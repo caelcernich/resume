@@ -8,7 +8,8 @@ A static site. No build step, no dependencies, and no folders. Every file sits a
 - `real-estate.html`: interactive demo of the Real Estate dashboard
 - `supplier-spend.html`: interactive demo of the Supplier Spend dashboard
 - `capital.html`: interactive demo of the Capital Availability dashboard
-- `headshot.jpg`: your portrait, shown in the hero
+- `headshot.jpg`: your portrait, shown in the hero and the top navigation
+- `gt-logo.png`: the Georgia Tech mark shown in the education badge
 
 All three demos run entirely on synthetic data generated in the browser. Nothing in them is real.
 
@@ -19,4 +20,4 @@ All three demos run entirely on synthetic data generated in the browser. Nothing
 
 ## Publish it (free)
 
-Create a public repository named exactly `<your-github-username>.github.io`. Use Add file, then Upload files, and drag in all six files. Then go to Settings, Pages, choose "Deploy from a branch," pick `main` and `/ (root)`, and save. The site appears at `https://<your-github-username>.github.io/`.
+Create a public repository named exactly `<your-github-username>.github.io`. Use Add file, then Upload files, and drag in all seven files. Then go to Settings, Pages, choose "Deploy from a branch," pick `main` and `/ (root)`, and save. The site appears at `https://<your-github-username>.github.io/`.
