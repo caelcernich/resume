@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0F1B3D">
+<meta name="theme-color" content="#0B1430">
 <title>Supplier Spend Dashboard (synthetic data demo)</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%232A44FF'/%3E%3Ctext x='50' y='68' font-size='52' font-weight='800' text-anchor='middle' fill='%23FFC61A' font-family='Arial Black,Arial,sans-serif'%3ECC%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%231E3A8A'/%3E%3Ctext x='50' y='68' font-size='52' font-weight='800' text-anchor='middle' fill='%23D2A02B' font-family='Arial Black,Arial,sans-serif'%3ECC%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --cobalt: #2A44FF; --cobalt-deep: #1C2FC4; --yellow: #FFC61A; --ink: #0F1B3D; --white: #FFFFFF;
+    --cobalt: #1E3A8A; --cobalt-deep: #14285F; --yellow: #D2A02B; --ink: #0B1430; --white: #FFFFFF;
     --concrete: #E6E9EE; --ink-soft: #3C4766; --line: #C3C9D6; --red: #C8321F; --green: #1F7A4D;
     --display: 'Big Shoulders Display', 'Arial Narrow', Impact, sans-serif;
     --body: 'Public Sans', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
@@ -92,7 +92,7 @@
   @media (max-width: 900px) { .mapwrap { grid-template-columns: 1fr; } }
   .tile { cursor: default; } .tile rect { stroke: var(--ink); stroke-width: 2; rx: 6; } .tile text { font: 700 14px var(--body); text-anchor: middle; pointer-events: none; }
   .legend { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; margin-top: 10px; }
-  .legend i { display: block; width: 160px; height: 12px; border: 2px solid var(--ink); background: linear-gradient(90deg, #E6E9EE, #2A44FF); }
+  .legend i { display: block; width: 160px; height: 12px; border: 2px solid var(--ink); background: linear-gradient(90deg, #E6E9EE, #1E3A8A); }
   .info { border: 3px solid var(--ink); border-radius: 8px; padding: 14px 16px; min-height: 100px; background: var(--concrete); margin-bottom: 14px; }
   .info h3 { margin: 0 0 6px; }
   .notes { display: flex; flex-direction: column; gap: 0; }
@@ -248,8 +248,8 @@
     var x1 = 90 + Math.cos(a) * (r - 20), y1 = 90 + Math.sin(a) * (r - 20), x2 = 90 + Math.cos(a) * (r + 20), y2 = 90 + Math.sin(a) * (r + 20);
     return '<svg class="donut" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="' + Math.round(share * 100) + ' percent of spend is under contract, goal ' + Math.round(goal * 100) + ' percent">' +
       '<circle cx="90" cy="90" r="' + r + '" fill="none" stroke="#C3C9D6" stroke-width="26"/>' +
-      '<circle cx="90" cy="90" r="' + r + '" fill="none" stroke="#2A44FF" stroke-width="26" stroke-dasharray="' + (share * C) + ' ' + C + '" transform="rotate(-90 90 90)"/>' +
-      '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="#FFC61A" stroke-width="5"/><line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="#0F1B3D" stroke-width="1.5"/>' +
+      '<circle cx="90" cy="90" r="' + r + '" fill="none" stroke="#1E3A8A" stroke-width="26" stroke-dasharray="' + (share * C) + ' ' + C + '" transform="rotate(-90 90 90)"/>' +
+      '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="#D2A02B" stroke-width="5"/><line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="#0B1430" stroke-width="1.5"/>' +
       '<text x="90" y="90" font-size="38">' + Math.round(share * 100) + '%</text><text x="90" y="112" font-size="14" style="font-family:Public Sans,Arial,sans-serif;font-weight:600">under contract</text></svg>';
   }
   function cov(list) { var t = sum(list, function (r) { return r.amt; }); var c = sum(list.filter(function (r) { return supMap[r.sup].con; }), function (r) { return r.amt; }); return { total: t, con: c, non: t - c, share: t > 0 ? c / t : 0 }; }
@@ -279,11 +279,11 @@
     var cur = bySupplier(list), top5 = cur.slice(0, 5);
     var qt = [0, 0, 0, 0]; cur.forEach(function (sp) { for (var i = 0; i < 4; i++) qt[i] += sp.q[i]; });
     var hmax = Math.max.apply(null, top5.map(function (sp) { return Math.max.apply(null, sp.q.map(Math.abs)); }).concat([1]));
-    function cell(v) { if (v < 0) return '<td class="cell" style="background:#F6C9C2">' + moneyP(v) + '</td>'; var t = Math.min(1, v / hmax); return '<td class="cell" style="background:rgb(' + Math.round(230 - 188 * t) + ',' + Math.round(233 - 165 * t) + ',' + Math.round(238 + 17 * t) + ');color:' + (t > 0.55 ? '#fff' : '#0F1B3D') + '">' + (v ? moneyP(v) : '-') + '</td>'; }
+    function cell(v) { if (v < 0) return '<td class="cell" style="background:#F6C9C2">' + moneyP(v) + '</td>'; var t = Math.min(1, v / hmax); return '<td class="cell" style="background:rgb(' + Math.round(230 - 200 * t) + ',' + Math.round(233 - 175 * t) + ',' + Math.round(238 - 100 * t) + ');color:' + (t > 0.55 ? '#fff' : '#0B1430') + '">' + (v ? moneyP(v) : '-') + '</td>'; }
     var rows = top5.map(function (sp) { return '<tr><td>' + esc(sp.name) + '</td>' + sp.q.map(cell).join('') + '<td class="num"><strong>' + money(sp.total) + '</strong></td></tr>'; }).join('');
     var c = cov(list);
     return '<div class="panel"><h2>Overview</h2><p class="sub">Where the money goes and where contracts are missing. Click a supplier bar to filter the whole dashboard to that supplier, and click it again to clear.</p>' +
-      '<div class="two"><div><h3 style="margin-top:0">Annual net spend by supplier</h3><div class="legend2"><span><i style="background:#2A44FF"></i>Under contract</span><span><i style="background:#C8321F"></i>Not under contract</span></div><div class="rank">' + (bars || '<div class="empty">No suppliers match these filters.</div>') + '</div></div>' +
+      '<div class="two"><div><h3 style="margin-top:0">Annual net spend by supplier</h3><div class="legend2"><span><i style="background:#1E3A8A"></i>Under contract</span><span><i style="background:#C8321F"></i>Not under contract</span></div><div class="rank">' + (bars || '<div class="empty">No suppliers match these filters.</div>') + '</div></div>' +
       '<div><h3 style="margin-top:0">Spend by quarter, top 5 suppliers</h3><div class="tablewrap"><table><thead><tr><th>Supplier</th><th class="num">Q1</th><th class="num">Q2</th><th class="num">Q3</th><th class="num">Q4</th><th class="num">Annual</th></tr></thead><tbody>' +
       '<tr class="total"><td>All suppliers</td>' + qt.map(function (v) { return '<td class="num">' + moneyP(v) + '</td>'; }).join('') + '<td class="num">' + money(c.total) + '</td></tr>' + (rows || '<tr><td colspan="6" class="empty">No data in view.</td></tr>') + '</tbody></table></div>' +
       '<h3>Contract coverage</h3><div class="donutwrap">' + donut(c.share, GOAL) + '<div><p style="margin:0 0 6px"><strong>' + Math.round(c.share * 100) + '%</strong> of spend is under contract.</p><p class="sub" style="margin:0">Goal: ' + Math.round(GOAL * 100) + '% under contract (yellow marker).</p></div></div></div></div></div>';
@@ -339,7 +339,7 @@
     var size = 56, gap = 7, tiles = '';
     Object.keys(GRID).forEach(function (code) {
       var p = GRID[code], v = by[code] || 0, t = Math.max(0, v) / mx, x = p[0] * (size + gap) + 4, y = p[1] * (size + gap) + 4;
-      tiles += '<g class="tile" data-state="' + code + '" tabindex="0" role="img" aria-label="' + code + ', ' + money(v) + '"><rect x="' + x + '" y="' + y + '" width="' + size + '" height="' + size + '" fill="' + (v > 0 ? 'rgb(' + lerp(230, 42, Math.max(0.12, t)) + ',' + lerp(233, 68, Math.max(0.12, t)) + ',' + lerp(238, 255, Math.max(0.12, t)) + ')' : '#F3F5F9') + '"/><text x="' + (x + size / 2) + '" y="' + (y + size / 2 + 5) + '" fill="' + (t > 0.5 ? '#fff' : '#0F1B3D') + '">' + code + '</text></g>';
+      tiles += '<g class="tile" data-state="' + code + '" tabindex="0" role="img" aria-label="' + code + ', ' + money(v) + '"><rect x="' + x + '" y="' + y + '" width="' + size + '" height="' + size + '" fill="' + (v > 0 ? 'rgb(' + lerp(230, 30, Math.max(0.12, t)) + ',' + lerp(233, 58, Math.max(0.12, t)) + ',' + lerp(238, 138, Math.max(0.12, t)) + ')' : '#F3F5F9') + '"/><text x="' + (x + size / 2) + '" y="' + (y + size / 2 + 5) + '" fill="' + (t > 0.5 ? '#fff' : '#0B1430') + '">' + code + '</text></g>';
     });
     var w = 11 * (size + gap) + 4, h = 8 * (size + gap) + 4;
     var f = {}; list.forEach(function (r) { f[r.fac] = (f[r.fac] || 0) + r.amt; });

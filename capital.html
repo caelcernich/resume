@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0F1B3D">
+<meta name="theme-color" content="#0B1430">
 <title>Capital Availability Dashboard (synthetic data demo)</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%232A44FF'/%3E%3Ctext x='50' y='68' font-size='52' font-weight='800' text-anchor='middle' fill='%23FFC61A' font-family='Arial Black,Arial,sans-serif'%3ECC%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%231E3A8A'/%3E%3Ctext x='50' y='68' font-size='52' font-weight='800' text-anchor='middle' fill='%23D2A02B' font-family='Arial Black,Arial,sans-serif'%3ECC%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --cobalt: #2A44FF; --cobalt-deep: #1C2FC4; --yellow: #FFC61A; --ink: #0F1B3D; --white: #FFFFFF;
+    --cobalt: #1E3A8A; --cobalt-deep: #14285F; --yellow: #D2A02B; --ink: #0B1430; --white: #FFFFFF;
     --concrete: #E6E9EE; --ink-soft: #3C4766; --line: #C3C9D6; --red: #C8321F; --green: #1F7A4D; --gray: #8A93A8;
     --display: 'Big Shoulders Display', 'Arial Narrow', Impact, sans-serif;
     --body: 'Public Sans', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
@@ -290,7 +290,7 @@
   }
 
   // ---------- trend chart ----------
-  var SERIES = [['budget', 'Total budget', '#C8321F'], ['assigned', 'Assigned', '#FFC61A'], ['committed', 'Committed', '#8A93A8'], ['actual', 'Actual', '#0F1B3D'], ['avail', 'Available', '#2A44FF']];
+  var SERIES = [['budget', 'Total budget', '#C8321F'], ['assigned', 'Assigned', '#D2A02B'], ['committed', 'Committed', '#8A93A8'], ['actual', 'Actual', '#0B1430'], ['avail', 'Available', '#3F72D4']];
   var W = 760, H = 330, L = 64, R = 16, T = 14, B = 34;
   var trendData = null;
   function buildTrend(list) {

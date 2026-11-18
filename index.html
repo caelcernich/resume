@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#2A44FF">
+<meta name="theme-color" content="#1E3A8A">
 <title>Cael Cernich: Senior Data Analyst and Analytics Product Owner</title>
 <meta name="description" content="Cael Cernich builds supply chain analytics products end to end: requirements, pipelines, dashboards, and adoption. Based in Atlanta, GA.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%232A44FF'/%3E%3Ctext x='50' y='68' font-size='52' font-weight='800' text-anchor='middle' fill='%23FFC61A' font-family='Arial Black,Arial,sans-serif'%3ECC%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%231E3A8A'/%3E%3Ctext x='50' y='68' font-size='52' font-weight='800' text-anchor='middle' fill='%23D2A02B' font-family='Arial Black,Arial,sans-serif'%3ECC%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js-on');</script>
 <style>
   :root {
-    --cobalt: #2A44FF;
-    --cobalt-deep: #1C2FC4;
-    --yellow: #FFC61A;
-    --ink: #0F1B3D;
+    --cobalt: #1E3A8A;
+    --cobalt-deep: #14285F;
+    --yellow: #D2A02B;
+    --ink: #0B1430;
     --white: #FFFFFF;
     --concrete: #E6E9EE;
     --ink-soft: #3C4766;
@@ -38,7 +38,8 @@
   .nav { position: sticky; top: 0; z-index: 40; background: var(--ink); color: var(--white); border-bottom: 3px solid var(--yellow); }
   .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 62px; gap: 16px; }
   .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--display); font-weight: 800; font-size: 24px; letter-spacing: 0.01em; }
-  .brand-mark { width: 34px; height: 34px; background: var(--yellow); color: var(--ink); display: grid; place-items: center; font-size: 19px; border-radius: 4px; }
+  .brand-mark { width: 46px; height: 46px; background: var(--yellow); color: var(--ink); display: grid; place-items: center; font-size: 19px; border-radius: 50%; overflow: hidden; border: 2px solid var(--yellow); flex-shrink: 0; }
+  .brand-mark img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; display: block; }
   .nav ul { display: flex; gap: 26px; list-style: none; margin: 0; padding: 0; font-weight: 600; font-size: 15px; }
   .nav ul a { text-decoration: none; padding: 6px 0; border-bottom: 3px solid transparent; }
   .nav ul a:hover { border-bottom-color: var(--yellow); }
@@ -53,8 +54,8 @@
   .cue-line::after { content: ""; position: absolute; left: 0; top: -100%; width: 100%; height: 100%; background: var(--yellow); animation: drip 1.9s ease-in-out infinite; }
   @keyframes drip { to { top: 100%; } }
   .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 48px; align-items: center; padding-top: 72px; }
-  .hero h1 { font-family: var(--display); font-weight: 900; font-size: clamp(64px, 14.5vw, 208px); line-height: 0.86; letter-spacing: -0.012em; margin: 0; }
-  .hero .lede { font-size: clamp(22px, 3vw, 34px); max-width: 28ch; margin: 0 0 32px; line-height: 1.3; font-weight: 500; }
+  .hero h1 { font-family: var(--display); font-weight: 900; font-size: clamp(52px, 9.6vw, 136px); line-height: 0.9; letter-spacing: -0.012em; margin: 0; }
+  .hero .lede { font-size: clamp(20px, 2.5vw, 30px); max-width: 34ch; margin: 0 0 32px; line-height: 1.3; font-weight: 500; }
   .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; }
   .btn { display: inline-flex; align-items: center; justify-content: center; font: 700 16px/1 var(--body); text-decoration: none; padding: 15px 26px; border-radius: 999px; border: 3px solid var(--ink); background: var(--yellow); color: var(--ink); cursor: pointer; }
   .btn:hover { background: var(--white); }
@@ -74,18 +75,34 @@
   }
 
   /* route graphic (scroll-driven) */
-  .route-wrap { margin-top: 72px; border-top: 3px solid var(--ink); padding-top: 18px; }
+  .route-wrap { margin-top: 72px; border-top: 3px solid var(--ink); padding-top: 22px; }
   .route-svg { width: 100%; height: auto; display: block; overflow: visible; }
   .route-base { fill: none; stroke: rgba(255,255,255,0.28); stroke-width: 4; stroke-linejoin: round; }
   .route-draw { fill: none; stroke: var(--yellow); stroke-width: 4; stroke-linejoin: round; }
   .node { fill: var(--yellow); stroke: var(--ink); stroke-width: 4; }
-  .node-label { fill: var(--white); font: 700 17px var(--body); text-anchor: middle; }
+  .nl-name { fill: var(--white); font: 700 16px var(--body); text-anchor: middle; }
+  .nl-sub { fill: rgba(255,255,255,0.82); font: 500 13px var(--body); text-anchor: middle; }
   .package { display: none; fill: var(--white); stroke: var(--ink); stroke-width: 3; }
   .js-route .node { fill: var(--cobalt-deep); stroke: var(--white); transition: fill .25s, stroke .25s; }
   .js-route .node.lit { fill: var(--yellow); stroke: var(--ink); }
-  .js-route .node-label { opacity: 0.35; transition: opacity .25s; }
-  .js-route .node-label.lit { opacity: 1; }
+  .js-route .nl { opacity: 0.35; transition: opacity .25s; }
+  .js-route .nl.lit { opacity: 1; }
   .js-route .package { display: block; }
+  /* narrow screens: the same route as a vertical list */
+  .route-list { display: none; list-style: none; margin: 0; padding: 0; position: relative; }
+  .route-list::before { content: ""; position: absolute; left: 8px; top: 12px; bottom: 12px; width: 4px; background: rgba(255,255,255,0.28); border-radius: 2px; }
+  .rl-fill { position: absolute; left: 8px; top: 12px; width: 4px; height: calc(100% - 24px); background: var(--yellow); border-radius: 2px; }
+  .route-list li { position: relative; padding: 0 0 22px 42px; }
+  .route-list li:last-child { padding-bottom: 0; }
+  .rl-dot { position: absolute; left: 0; top: 1px; width: 20px; height: 20px; border-radius: 50%; background: var(--yellow); border: 3px solid var(--ink); }
+  .route-list strong { display: block; font-size: 18px; line-height: 1.25; }
+  .route-list em { display: block; font-style: normal; font-size: 15px; opacity: 0.85; }
+  .js-route-list .rl-fill { height: 0; }
+  .js-route-list li { opacity: 0.45; transition: opacity .25s; }
+  .js-route-list li .rl-dot { background: var(--cobalt-deep); border-color: var(--white); transition: background .25s, border-color .25s; }
+  .js-route-list li.lit { opacity: 1; }
+  .js-route-list li.lit .rl-dot { background: var(--yellow); border-color: var(--ink); }
+  @media (max-width: 900px) { .route-svg { display: none; } .route-list { display: block; } }
 
   /* scroll reveal: content bleeds in with a soft downward wipe tied to scroll position */
   .js-on [data-bleed]:not([data-done]) {
@@ -103,7 +120,8 @@
   .about p { margin: 0 0 18px; max-width: 62ch; }
   .edu { background: var(--white); border: 3px solid var(--ink); border-radius: 8px; }
   .edu-top { padding: 10px 20px; border-bottom: 3px solid var(--ink); background: var(--yellow); font-weight: 700; font-size: 15px; }
-  .edu-body { padding: 20px; }
+  .edu-body { padding: 20px; display: flex; align-items: center; gap: 18px; }
+  .gt-mark { width: 74px; height: auto; flex-shrink: 0; display: block; }
   .edu-body h3 { font-family: var(--display); font-size: 30px; margin: 0 0 4px; line-height: 1.05; }
   .edu-body p { margin: 0 0 6px; font-size: 16px; }
   @media (max-width: 820px) { .about-grid { grid-template-columns: 1fr; gap: 32px; } }
@@ -152,7 +170,7 @@
 
   /* dialog */
   dialog { border: 3px solid var(--ink); border-radius: 8px; padding: 0; width: min(760px, calc(100% - 28px)); max-height: calc(100% - 40px); color: var(--ink); background: var(--white); }
-  dialog::backdrop { background: rgba(15, 27, 61, 0.72); }
+  dialog::backdrop { background: rgba(11, 20, 48, 0.72); }
   .dlg-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 14px 10px 22px; border-bottom: 3px solid var(--ink); background: var(--yellow); font-weight: 700; font-size: 14px; position: sticky; top: 0; }
   .dlg-top button { font: 700 14px var(--body); border: 3px solid var(--ink); background: var(--white); color: var(--ink); border-radius: 999px; padding: 6px 16px; cursor: pointer; }
   .dlg-body { padding: 24px 28px 30px; display: flex; flex-direction: column; gap: 18px; }
@@ -176,6 +194,8 @@
   .job { display: grid; grid-template-columns: 220px 1fr; gap: 12px 40px; padding: 30px 0; border-top: 3px solid var(--ink); }
   .job:last-child { border-bottom: 3px solid var(--ink); }
   .job-dates { font-family: var(--display); font-weight: 800; font-size: 28px; line-height: 1.05; }
+  .job-span { display: block; width: fit-content; margin-top: 10px; font: 700 14px/1.4 var(--body); background: var(--yellow); color: var(--ink); border: 2px solid var(--ink); border-radius: 999px; padding: 2px 12px; }
+  .job-span:empty { display: none; }
   .job h3 { font-family: var(--display); font-weight: 800; font-size: 34px; line-height: 1; margin: 0 0 4px; }
   .job .org { margin: 0 0 14px; font-weight: 600; }
   .job ul { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; max-width: 70ch; }
@@ -214,7 +234,7 @@
 
 <header class="nav">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="Cael Cernich, home"><span class="brand-mark">CC</span>Cael Cernich</a>
+    <a class="brand" href="#top" aria-label="Cael Cernich, home"><span class="brand-mark" id="navFace"><img src="headshot.jpg" width="44" height="44" alt="" id="navImg"></span>Cael Cernich</a>
     <nav aria-label="Primary">
       <ul>
         <li><a href="#about">About</a></li>
@@ -231,13 +251,13 @@
   <section class="hero" aria-labelledby="hero-title">
     <div class="wrap">
       <div class="hero-first">
-        <h1 id="hero-title">Messy data in. Tools people use out.</h1>
+        <h1 id="hero-title">They say you get out what you put in. I'm changing that.</h1>
         <div class="cue" id="cue" aria-hidden="true"><span class="cue-line"></span><span>Scroll to unpack</span></div>
       </div>
 
       <div class="hero-grid">
         <div>
-          <p class="lede">I'm Cael Cernich, a senior data analyst and analytics product owner in supply chain. I take a manual process from request to a tool a team adopts.</p>
+          <p class="lede">I'm Cael Cernich, a senior data analyst and analytics product owner. I take messy source data and turn it into dependable tools my peers can use for any use case.</p>
           <div class="hero-cta">
             <a class="btn" href="#work">See my work</a>
             <a class="btn ghost" href="#contact">Get in touch</a>
@@ -251,21 +271,34 @@
       </div>
 
       <div class="route-wrap" id="routeWrap">
-        <svg class="route-svg" id="routeSvg" viewBox="0 0 1000 150" role="img" aria-label="A route from source systems through BigQuery and Python with SQL to dashboards and decisions">
-          <path class="route-base" d="M60 90 L270 50 L500 90 L730 50 L940 90"/>
-          <path class="route-draw" d="M60 90 L270 50 L500 90 L730 50 L940 90"/>
-          <circle class="node" cx="60"  cy="90" r="15"/>
-          <circle class="node" cx="270" cy="50" r="15"/>
-          <circle class="node" cx="500" cy="90" r="15"/>
-          <circle class="node" cx="730" cy="50" r="15"/>
-          <circle class="node" cx="940" cy="90" r="19"/>
-          <text class="node-label" x="60"  y="136">Source systems</text>
-          <text class="node-label" x="270" y="96">BigQuery</text>
-          <text class="node-label" x="500" y="136">Python and SQL</text>
-          <text class="node-label" x="730" y="96">Dashboards</text>
-          <text class="node-label" x="940" y="136">Decisions</text>
-          <circle class="package" id="pkg" r="9" cx="60" cy="90"/>
+        <svg class="route-svg" id="routeSvg" viewBox="0 0 1200 216" role="img" aria-label="A route from source systems through Microsoft 365, Google Cloud, Python and SQL, and AI tools to dashboards, tools, and reports, and finally to decisions">
+          <path class="route-base" d="M90 140 L260 84 L430 140 L600 84 L770 140 L940 84 L1110 140"/>
+          <path class="route-draw" d="M90 140 L260 84 L430 140 L600 84 L770 140 L940 84 L1110 140"/>
+          <circle class="node" cx="90" cy="140" r="15"/>
+          <circle class="node" cx="260" cy="84" r="15"/>
+          <circle class="node" cx="430" cy="140" r="15"/>
+          <circle class="node" cx="600" cy="84" r="15"/>
+          <circle class="node" cx="770" cy="140" r="15"/>
+          <circle class="node" cx="940" cy="84" r="15"/>
+          <circle class="node" cx="1110" cy="140" r="19"/>
+          <g class="nl"><text class="nl-name" x="90" y="184">Source systems</text><text class="nl-sub" x="90" y="202">Where the mess starts</text></g>
+          <g class="nl"><text class="nl-name" x="260" y="34">Microsoft 365</text><text class="nl-sub" x="260" y="52">SharePoint and Excel</text></g>
+          <g class="nl"><text class="nl-name" x="430" y="184">Google Cloud</text><text class="nl-sub" x="430" y="202">BigQuery</text></g>
+          <g class="nl"><text class="nl-name" x="600" y="34">Python and SQL</text><text class="nl-sub" x="600" y="52">Clean and model</text></g>
+          <g class="nl"><text class="nl-name" x="770" y="184">AI tools</text><text class="nl-sub" x="770" y="202">Claude, Gemini, Copilot</text></g>
+          <g class="nl"><text class="nl-name" x="940" y="34">Dashboards, tools, and reports</text><text class="nl-sub" x="940" y="52">What people actually use</text></g>
+          <g class="nl"><text class="nl-name" x="1110" y="188">Decisions</text><text class="nl-sub" x="1110" y="206">The point of it all</text></g>
+          <circle class="package" id="pkg" r="9" cx="90" cy="140"/>
         </svg>
+        <ol class="route-list" id="routeList" aria-label="From source systems to decisions"><div class="rl-fill" id="rlFill" aria-hidden="true"></div>
+          <li><span class="rl-dot" aria-hidden="true"></span><strong>Source systems</strong><em>Where the mess starts</em></li>
+          <li><span class="rl-dot" aria-hidden="true"></span><strong>Microsoft 365</strong><em>SharePoint and Excel</em></li>
+          <li><span class="rl-dot" aria-hidden="true"></span><strong>Google Cloud</strong><em>BigQuery</em></li>
+          <li><span class="rl-dot" aria-hidden="true"></span><strong>Python and SQL</strong><em>Clean and model</em></li>
+          <li><span class="rl-dot" aria-hidden="true"></span><strong>AI tools</strong><em>Claude, Gemini, Copilot</em></li>
+          <li><span class="rl-dot" aria-hidden="true"></span><strong>Dashboards, tools, and reports</strong><em>What people actually use</em></li>
+          <li><span class="rl-dot" aria-hidden="true"></span><strong>Decisions</strong><em>The point of it all</em></li>
+        </ol>
       </div>
     </div>
   </section>
@@ -273,7 +306,7 @@
   <section class="about" id="about" aria-labelledby="about-title">
     <div class="wrap about-grid">
       <div>
-        <h2 id="about-title">Industrial engineer by training. Product owner by habit.</h2>
+        <h2 id="about-title">Industrial Engineer by education. Analytics product owner by trade.</h2>
         <p>I studied Industrial and Systems Engineering at Georgia Tech, which left me with a bias for systems: find the bottleneck, model it, fix it.</p>
         <p>Over five years in supply chain analytics I've moved from answering one-off questions in spreadsheets to owning analytics products end to end. I gather the requirements, build the pipeline, ship the dashboard, and train the people who use it.</p>
         <p>I'm happiest when a manual process quietly becomes something nobody has to think about anymore.</p>
@@ -281,11 +314,11 @@
       <aside class="edu" aria-label="Education">
         <div class="edu-top">Education</div>
         <div class="edu-body">
-          <h3>Georgia Institute of Technology</h3>
-          <p><strong>B.S., Industrial and Systems Engineering</strong>, College of Engineering</p>
-          <p>Concentration in Economic and Financial Systems</p>
-          <p>Finance certificate, Scheller College of Business</p>
-          <p>2016 to 2021</p>
+          <img class="gt-mark" src="gt-logo.png" width="280" height="178" alt="Georgia Tech logo" onerror="this.style.display='none'">
+          <div>
+            <h3>Georgia Institute of Technology</h3>
+            <p><strong>B.S., Industrial and Systems Engineering</strong></p>
+          </div>
         </div>
       </aside>
     </div>
@@ -336,7 +369,7 @@
       </div>
       <ol class="timeline">
         <li class="job">
-          <div class="job-dates">October 2025 to present</div>
+          <div class="job-dates"><span>October 2025 to present</span><span class="job-span" data-start="2025-10" data-end="present"></span></div>
           <div>
             <h3>Senior Data Analyst, Supply Chain Infrastructure</h3>
             <p class="org">The Home Depot, Atlanta, GA</p>
@@ -348,7 +381,7 @@
           </div>
         </li>
         <li class="job">
-          <div class="job-dates">November 2022 to September 2025</div>
+          <div class="job-dates"><span>November 2022 to September 2025</span><span class="job-span" data-start="2022-11" data-end="2025-09"></span></div>
           <div>
             <h3>Senior Data Analyst, Channel Management</h3>
             <p class="org">The Home Depot, Atlanta, GA</p>
@@ -361,7 +394,7 @@
           </div>
         </li>
         <li class="job">
-          <div class="job-dates">May 2021 to November 2022</div>
+          <div class="job-dates"><span>May 2021 to November 2022</span><span class="job-span" data-start="2021-05" data-end="2022-11"></span></div>
           <div>
             <h3>Contractor, Data Analyst</h3>
             <p class="org">The Home Depot, Atlanta, GA</p>
@@ -687,6 +720,10 @@
   }
   img.addEventListener('error', monogram);
   if (img.complete && img.naturalWidth === 0) monogram();
+  var navImg = document.getElementById('navImg');
+  function navMono() { document.getElementById('navFace').textContent = 'CC'; }
+  navImg.addEventListener('error', navMono);
+  if (navImg.complete && navImg.naturalWidth === 0) navMono();
 
   // ----- scroll-driven reveal: content "unpacks" as you scroll -----
   var REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -712,33 +749,38 @@
     });
   }
 
-  // route graphic: the package travels as you scroll
+  // route graphic: the package travels as you scroll (wide screens), or a vertical list fills in (narrow screens)
   var routeSvg = document.getElementById('routeSvg');
-  var routeWrap = document.getElementById('routeWrap');
+  var routeList = document.getElementById('routeList');
   var routePath = routeSvg.querySelector('.route-draw');
   var routeNodes = routeSvg.querySelectorAll('.node');
-  var routeLabels = routeSvg.querySelectorAll('.node-label');
+  var routeLabels = routeSvg.querySelectorAll('.nl');
+  var rlItems = routeList.querySelectorAll('li');
+  var rlFill = document.getElementById('rlFill');
   var pkg = document.getElementById('pkg');
   var routeLen = routePath.getTotalLength ? routePath.getTotalLength() : 0;
-  var FRACTIONS = [0, 0.239, 0.5, 0.761, 1];
+  var STOPS = routeNodes.length;
   var routeQ = 0;
 
   function setRoute(q) {
-    routePath.style.strokeDasharray = routeLen;
-    routePath.style.strokeDashoffset = routeLen * (1 - q);
-    var pt = routePath.getPointAtLength(routeLen * q);
-    pkg.setAttribute('cx', pt.x);
-    pkg.setAttribute('cy', pt.y);
-    for (var i = 0; i < routeNodes.length; i++) {
-      var lit = q >= FRACTIONS[i] && (i > 0 || q > 0.005);
+    if (routeLen) {
+      routePath.style.strokeDasharray = routeLen;
+      routePath.style.strokeDashoffset = routeLen * (1 - q);
+      var pt = routePath.getPointAtLength(routeLen * q);
+      pkg.setAttribute('cx', pt.x);
+      pkg.setAttribute('cy', pt.y);
+    }
+    for (var i = 0; i < STOPS; i++) {
+      var lit = q >= i / (STOPS - 1) - 0.0001 && (i > 0 || q > 0.005);
       routeNodes[i].classList.toggle('lit', lit);
       routeLabels[i].classList.toggle('lit', lit);
+      rlItems[i].classList.toggle('lit', lit);
     }
+    rlFill.style.height = 'calc((100% - 24px) * ' + q.toFixed(3) + ')';
   }
-  if (routeLen) {
-    routeSvg.classList.add('js-route');
-    if (REDUCE) { routeQ = 1; setRoute(1); pkg.style.display = 'none'; } else { setRoute(0); }
-  }
+  routeSvg.classList.add('js-route');
+  routeList.classList.add('js-route-list');
+  if (REDUCE) { routeQ = 1; setRoute(1); pkg.style.display = 'none'; } else { setRoute(0); }
 
   var cue = document.getElementById('cue');
   function updateReveal() {
@@ -757,10 +799,11 @@
       if (st.p >= 1) finish(node); else node.style.setProperty('--p', st.p.toFixed(3));
     }
 
-    if (routeLen && routeQ < 1) {
-      var rt = routeWrap.getBoundingClientRect().top;
-      var qs = vh * 0.95, qe = vh * 0.38;
-      var q = atBottom ? 1 : Math.max(0, Math.min(1, (qs - rt) / (qs - qe)));
+    if (routeQ < 1) {
+      var routeEl = window.getComputedStyle(routeSvg).display !== 'none' ? routeSvg : routeList;
+      var rr = routeEl.getBoundingClientRect();
+      var qs = vh * 0.95, qe = Math.min(vh * 0.38, vh * 0.9 - rr.height);
+      var q = atBottom ? 1 : Math.max(0, Math.min(1, (qs - rr.top) / (qs - qe)));
       if (q > routeQ) { routeQ = q; setRoute(routeQ); }
     }
   }
@@ -789,6 +832,22 @@
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(EMAIL).then(function () { done(true); }, function () { done(false); });
     } else { done(false); }
+  });
+
+  // ----- time in role (counts the first and last month, the way LinkedIn does) -----
+  function plural(n, word) { return n + ' ' + word + (n === 1 ? '' : 's'); }
+  function spanText(start, end) {
+    var s = start.split('-'), now = new Date();
+    var ey = end === 'present' ? now.getFullYear() : Number(end.split('-')[0]);
+    var em = end === 'present' ? now.getMonth() + 1 : Number(end.split('-')[1]);
+    var months = (ey - Number(s[0])) * 12 + (em - Number(s[1])) + 1;
+    if (months < 1) return '';
+    var y = Math.floor(months / 12), m = months % 12;
+    if (y && m) return plural(y, 'year') + ', ' + plural(m, 'month');
+    return y ? plural(y, 'year') : plural(m, 'month');
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.job-span'), function (node) {
+    node.textContent = spanText(node.getAttribute('data-start'), node.getAttribute('data-end'));
   });
 
   document.getElementById('year').textContent = new Date().getFullYear();
