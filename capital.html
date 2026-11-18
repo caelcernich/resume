@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0F1B3D">
+<title>Capital Availability Dashboard (synthetic data demo)</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%232A44FF'/%3E%3Ctext x='50' y='68' font-size='52' font-weight='800' text-anchor='middle' fill='%23FFC61A' font-family='Arial Black,Arial,sans-serif'%3ECC%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cobalt: #2A44FF; --cobalt-deep: #1C2FC4; --yellow: #FFC61A; --ink: #0F1B3D; --white: #FFFFFF;
+    --concrete: #E6E9EE; --ink-soft: #3C4766; --line: #C3C9D6; --red: #C8321F; --green: #1F7A4D; --gray: #8A93A8;
+    --display: 'Big Shoulders Display', 'Arial Narrow', Impact, sans-serif;
+    --body: 'Public Sans', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--body); color: var(--ink); background: var(--concrete); line-height: 1.45; font-size: 15px; -webkit-font-smoothing: antialiased; }
+  :focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; box-shadow: 0 0 0 5px var(--ink); }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+  button, input, textarea { font-family: inherit; }
+
+  .bar { background: var(--ink); color: var(--white); border-bottom: 3px solid var(--yellow); }
+  .bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 60px; flex-wrap: wrap; padding-top: 8px; padding-bottom: 8px; }
+  .bar h1 { font-family: var(--display); font-weight: 800; font-size: 28px; margin: 0; line-height: 1; }
+  .bar a { color: var(--white); font-weight: 600; text-decoration: none; border: 2px solid var(--white); border-radius: 999px; padding: 6px 16px; font-size: 14px; }
+  .bar a:hover { background: var(--yellow); color: var(--ink); border-color: var(--yellow); }
+  .banner { background: var(--yellow); color: var(--ink); border-bottom: 3px solid var(--ink); font-weight: 600; }
+  .banner .wrap { padding-top: 10px; padding-bottom: 10px; }
+
+  .kpis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin: 22px 0 16px; }
+  .kpi { background: var(--white); border: 3px solid var(--ink); border-radius: 8px; padding: 12px 14px; }
+  .kpi .k { font-size: 13px; font-weight: 600; color: var(--ink-soft); }
+  .kpi .v { font-family: var(--display); font-weight: 900; font-size: 34px; line-height: 1.05; }
+  .kpi .s { font-size: 13px; font-weight: 700; color: var(--ink-soft); }
+  .kpi.avail { background: #E4F3EA; }
+  @media (max-width: 980px) { .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+  .filters { background: var(--white); border: 3px solid var(--ink); border-radius: 8px; padding: 14px 16px; display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: flex-end; margin-bottom: 22px; }
+  .fgroup { display: flex; flex-direction: column; gap: 6px; }
+  .fgroup > span { font-size: 13px; font-weight: 700; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { font: 600 13px var(--body); border: 2px solid var(--ink); background: var(--white); color: var(--ink); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--cobalt); color: var(--white); }
+  select, textarea { font: 500 14px var(--body); border: 2px solid var(--ink); border-radius: 6px; padding: 6px 10px; background: var(--white); color: var(--ink); }
+  .check { display: flex; gap: 8px; align-items: center; font-weight: 600; font-size: 14px; }
+  .check input { width: 18px; height: 18px; accent-color: var(--cobalt); }
+  .btn { font: 700 14px var(--body); border: 3px solid var(--ink); background: var(--yellow); color: var(--ink); border-radius: 999px; padding: 7px 16px; cursor: pointer; }
+  .btn:hover { background: var(--white); }
+  .btn.ghost { background: var(--white); } .btn.ghost:hover { background: var(--yellow); }
+  .btn.sm { padding: 5px 12px; font-size: 13px; }
+  .push { margin-left: auto; display: flex; gap: 10px; }
+
+  .panel { background: var(--white); border: 3px solid var(--ink); border-radius: 8px; padding: 20px 22px; margin-bottom: 26px; }
+  .panel h2 { font-family: var(--display); font-weight: 900; font-size: 34px; margin: 0 0 4px; line-height: 1; }
+  .sub { margin: 0 0 16px; color: var(--ink-soft); max-width: 72ch; }
+  .two { display: grid; grid-template-columns: 1fr 1.25fr; gap: 26px; }
+  @media (max-width: 960px) { .two { grid-template-columns: 1fr; } }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 8px 8px; border-bottom: 2px solid var(--concrete); vertical-align: top; }
+  th { font-weight: 700; font-size: 13px; border-bottom: 3px solid var(--ink); white-space: nowrap; }
+  th button { font: inherit; font-weight: 700; background: none; border: 0; cursor: pointer; padding: 0; color: inherit; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  tr.grp td { background: var(--ink); color: var(--white); font-weight: 800; font-family: var(--display); font-size: 20px; padding: 6px 8px; }
+  tr.all td { background: #E8ECFF; font-weight: 800; border-bottom: 3px solid var(--ink); }
+  tr.subt td { font-weight: 800; background: #F3F5F9; border-top: 2px solid var(--ink); }
+  .tablewrap { overflow-x: auto; max-height: 560px; overflow-y: auto; border: 3px solid var(--ink); border-radius: 8px; }
+  .tablewrap thead th { position: sticky; top: 0; background: var(--white); z-index: 1; }
+  .pos { color: var(--green); font-weight: 700; } .neg { color: var(--red); font-weight: 700; } .zero { color: var(--ink-soft); }
+  .tag { display: inline-block; font-weight: 700; font-size: 12px; border: 2px solid var(--red); color: var(--white); background: var(--red); border-radius: 999px; padding: 0 8px; margin-left: 6px; }
+
+  .prog { display: flex; flex-direction: column; gap: 6px; max-height: 520px; overflow: auto; padding-right: 6px; }
+  .prow { display: grid; grid-template-columns: minmax(120px, 190px) 1fr 62px; gap: 10px; align-items: center; font-size: 13px; }
+  .prow .l { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .prow .track { height: 18px; background: #DDF1E5; border-radius: 4px; overflow: hidden; border: 2px solid var(--ink); }
+  .prow .fill { display: block; height: 100%; background: var(--yellow); }
+  .prow.over .fill { background: var(--red); }
+  .prow .n { font-weight: 700; text-align: right; }
+  .ptype { font-family: var(--display); font-weight: 800; font-size: 20px; margin-top: 8px; border-bottom: 3px solid var(--ink); }
+
+  .range { display: flex; gap: 18px; flex-wrap: wrap; align-items: center; margin: 4px 0 10px; }
+  .range label { display: flex; flex-direction: column; gap: 2px; font-size: 13px; font-weight: 700; flex: 1; min-width: 180px; }
+  .range input[type=range] { width: 100%; accent-color: var(--cobalt); }
+  .chart { width: 100%; height: auto; display: block; }
+  .chart text { font: 600 12px var(--body); fill: var(--ink); }
+  .chart .gl { stroke: var(--line); stroke-width: 1; }
+  .chart .cross { stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 4 3; }
+  .lg { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13px; font-weight: 600; margin: 8px 0; }
+  .lg span::before { content: ""; display: inline-block; width: 22px; height: 5px; margin-right: 6px; vertical-align: 3px; background: var(--c); border-radius: 3px; }
+  .readout { font-size: 13px; font-weight: 600; min-height: 38px; background: var(--concrete); border-radius: 6px; padding: 8px 10px; }
+  .fb { position: fixed; right: 18px; bottom: 18px; z-index: 20; }
+  .fbpanel { position: fixed; right: 18px; bottom: 70px; z-index: 20; width: min(340px, calc(100% - 36px)); background: var(--white); border: 3px solid var(--ink); border-radius: 8px; padding: 14px; display: none; }
+  .fbpanel.open { display: block; }
+  .fbpanel textarea { width: 100%; min-height: 90px; margin: 8px 0; }
+  .empty { padding: 28px 10px; text-align: center; color: var(--ink-soft); }
+  footer { padding: 6px 0 80px; font-size: 14px; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <h1>Capital Availability Dashboard</h1>
+    <a href="index.html">Back to portfolio</a>
+  </div>
+</header>
+<div class="banner" role="note">
+  <div class="wrap">Synthetic data demo. Every project name, ID, and dollar figure here is fictional. It recreates the layout and interactions of a confidential internal tool I built.</div>
+</div>
+
+<main class="wrap">
+  <div class="kpis" id="kpis" aria-live="polite"></div>
+
+  <section class="filters" aria-label="Filters">
+    <div class="fgroup"><span>Spend type</span><div class="chips" id="typeChips"></div></div>
+    <div class="fgroup"><span>Project</span><select id="projSel" aria-label="Project"></select></div>
+    <label class="check"><input type="checkbox" id="hideZero"> Hide projects with no budget</label>
+    <div class="push">
+      <button class="btn ghost" id="clearBtn" type="button">Clear all</button>
+      <button class="btn" id="csvBtn" type="button">Download CSV</button>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="avail-h">
+    <h2 id="avail-h">Current availability report</h2>
+    <p class="sub">Budget, what has been spent, what is committed, and what is still available for every project. Week-over-week columns show how much each number moved since the previous weekly snapshot. Click a column heading to sort within each spend type.</p>
+    <div class="tablewrap"><table id="availTable"></table></div>
+  </section>
+
+  <div class="two">
+    <section class="panel" aria-labelledby="prog-h">
+      <h2 id="prog-h">Project spend progress</h2>
+      <p class="sub">The share of each budget already assigned. Red means a project has assigned more than its budget.</p>
+      <div class="prog" id="prog"></div>
+    </section>
+    <section class="panel" aria-labelledby="trend-h">
+      <h2 id="trend-h">Capital over time</h2>
+      <p class="sub">Weekly snapshots for the projects in view. Drag the sliders to change the date range, and hover the chart to read any week.</p>
+      <div class="range">
+        <label>From <span id="r0Label"></span><input type="range" id="r0" min="0" value="0" aria-label="Start of date range"></label>
+        <label>To <span id="r1Label"></span><input type="range" id="r1" min="0" aria-label="End of date range"></label>
+      </div>
+      <div id="trendBox"></div>
+    </section>
+  </div>
+  <footer>All data in this demo is synthetic, generated for illustration. Snapshots are weekly and dates are set relative to today.</footer>
+</main>
+
+<button class="btn fb" id="fbBtn" type="button" aria-expanded="false" aria-controls="fbPanel">Share feedback</button>
+<div class="fbpanel" id="fbPanel" role="dialog" aria-label="Share feedback">
+  <strong>What would make this more useful?</strong>
+  <textarea id="fbText" aria-label="Your feedback" placeholder="Tell me what to change"></textarea>
+  <div style="display:flex;gap:10px;align-items:center"><button class="btn sm" id="fbSend" type="button">Send feedback</button><span id="fbMsg" role="status" style="font-weight:600;font-size:13px"></span></div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---------- seeded synthetic data ----------
+  function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  var rnd = mulberry32(20261202);
+  function between(a, b) { return a + rnd() * (b - a); }
+  var TODAY = new Date(); TODAY.setHours(0, 0, 0, 0);
+  var N = 40;
+  var DATES = []; for (var d = 0; d < N; d++) DATES.push(new Date(TODAY.getTime() - (N - 1 - d) * 7 * 86400000));
+
+  var DEFS = [
+    ['Enhancements', ['Dock Door Refresh', 'Pallet Flow Upgrade', 'Generator Network Review', 'Yard Truck Fleet', 'Break Room Refresh', 'Mezzanine Expansion']],
+    ['Automation and Productivity', ['Conveyor Retrofit', 'Sorter Modernization', 'Cross-Dock Automation Pilot', 'Goods-to-Person Pilot', 'Mechanization Phase Two', 'Miscellaneous Automation']],
+    ['Run the Business', ['Regional Facility Upkeep', 'Fulfillment Facility Upkeep', 'Battery Room Replacement', 'Lighting Retrofit', 'Roof and Dock Repairs']],
+    ['Asset Protection', ['Camera and Access Upgrade', 'Fire Panel Replacement', 'Perimeter Fencing']],
+    ['Network Expansion', ['Annex Build-Out', 'Rack Expansion', 'Site Relocation Study', 'Placeholder, No Budget Yet']]
+  ];
+  var TYPES = DEFS.map(function (x) { return x[0]; });
+  var projects = [], idn = 101, idx = 0;
+  DEFS.forEach(function (g) {
+    g[1].forEach(function (name) {
+      var zero = name.indexOf('Placeholder') === 0;
+      var B0 = zero ? 0 : Math.round(between(0.6e6, 14e6) / 1000) * 1000;
+      if (!zero && idx % 7 === 0) B0 *= 3;
+      var budget = []; for (var i = 0; i < N; i++) budget.push(B0);
+      var changes = zero ? 0 : (rnd() < 0.4 ? 1 : 0) + (rnd() < 0.1 ? 1 : 0);
+      for (var c = 0; c < changes; c++) {
+        var w = 5 + Math.floor(rnd() * (N - 7)), delta = Math.round(B0 * between(0.05, 0.25) / 1000) * 1000 * (rnd() < 0.75 ? 1 : -1);
+        for (var j = w; j < N; j++) budget[j] += delta;
+      }
+      var bFinal = budget[N - 1];
+      var f = name === 'Sorter Modernization' ? 1.0001 : name === 'Pallet Flow Upgrade' ? 0.995 : between(0.3, 0.92);
+      if (!zero && name === 'Camera and Access Upgrade') f = 0.04;
+      var rr = between(0.45, 0.8), assigned = [], actual = [], committed = [], maxA = 0, maxAct = 0;
+      for (var t = 0; t < N; t++) {
+        var curve = Math.pow((t + 1) / N, between(1.05, 1.3));
+        var a = zero ? 0 : Math.round(bFinal * f * Math.min(1, curve + (rnd() - 0.5) * 0.03));
+        maxA = Math.max(maxA, a);
+        var act = Math.round(maxA * (0.18 + (rr - 0.18) * ((t + 1) / N)));
+        maxAct = Math.max(maxAct, act);
+        assigned.push(maxA); actual.push(Math.min(maxAct, maxA)); committed.push(maxA - Math.min(maxAct, maxA));
+      }
+      projects.push({ id: 'CP-0' + (idn++), name: name, type: g[0], year: rnd() < 0.55 ? 'MULTI' : '2026', budget: budget, assigned: assigned, actual: actual, committed: committed });
+      idx++;
+    });
+  });
+
+  // ---------- state ----------
+  var s = { types: {}, proj: 'all', hideZero: false, sortKey: 'id', sortDir: 1, r0: 0, r1: N - 1 };
+  TYPES.forEach(function (t) { s.types[t] = true; });
+
+  // ---------- helpers ----------
+  function money(n) { var a = Math.abs(n), sg = n < 0 ? '-' : ''; if (a >= 1e6) return sg + '$' + (a / 1e6).toFixed(1) + 'M'; if (a >= 1e3) return sg + '$' + Math.round(a / 1e3) + 'K'; return sg + '$' + Math.round(a); }
+  function full(n) { var sg = n < 0 ? '-' : ''; return sg + '$' + Math.abs(Math.round(n)).toLocaleString('en-US'); }
+  function wow(n) { if (n === 0) return '<span class="zero">$0</span>'; return '<span class="' + (n > 0 ? 'pos' : 'neg') + '">' + (n > 0 ? '+' : '-') + '$' + Math.abs(Math.round(n)).toLocaleString('en-US') + '</span>'; }
+  function esc(x) { return String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function sum(arr, f) { var t = 0; for (var i = 0; i < arr.length; i++) t += f(arr[i]); return t; }
+  function fmtShort(d) { return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
+  function pct(a, b) { return b ? Math.round(a / b * 1000) / 10 : 0; }
+  function download(name, text) { var b = new Blob([text], { type: 'text/csv;charset=utf-8' }); var a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = name; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500); }
+  function csvRow(arr) { return arr.map(function (x) { return '"' + String(x).replace(/"/g, '""') + '"'; }).join(','); }
+
+  function cur(p) { var L = N - 1, P = N - 2; var b = p.budget[L], as = p.assigned[L]; return { id: p.id, name: p.name, type: p.type, year: p.year, budget: b, actual: p.actual[L], commit: p.committed[L], assigned: as, avail: b - as, availWow: (b - as) - (p.budget[P] - p.assigned[P]), budgetWow: b - p.budget[P] }; }
+  function filtered() {
+    return projects.filter(function (p) {
+      if (!s.types[p.type]) return false;
+      if (s.proj !== 'all' && p.id !== s.proj) return false;
+      if (s.hideZero && p.budget[N - 1] === 0) return false;
+      return true;
+    });
+  }
+  function totals(list) {
+    var t = { budget: 0, actual: 0, commit: 0, assigned: 0, avail: 0, availWow: 0, budgetWow: 0 };
+    list.map(cur).forEach(function (c) { for (var k in t) t[k] += c[k]; });
+    return t;
+  }
+
+  // ---------- KPIs + filters ----------
+  function renderKpis(list) {
+    var t = totals(list);
+    document.getElementById('kpis').innerHTML =
+      '<div class="kpi"><div class="k">Total budget</div><div class="v">' + money(t.budget) + '</div></div>' +
+      '<div class="kpi"><div class="k">Total assigned</div><div class="v">' + money(t.assigned) + '</div><div class="s">' + pct(t.assigned, t.budget) + '% of budget</div></div>' +
+      '<div class="kpi"><div class="k">Total actual</div><div class="v">' + money(t.actual) + '</div><div class="s">' + pct(t.actual, t.budget) + '% of budget</div></div>' +
+      '<div class="kpi"><div class="k">Total committed</div><div class="v">' + money(t.commit) + '</div><div class="s">' + pct(t.commit, t.budget) + '% of budget</div></div>' +
+      '<div class="kpi avail"><div class="k">Total available</div><div class="v">' + money(t.avail) + '</div><div class="s">' + pct(t.avail, t.budget) + '% of budget</div></div>';
+  }
+  function buildFilters() {
+    document.getElementById('typeChips').innerHTML = TYPES.map(function (t) { return '<button type="button" class="chip" data-type="' + esc(t) + '" aria-pressed="' + !!s.types[t] + '">' + esc(t) + '</button>'; }).join('');
+    document.getElementById('projSel').innerHTML = '<option value="all">All projects</option>' + projects.map(function (p) { return '<option value="' + p.id + '"' + (s.proj === p.id ? ' selected' : '') + '>' + p.id + ' - ' + esc(p.name) + '</option>'; }).join('');
+    document.getElementById('hideZero').checked = s.hideZero;
+  }
+
+  // ---------- availability table ----------
+  function renderTable(list) {
+    var cs = list.map(cur), k = s.sortKey, dir = s.sortDir;
+    function th(key, label, num) { return '<th class="' + (num ? 'num' : '') + '" aria-sort="' + (s.sortKey === key ? (dir > 0 ? 'ascending' : 'descending') : 'none') + '"><button type="button" data-sort="' + key + '">' + label + (s.sortKey === key ? (dir > 0 ? ' \u25B2' : ' \u25BC') : '') + '</button></th>'; }
+    var t = totals(list);
+    var html = '<thead><tr>' + th('id', 'Project ID') + th('name', 'Project name') + th('year', 'Year') + th('budget', 'Total budget', true) + th('actual', 'Actual', true) + th('commit', 'Committed', true) + th('assigned', 'Assigned', true) + th('avail', 'Available', true) + th('availWow', 'Available WoW', true) + th('budgetWow', 'Budget WoW', true) + '</tr></thead><tbody>';
+    html += '<tr class="all"><td colspan="3">ALL</td><td class="num">' + full(t.budget) + '</td><td class="num">' + full(t.actual) + '</td><td class="num">' + full(t.commit) + '</td><td class="num">' + full(t.assigned) + '</td><td class="num ' + (t.avail < 0 ? 'neg' : 'pos') + '">' + full(t.avail) + '</td><td class="num">' + wow(t.availWow) + '</td><td class="num">' + wow(t.budgetWow) + '</td></tr>';
+    var any = false;
+    TYPES.forEach(function (type) {
+      var g = cs.filter(function (c) { return c.type === type; });
+      if (!g.length) return; any = true;
+      g.sort(function (a, b) { var av = a[k], bv = b[k]; return (av < bv ? -1 : av > bv ? 1 : 0) * dir; });
+      html += '<tr class="grp"><td colspan="10">' + esc(type) + '</td></tr>';
+      g.forEach(function (c) {
+        html += '<tr><td>' + c.id + '</td><td>' + esc(c.name) + (c.avail < 0 ? '<span class="tag">Over budget</span>' : '') + '</td><td>' + c.year + '</td><td class="num">' + full(c.budget) + '</td><td class="num">' + full(c.actual) + '</td><td class="num">' + full(c.commit) + '</td><td class="num">' + full(c.assigned) + '</td><td class="num ' + (c.avail < 0 ? 'neg' : c.avail > 0 ? 'pos' : 'zero') + '">' + full(c.avail) + '</td><td class="num">' + wow(c.availWow) + '</td><td class="num">' + wow(c.budgetWow) + '</td></tr>';
+      });
+      var st = totals(list.filter(function (p) { return p.type === type; }));
+      html += '<tr class="subt"><td colspan="3">' + esc(type) + ' subtotal</td><td class="num">' + full(st.budget) + '</td><td class="num">' + full(st.actual) + '</td><td class="num">' + full(st.commit) + '</td><td class="num">' + full(st.assigned) + '</td><td class="num ' + (st.avail < 0 ? 'neg' : 'pos') + '">' + full(st.avail) + '</td><td class="num">' + wow(st.availWow) + '</td><td class="num">' + wow(st.budgetWow) + '</td></tr>';
+    });
+    if (!any) html += '<tr><td colspan="10" class="empty">No projects match these filters. Clear a filter to see more.</td></tr>';
+    document.getElementById('availTable').innerHTML = html + '</tbody>';
+  }
+
+  // ---------- progress ----------
+  function renderProgress(list) {
+    var html = '', any = false;
+    TYPES.forEach(function (type) {
+      var g = list.filter(function (p) { return p.type === type; }).map(cur).filter(function (c) { return c.budget > 0; });
+      if (!g.length) return; any = true;
+      html += '<div class="ptype">' + esc(type) + '</div>';
+      g.sort(function (a, b) { return b.assigned / b.budget - a.assigned / a.budget; }).forEach(function (c) {
+        var p = c.assigned / c.budget;
+        html += '<div class="prow' + (p >= 1 ? ' over' : '') + '"><span class="l" title="' + esc(c.name) + '">' + esc(c.name) + '</span><span class="track"><span class="fill" style="width:' + Math.min(100, p * 100) + '%"></span></span><span class="n">' + (Math.round(p * 1000) / 10) + '%</span></div>';
+      });
+    });
+    document.getElementById('prog').innerHTML = any ? html : '<div class="empty">No projects with a budget in view.</div>';
+  }
+
+  // ---------- trend chart ----------
+  var SERIES = [['budget', 'Total budget', '#C8321F'], ['assigned', 'Assigned', '#FFC61A'], ['committed', 'Committed', '#8A93A8'], ['actual', 'Actual', '#0F1B3D'], ['avail', 'Available', '#2A44FF']];
+  var W = 760, H = 330, L = 64, R = 16, T = 14, B = 34;
+  var trendData = null;
+  function buildTrend(list) {
+    var d = { budget: [], assigned: [], committed: [], actual: [], avail: [] };
+    for (var w = 0; w < N; w++) {
+      var b = 0, a = 0, c = 0, ac = 0;
+      list.forEach(function (p) { b += p.budget[w]; a += p.assigned[w]; c += p.committed[w]; ac += p.actual[w]; });
+      d.budget.push(b); d.assigned.push(a); d.committed.push(c); d.actual.push(ac); d.avail.push(b - a);
+    }
+    return d;
+  }
+  function renderTrend() {
+    var d = trendData, a = s.r0, b = s.r1;
+    document.getElementById('r0Label').textContent = fmtShort(DATES[a]);
+    document.getElementById('r1Label').textContent = fmtShort(DATES[b]);
+    var ymax = 1; for (var i = a; i <= b; i++) { ymax = Math.max(ymax, d.budget[i], d.assigned[i]); } ymax *= 1.08;
+    function X(i) { return L + (b === a ? 0 : (i - a) / (b - a)) * (W - L - R); }
+    function Y(v) { return T + (1 - Math.max(0, v) / ymax) * (H - T - B); }
+    var svg = '<svg class="chart" id="chartSvg" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Line chart of budget, assigned, committed, actual and available capital by week">';
+    for (var g = 0; g <= 4; g++) { var v = ymax * g / 4; svg += '<line class="gl" x1="' + L + '" y1="' + Y(v) + '" x2="' + (W - R) + '" y2="' + Y(v) + '"/><text x="' + (L - 8) + '" y="' + (Y(v) + 4) + '" text-anchor="end">' + money(v) + '</text>'; }
+    var ticks = Math.min(6, b - a); for (var k = 0; k <= ticks; k++) { var ix = a + Math.round((b - a) * (ticks ? k / ticks : 0)); svg += '<text x="' + X(ix) + '" y="' + (H - 10) + '" text-anchor="middle">' + fmtShort(DATES[ix]) + '</text>'; }
+    SERIES.forEach(function (sr) {
+      var pts = []; for (var j = a; j <= b; j++) pts.push(X(j).toFixed(1) + ',' + Y(d[sr[0]][j]).toFixed(1));
+      svg += '<polyline fill="none" stroke="' + sr[2] + '" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round" points="' + pts.join(' ') + '"/>';
+    });
+    svg += '<line class="cross" id="cross" x1="-10" y1="' + T + '" x2="-10" y2="' + (H - B) + '"/><rect id="chartHit" x="' + L + '" y="' + T + '" width="' + (W - L - R) + '" height="' + (H - T - B) + '" fill="transparent"/></svg>';
+    var lg = '<div class="lg">' + SERIES.map(function (sr) { return '<span style="--c:' + sr[2] + '">' + sr[1] + ' ' + money(d[sr[0]][b]) + '</span>'; }).join('') + '</div>';
+    document.getElementById('trendBox').innerHTML = svg + lg + '<div class="readout" id="readout">Hover the chart to read any week. Legend values show the end of your date range.</div>';
+  }
+  function hover(e) {
+    var svgEl = document.getElementById('chartSvg'); if (!svgEl) return;
+    var rc = svgEl.getBoundingClientRect(), x = (e.clientX - rc.left) / rc.width * W, a = s.r0, b = s.r1;
+    var i = Math.max(a, Math.min(b, Math.round(a + (x - L) / (W - L - R) * (b - a))));
+    var px = L + (b === a ? 0 : (i - a) / (b - a)) * (W - L - R);
+    var cr = document.getElementById('cross'); cr.setAttribute('x1', px); cr.setAttribute('x2', px);
+    var d = trendData;
+    document.getElementById('readout').innerHTML = 'Week of ' + DATES[i].toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ': budget ' + money(d.budget[i]) + ', assigned ' + money(d.assigned[i]) + ', committed ' + money(d.committed[i]) + ', actual ' + money(d.actual[i]) + ', available ' + money(d.avail[i]) + '.';
+  }
+
+  // ---------- render ----------
+  function render() {
+    var list = filtered();
+    renderKpis(list); renderTable(list); renderProgress(list);
+    trendData = buildTrend(list); renderTrend();
+  }
+
+  // ---------- events ----------
+  document.getElementById('typeChips').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-type]'); if (!b) return; var n = b.getAttribute('data-type'); s.types[n] = !s.types[n];
+    if (!TYPES.some(function (t) { return s.types[t]; })) s.types[n] = true; buildFilters(); render();
+  });
+  document.getElementById('projSel').addEventListener('change', function (e) { s.proj = e.target.value; render(); });
+  document.getElementById('hideZero').addEventListener('change', function (e) { s.hideZero = e.target.checked; render(); });
+  document.getElementById('clearBtn').addEventListener('click', function () { TYPES.forEach(function (t) { s.types[t] = true; }); s.proj = 'all'; s.hideZero = false; buildFilters(); render(); });
+  document.getElementById('csvBtn').addEventListener('click', function () {
+    var rows = [csvRow(['Project ID', 'Project name', 'Spend type', 'Year', 'Total budget', 'Actual', 'Committed', 'Assigned', 'Available', 'Available WoW', 'Budget WoW'])];
+    filtered().map(cur).forEach(function (c) { rows.push(csvRow([c.id, c.name, c.type, c.year, c.budget, c.actual, c.commit, c.assigned, c.avail, c.availWow, c.budgetWow])); });
+    download('synthetic-capital-availability.csv', rows.join('\n'));
+  });
+  document.getElementById('availTable').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-sort]'); if (!b) return; var k = b.getAttribute('data-sort');
+    if (s.sortKey === k) s.sortDir *= -1; else { s.sortKey = k; s.sortDir = (k === 'id' || k === 'name' || k === 'year') ? 1 : -1; }
+    renderTable(filtered());
+  });
+  var r0 = document.getElementById('r0'), r1 = document.getElementById('r1');
+  r0.max = N - 1; r1.max = N - 1; r0.value = s.r0; r1.value = s.r1;
+  r0.addEventListener('input', function () { s.r0 = Math.min(Number(r0.value), s.r1 - 1); r0.value = s.r0; renderTrend(); });
+  r1.addEventListener('input', function () { s.r1 = Math.max(Number(r1.value), s.r0 + 1); r1.value = s.r1; renderTrend(); });
+  document.getElementById('trendBox').addEventListener('mousemove', function (e) { if (e.target.id === 'chartHit') hover(e); });
+  document.getElementById('trendBox').addEventListener('touchmove', function (e) { if (e.touches && e.touches[0] && e.target.id === 'chartHit') hover(e.touches[0]); }, { passive: true });
+
+  var fbBtn = document.getElementById('fbBtn'), fbPanel = document.getElementById('fbPanel');
+  fbBtn.addEventListener('click', function () { var open = fbPanel.classList.toggle('open'); fbBtn.setAttribute('aria-expanded', open ? 'true' : 'false'); });
+  document.getElementById('fbSend').addEventListener('click', function () {
+    var t = document.getElementById('fbText'); var m = document.getElementById('fbMsg');
+    if (!t.value.trim()) { m.textContent = 'Type a note first.'; return; }
+    m.textContent = 'Thanks, noted. (Demo only, nothing is sent.)'; t.value = '';
+  });
+
+  buildFilters();
+  render();
+})();
+</script>
+</body>
+</html>

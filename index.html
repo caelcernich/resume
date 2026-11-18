@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#2A44FF">
+<title>Cael Cernich: Senior Data Analyst and Analytics Product Owner</title>
+<meta name="description" content="Cael Cernich builds supply chain analytics products end to end: requirements, pipelines, dashboards, and adoption. Based in Atlanta, GA.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%232A44FF'/%3E%3Ctext x='50' y='68' font-size='52' font-weight='800' text-anchor='middle' fill='%23FFC61A' font-family='Arial Black,Arial,sans-serif'%3ECC%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js-on');</script>
+<style>
+  :root {
+    --cobalt: #2A44FF;
+    --cobalt-deep: #1C2FC4;
+    --yellow: #FFC61A;
+    --ink: #0F1B3D;
+    --white: #FFFFFF;
+    --concrete: #E6E9EE;
+    --ink-soft: #3C4766;
+    --display: 'Big Shoulders Display', 'Arial Narrow', Impact, sans-serif;
+    --body: 'Public Sans', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+    --max: 1120px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: var(--body); color: var(--ink); background: var(--concrete); line-height: 1.6; font-size: 17px; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  img { max-width: 100%; display: block; }
+  :focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; box-shadow: 0 0 0 6px var(--ink); }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+  .skip { position: absolute; left: -999px; top: 8px; background: var(--yellow); color: var(--ink); padding: 8px 14px; font-weight: 700; z-index: 100; }
+  .skip:focus { left: 8px; }
+
+  /* ---------- nav ---------- */
+  .nav { position: sticky; top: 0; z-index: 40; background: var(--ink); color: var(--white); border-bottom: 3px solid var(--yellow); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 62px; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--display); font-weight: 800; font-size: 24px; letter-spacing: 0.01em; }
+  .brand-mark { width: 34px; height: 34px; background: var(--yellow); color: var(--ink); display: grid; place-items: center; font-size: 19px; border-radius: 4px; }
+  .nav ul { display: flex; gap: 26px; list-style: none; margin: 0; padding: 0; font-weight: 600; font-size: 15px; }
+  .nav ul a { text-decoration: none; padding: 6px 0; border-bottom: 3px solid transparent; }
+  .nav ul a:hover { border-bottom-color: var(--yellow); }
+  .nav .pill { background: var(--yellow); color: var(--ink); padding: 8px 18px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 15px; }
+  @media (max-width: 820px) { .nav ul { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero { background: var(--cobalt); color: var(--white); padding: 0 0 72px; overflow: hidden; }
+  .hero-first { min-height: calc(100vh - 65px); min-height: calc(100svh - 65px); display: flex; flex-direction: column; justify-content: center; gap: 40px; padding: 40px 0 28px; }
+  .cue { display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 17px; }
+  .cue-line { width: 4px; height: 48px; background: rgba(255,255,255,0.3); position: relative; overflow: hidden; display: block; }
+  .cue-line::after { content: ""; position: absolute; left: 0; top: -100%; width: 100%; height: 100%; background: var(--yellow); animation: drip 1.9s ease-in-out infinite; }
+  @keyframes drip { to { top: 100%; } }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 48px; align-items: center; padding-top: 72px; }
+  .hero h1 { font-family: var(--display); font-weight: 900; font-size: clamp(64px, 14.5vw, 208px); line-height: 0.86; letter-spacing: -0.012em; margin: 0; }
+  .hero .lede { font-size: clamp(22px, 3vw, 34px); max-width: 28ch; margin: 0 0 32px; line-height: 1.3; font-weight: 500; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; font: 700 16px/1 var(--body); text-decoration: none; padding: 15px 26px; border-radius: 999px; border: 3px solid var(--ink); background: var(--yellow); color: var(--ink); cursor: pointer; }
+  .btn:hover { background: var(--white); }
+  .btn.ghost { background: transparent; color: inherit; border-color: currentColor; }
+  .btn.ghost:hover { background: var(--ink); color: var(--white); border-color: var(--ink); }
+  .photo { position: relative; justify-self: end; width: 280px; }
+  .photo::before, .photo::after { content: ""; position: absolute; width: 84px; height: 26px; background: var(--yellow); opacity: 0.92; z-index: 2; }
+  .photo::before { top: -10px; left: -22px; transform: rotate(-38deg); }
+  .photo::after { bottom: -10px; right: -22px; transform: rotate(-38deg); }
+  .photo-frame { aspect-ratio: 3 / 4; background: var(--white); border: 4px solid var(--ink); border-radius: 6px; overflow: hidden; display: grid; place-items: center; }
+  .photo-frame img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+  .monogram { font-family: var(--display); font-weight: 900; font-size: 120px; color: var(--cobalt); letter-spacing: 0.02em; }
+  @media (max-width: 820px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+    .photo { justify-self: start; width: 200px; order: -1; }
+    .monogram { font-size: 84px; }
+  }
+
+  /* route graphic (scroll-driven) */
+  .route-wrap { margin-top: 72px; border-top: 3px solid var(--ink); padding-top: 18px; }
+  .route-svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .route-base { fill: none; stroke: rgba(255,255,255,0.28); stroke-width: 4; stroke-linejoin: round; }
+  .route-draw { fill: none; stroke: var(--yellow); stroke-width: 4; stroke-linejoin: round; }
+  .node { fill: var(--yellow); stroke: var(--ink); stroke-width: 4; }
+  .node-label { fill: var(--white); font: 700 17px var(--body); text-anchor: middle; }
+  .package { display: none; fill: var(--white); stroke: var(--ink); stroke-width: 3; }
+  .js-route .node { fill: var(--cobalt-deep); stroke: var(--white); transition: fill .25s, stroke .25s; }
+  .js-route .node.lit { fill: var(--yellow); stroke: var(--ink); }
+  .js-route .node-label { opacity: 0.35; transition: opacity .25s; }
+  .js-route .node-label.lit { opacity: 1; }
+  .js-route .package { display: block; }
+
+  /* scroll reveal: content bleeds in with a soft downward wipe tied to scroll position */
+  .js-on [data-bleed]:not([data-done]) {
+    -webkit-mask-image: linear-gradient(180deg, #000 0, #000 calc(var(--p, 1) * 135% - 35%), transparent calc(var(--p, 1) * 135%));
+    mask-image: linear-gradient(180deg, #000 0, #000 calc(var(--p, 1) * 135% - 35%), transparent calc(var(--p, 1) * 135%));
+    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  }
+
+  /* ---------- sections ---------- */
+  section { padding: 84px 0; }
+  h2 { font-family: var(--display); font-weight: 900; font-size: clamp(44px, 7vw, 84px); line-height: 0.92; margin: 0 0 22px; letter-spacing: -0.01em; }
+  .intro { max-width: 62ch; font-size: 19px; margin: 0 0 40px; }
+
+  .about-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: start; }
+  .about p { margin: 0 0 18px; max-width: 62ch; }
+  .edu { background: var(--white); border: 3px solid var(--ink); border-radius: 8px; }
+  .edu-top { padding: 10px 20px; border-bottom: 3px solid var(--ink); background: var(--yellow); font-weight: 700; font-size: 15px; }
+  .edu-body { padding: 20px; }
+  .edu-body h3 { font-family: var(--display); font-size: 30px; margin: 0 0 4px; line-height: 1.05; }
+  .edu-body p { margin: 0 0 6px; font-size: 16px; }
+  @media (max-width: 820px) { .about-grid { grid-template-columns: 1fr; gap: 32px; } }
+
+  /* toolkit */
+  .toolkit { background: var(--white); }
+  .tools { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .tool-tile { text-align: left; font: inherit; color: var(--ink); background: var(--concrete); border: 3px solid var(--ink); border-radius: 8px; padding: 18px 18px 16px; cursor: pointer; display: flex; flex-direction: column; gap: 8px; min-height: 190px; }
+  .tool-tile:hover { background: var(--yellow); }
+  .tool-tile[aria-pressed="true"] { background: var(--cobalt); color: var(--white); }
+  .tool-tile h3 { font-family: var(--display); font-weight: 800; font-size: 30px; line-height: 1; margin: 0; }
+  .tool-tile p { margin: 0; font-size: 15px; line-height: 1.45; flex: 1; }
+  .tool-count { font-weight: 700; font-size: 14px; }
+  @media (max-width: 980px) { .tools { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .tools { grid-template-columns: 1fr; } .tool-tile { min-height: 0; } }
+
+  /* redaction notice */
+  .notice { display: flex; gap: 16px; align-items: flex-start; background: var(--white); border: 3px solid var(--ink); border-left: 14px solid var(--yellow); border-radius: 6px; padding: 16px 20px; margin: 0 0 34px; max-width: 78ch; }
+  .notice strong { display: block; font-size: 16px; margin-bottom: 2px; }
+  .notice p { margin: 0; font-size: 15px; }
+
+  /* work */
+  .filter-bar { display: flex; align-items: center; gap: 14px; min-height: 44px; margin-bottom: 20px; font-weight: 600; flex-wrap: wrap; }
+  .filter-bar button { font: 700 14px var(--body); border: 3px solid var(--ink); background: var(--yellow); color: var(--ink); border-radius: 999px; padding: 6px 16px; cursor: pointer; }
+  .filter-bar button:hover { background: var(--white); }
+  .work-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
+  .label { background: var(--white); border: 3px solid var(--ink); border-radius: 8px; display: flex; flex-direction: column; }
+  .label.featured { grid-column: 1 / -1; }
+  .label[hidden] { display: none; }
+  .label-top { display: flex; justify-content: space-between; gap: 12px; padding: 10px 20px; border-bottom: 3px solid var(--ink); background: var(--concrete); font-weight: 700; font-size: 14px; }
+  .label.featured .label-top { background: var(--yellow); }
+  .label-body { padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 18px; flex: 1; }
+  .label h3 { font-family: var(--display); font-weight: 900; font-size: clamp(34px, 4vw, 48px); line-height: 0.96; margin: 0; }
+  .label.featured h3 { font-size: clamp(40px, 5.4vw, 68px); }
+  .summary { margin: 0; max-width: 62ch; }
+  .route-fields { display: grid; grid-template-columns: 62px 1fr; gap: 10px 14px; margin: 0; padding-top: 16px; border-top: 3px dashed var(--ink); }
+  .route-fields dt { font-weight: 800; font-size: 13px; letter-spacing: 0.08em; padding-top: 3px; }
+  .route-fields dd { margin: 0; font-weight: 600; }
+  .tool-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .tool-row .lead { font-weight: 800; font-size: 13px; letter-spacing: 0.08em; margin-right: 6px; }
+  .chip { font-size: 14px; font-weight: 600; border: 2px solid var(--ink); border-radius: 999px; padding: 2px 12px; background: var(--white); }
+  .chip.on { background: var(--cobalt); color: var(--white); }
+  .label-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto; padding-top: 4px; }
+  .btn.small { padding: 11px 20px; font-size: 15px; }
+  @media (max-width: 820px) { .work-grid { grid-template-columns: 1fr; } }
+
+  /* dialog */
+  dialog { border: 3px solid var(--ink); border-radius: 8px; padding: 0; width: min(760px, calc(100% - 28px)); max-height: calc(100% - 40px); color: var(--ink); background: var(--white); }
+  dialog::backdrop { background: rgba(15, 27, 61, 0.72); }
+  .dlg-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 14px 10px 22px; border-bottom: 3px solid var(--ink); background: var(--yellow); font-weight: 700; font-size: 14px; position: sticky; top: 0; }
+  .dlg-top button { font: 700 14px var(--body); border: 3px solid var(--ink); background: var(--white); color: var(--ink); border-radius: 999px; padding: 6px 16px; cursor: pointer; }
+  .dlg-body { padding: 24px 28px 30px; display: flex; flex-direction: column; gap: 18px; }
+  .dlg-body h3 { font-family: var(--display); font-weight: 900; font-size: 46px; line-height: 0.96; margin: 0; }
+  .dlg-body h4 { font-family: var(--display); font-weight: 800; font-size: 26px; margin: 8px 0 -6px; }
+  .dlg-body p { margin: 0; max-width: 62ch; }
+  .dlg-body ul { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; max-width: 62ch; }
+  .dlg-note { font-size: 14px; border-top: 3px dashed var(--ink); padding-top: 14px; }
+
+  /* beyond the build */
+  .beyond { background: var(--yellow); }
+  .beyond-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 8px; }
+  .beyond-item { border-top: 4px solid var(--ink); padding-top: 14px; }
+  .beyond-item h3 { font-family: var(--display); font-weight: 800; font-size: 30px; line-height: 1; margin: 0 0 8px; }
+  .beyond-item p { margin: 0; font-size: 16px; }
+  @media (max-width: 820px) { .beyond-grid { grid-template-columns: 1fr; } }
+
+  /* experience */
+  .experience { background: var(--white); }
+  .timeline { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; }
+  .job { display: grid; grid-template-columns: 220px 1fr; gap: 12px 40px; padding: 30px 0; border-top: 3px solid var(--ink); }
+  .job:last-child { border-bottom: 3px solid var(--ink); }
+  .job-dates { font-family: var(--display); font-weight: 800; font-size: 28px; line-height: 1.05; }
+  .job h3 { font-family: var(--display); font-weight: 800; font-size: 34px; line-height: 1; margin: 0 0 4px; }
+  .job .org { margin: 0 0 14px; font-weight: 600; }
+  .job ul { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; max-width: 70ch; }
+  @media (max-width: 820px) { .job { grid-template-columns: 1fr; gap: 6px; } }
+
+  .lead-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-top: 44px; }
+  .panel { background: var(--concrete); border: 3px solid var(--ink); border-radius: 8px; padding: 22px 24px; }
+  .panel h3 { font-family: var(--display); font-weight: 800; font-size: 32px; margin: 0 0 4px; line-height: 1; }
+  .panel .org { margin: 0 0 12px; font-weight: 600; }
+  .panel ul { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; }
+  @media (max-width: 820px) { .lead-grid { grid-template-columns: 1fr; } }
+
+  /* contact */
+  .contact { background: var(--cobalt); color: var(--white); min-height: 80vh; }
+  .contact h2 { margin-bottom: 18px; }
+  .contact p { max-width: 52ch; font-size: 19px; margin: 0 0 30px; }
+  .email-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-bottom: 26px; }
+  .email-big { font-family: var(--display); font-weight: 900; font-size: clamp(32px, 6.2vw, 76px); line-height: 1; text-decoration: none; border-bottom: 6px solid var(--yellow); overflow-wrap: anywhere; }
+  .email-big:hover { background: var(--yellow); color: var(--ink); }
+  .links { display: flex; flex-wrap: wrap; gap: 14px; }
+  .copied { font-weight: 700; min-height: 1.4em; margin-top: 12px; }
+
+  footer { background: var(--ink); color: var(--white); padding: 28px 0 36px; font-size: 15px; }
+  footer p { margin: 0 0 6px; max-width: 80ch; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .cue-line::after { animation: none; }
+    [data-bleed] { -webkit-mask-image: none !important; mask-image: none !important; }
+  }
+  @media print { [data-bleed] { -webkit-mask-image: none !important; mask-image: none !important; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#work">Skip to selected work</a>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Cael Cernich, home"><span class="brand-mark">CC</span>Cael Cernich</a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#toolkit">Toolkit</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#experience">Experience</a></li>
+      </ul>
+    </nav>
+    <a class="pill" href="#contact">Get in touch</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div class="hero-first">
+        <h1 id="hero-title">Messy data in. Tools people use out.</h1>
+        <div class="cue" id="cue" aria-hidden="true"><span class="cue-line"></span><span>Scroll to unpack</span></div>
+      </div>
+
+      <div class="hero-grid">
+        <div>
+          <p class="lede">I'm Cael Cernich, a senior data analyst and analytics product owner in supply chain. I take a manual process from request to a tool a team adopts.</p>
+          <div class="hero-cta">
+            <a class="btn" href="#work">See my work</a>
+            <a class="btn ghost" href="#contact">Get in touch</a>
+          </div>
+        </div>
+        <div class="photo">
+          <div class="photo-frame" id="photoFrame">
+            <img src="headshot.jpg" width="768" height="1024" alt="Illustrated portrait of Cael Cernich in a navy blazer and light blue shirt, smiling" id="headshot">
+          </div>
+        </div>
+      </div>
+
+      <div class="route-wrap" id="routeWrap">
+        <svg class="route-svg" id="routeSvg" viewBox="0 0 1000 150" role="img" aria-label="A route from source systems through BigQuery and Python with SQL to dashboards and decisions">
+          <path class="route-base" d="M60 90 L270 50 L500 90 L730 50 L940 90"/>
+          <path class="route-draw" d="M60 90 L270 50 L500 90 L730 50 L940 90"/>
+          <circle class="node" cx="60"  cy="90" r="15"/>
+          <circle class="node" cx="270" cy="50" r="15"/>
+          <circle class="node" cx="500" cy="90" r="15"/>
+          <circle class="node" cx="730" cy="50" r="15"/>
+          <circle class="node" cx="940" cy="90" r="19"/>
+          <text class="node-label" x="60"  y="136">Source systems</text>
+          <text class="node-label" x="270" y="96">BigQuery</text>
+          <text class="node-label" x="500" y="136">Python and SQL</text>
+          <text class="node-label" x="730" y="96">Dashboards</text>
+          <text class="node-label" x="940" y="136">Decisions</text>
+          <circle class="package" id="pkg" r="9" cx="60" cy="90"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about" aria-labelledby="about-title">
+    <div class="wrap about-grid">
+      <div>
+        <h2 id="about-title">Industrial engineer by training. Product owner by habit.</h2>
+        <p>I studied Industrial and Systems Engineering at Georgia Tech, which left me with a bias for systems: find the bottleneck, model it, fix it.</p>
+        <p>Over five years in supply chain analytics I've moved from answering one-off questions in spreadsheets to owning analytics products end to end. I gather the requirements, build the pipeline, ship the dashboard, and train the people who use it.</p>
+        <p>I'm happiest when a manual process quietly becomes something nobody has to think about anymore.</p>
+      </div>
+      <aside class="edu" aria-label="Education">
+        <div class="edu-top">Education</div>
+        <div class="edu-body">
+          <h3>Georgia Institute of Technology</h3>
+          <p><strong>B.S., Industrial and Systems Engineering</strong>, College of Engineering</p>
+          <p>Concentration in Economic and Financial Systems</p>
+          <p>Finance certificate, Scheller College of Business</p>
+          <p>2016 to 2021</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="toolkit" id="toolkit" aria-labelledby="toolkit-title">
+    <div class="wrap">
+      <h2 id="toolkit-title">Toolkit</h2>
+      <p class="intro">Every project below runs on some mix of these. Pick a tool to see where I've used it.</p>
+      <div class="tools" id="tools"></div>
+    </div>
+  </section>
+
+  <section class="work" id="work" aria-labelledby="work-title">
+    <div class="wrap">
+      <h2 id="work-title">Selected work</h2>
+      <div class="notice" role="note">
+        <div>
+          <strong>Redacted for confidentiality</strong>
+          <p>Exact figures, results, and internal system, project, and team names have been removed from employer work. The descriptions are accurate to what I built.</p>
+        </div>
+      </div>
+      <div class="filter-bar" id="filterBar" aria-live="polite"></div>
+      <div class="work-grid" id="workGrid"></div>
+    </div>
+  </section>
+
+  <section class="beyond" aria-labelledby="beyond-title">
+    <div class="wrap">
+      <h2 id="beyond-title">Beyond the build</h2>
+      <p class="intro">A tool only matters if people can use it. I spend real time making the people around me better at working with data.</p>
+      <div class="beyond-grid">
+        <div class="beyond-item"><h3>Code review</h3><p>I review and optimize Python scripts for teammates across functions, so their automations run faster and break less.</p></div>
+        <div class="beyond-item"><h3>Dashboard help</h3><p>I help colleagues design, fix, and extend their own dashboards, so they aren't blocked waiting on a build.</p></div>
+        <div class="beyond-item"><h3>Teaching</h3><p>I teach teammates to use BigQuery and Tableau properly, so analytics skill grows past my own desk.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="experience" id="experience" aria-labelledby="exp-title">
+    <div class="wrap">
+      <h2 id="exp-title">Experience</h2>
+      <div class="notice" role="note">
+        <div>
+          <strong>Redacted for confidentiality</strong>
+          <p>Exact figures, results, and internal system, project, and team names have been removed.</p>
+        </div>
+      </div>
+      <ol class="timeline">
+        <li class="job">
+          <div class="job-dates">October 2025 to present</div>
+          <div>
+            <h3>Senior Data Analyst, Supply Chain Infrastructure</h3>
+            <p class="org">The Home Depot, Atlanta, GA</p>
+            <ul>
+              <li>Lead development and enterprise rollout of a maintenance analytics product that combines work order, labor, and equipment data across multiple distribution facilities. I drive requirements, stakeholder alignment, validation, go-live, and ongoing enhancements.</li>
+              <li>Own the strategy, modernization, and delivery of supply chain analytics products, turning manual processes into automated Python, BigQuery, and Tableau solutions. Adoption has grown across a wide base of business users, who now make decisions in self-service.</li>
+              <li>Took ownership of a digital twin initiative outside the traditional analytics scope. I partnered with Engineering to build a 3D simulation model, showed that simulation-based decision support is viable, and delivered a usable model for continued development.</li>
+            </ul>
+          </div>
+        </li>
+        <li class="job">
+          <div class="job-dates">November 2022 to September 2025</div>
+          <div>
+            <h3>Senior Data Analyst, Channel Management</h3>
+            <p class="org">The Home Depot, Atlanta, GA</p>
+            <ul>
+              <li>Built an offboarding strategy for underperforming products that cut unproductive inventory and freed capacity across a national fulfillment network.</li>
+              <li>Partnered on the design and rollout of an assortment recommendation tool that replaced manual analysis for merchandising and supply chain teams.</li>
+              <li>Developed allocation logic for onboarding new products across fulfillment centers, balancing space, speed to customer, inventory cost, transportation cost, and regional shipping metrics.</li>
+              <li>Directed seasonal capacity planning through space and utilization analysis, so storage was ready for peak events.</li>
+            </ul>
+          </div>
+        </li>
+        <li class="job">
+          <div class="job-dates">May 2021 to November 2022</div>
+          <div>
+            <h3>Contractor, Data Analyst</h3>
+            <p class="org">The Home Depot, Atlanta, GA</p>
+            <ul>
+              <li>Found and onboarded critical assortment gaps in a major market, lifting home-delivery revenue, outbound volume, and orders placed.</li>
+              <li>Identified and quantified the root causes limiting warehouse fulfillment performance, which led to targeted operational improvements across multiple markets.</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+
+      <div class="lead-grid">
+        <div class="panel">
+          <h3>Leadership</h3>
+          <p class="org">Employee voice committee, member and contributor, March 2023 to March 2024</p>
+          <ul>
+            <li>Started a series of profiles that demystify how teams across the business operate, published alongside the committee's monthly newsletter.</li>
+            <li>Co-organized and hosted the inaugural Supply Chain Analytics Symposium, a three-day event for peer learning, networking, and recognition.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Skills</h3>
+          <p class="org">What I work in every day</p>
+          <ul>
+            <li><strong>Technical:</strong> SQL, Google BigQuery and Google Cloud Platform, Python, Tableau, Excel, FlexSim, data modeling, ETL pipelines, reporting automation, and AI tools (Gemini, Copilot, Claude, ChatGPT).</li>
+            <li><strong>Business:</strong> product ownership, roadmap prioritization, process improvement, and data governance.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact" aria-labelledby="contact-title">
+    <div class="wrap">
+      <h2 id="contact-title">Let's talk.</h2>
+      <p>I'm open to new roles in analytics, data products, and supply chain technology. The fastest way to reach me is email.</p>
+      <div class="email-row">
+        <a class="email-big" id="emailLink" href="mailto:cael21cernich@gmail.com">cael21cernich@gmail.com</a>
+      </div>
+      <div class="links" id="links">
+        <button class="btn" id="copyBtn" type="button">Copy email address</button>
+        <a class="btn ghost" id="ghLink" href="https://github.com/caelcernich" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn ghost" id="liLink" href="#" target="_blank" rel="noopener" hidden>LinkedIn</a>
+      </div>
+      <div class="copied" id="copied" role="status" aria-live="polite"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Employer work on this site is described in general terms. Exact figures, results, and internal system, project, and team names are redacted for confidentiality.</p>
+    <p>&copy; <span id="year"></span> Cael Cernich. Built by hand and with AI assistance.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  // ----- edit these -----
+  var LINKEDIN = '';   // paste your LinkedIn profile URL here, e.g. 'https://www.linkedin.com/in/your-name'
+  var EMAIL = 'cael21cernich@gmail.com';
+  // -----------------------
+
+  var TOOLS = [
+    { id: 'SQL', name: 'SQL', line: 'Modeling, joins, and validation logic. The backbone under every product I ship.' },
+    { id: 'BigQuery', name: 'BigQuery', line: 'The central warehouse behind every dashboard, plus the scheduled pipelines that feed it. I also teach peers to use it well.' },
+    { id: 'Python', name: 'Python', line: 'Extraction, transformation, and automation. I also review and optimize teammates\' scripts.' },
+    { id: 'Tableau', name: 'Tableau', line: 'Executive-ready dashboards with built-in downloads and feedback loops.' },
+    { id: 'AI', name: 'AI tools', line: 'Gemini, Copilot, Claude, and ChatGPT help me build faster and review smarter. A person checks every number.' },
+    { id: 'Excel', name: 'Excel', line: 'Where stakeholders live. I meet teams there, then move them to automated tools.' },
+    { id: 'GitHub', name: 'GitHub', line: 'Version control, scheduled automation, and free hosting for personal projects.' },
+    { id: 'FlexSim', name: 'FlexSim', line: '3D simulation and digital twin modeling for operational decision support.' }
+  ];
+
+  var PROJECTS = [
+    {
+      id: 'real-estate', featured: true, kind: 'Employer work', title: 'Supply Chain Real Estate Dashboard',
+      from: 'Contract data scattered across teams and apps',
+      to: 'One source of truth for monthly reviews and decisions',
+      tools: ['SQL', 'BigQuery', 'AI'],
+      summary: 'A single app that brings a national portfolio of distribution, fulfillment, and parking contracts into one place, so leaders can see what expires, what it costs, and where it sits.',
+      problem: 'Real estate contract data lived in separate teams and apps. Basic questions, like what expires when, what we pay, and where each site is, meant manual digging every time.',
+      built: [
+        'An executive summary with headline KPIs and a quick read on what expires when',
+        'A map of every contract, sized by rent or area',
+        'Lease expirations ranked by next expiration, with drill-down to each contract',
+        'A decision calendar that puts expirations and notice deadlines on one timeline',
+        'Rent-per-square-foot comparisons across groups that show spread and outliers',
+        'A scenario analyzer for renewal what-ifs that never touches source data, with scenarios that can be saved, compared, and exported',
+        'Data quality checks ranked by severity, each with a plain-language fix',
+        'Filters that apply to every view, and a download of the data behind any view'
+      ],
+      runs: 'The data refreshes monthly from a BigQuery query and a documented build step that uses AI assistance. The result is deployed as an internal app behind company sign-in, with access granted by named user, visits logged for usage metrics, and a link that stays the same after every refresh. I also wrote the user and admin guide and a handoff checklist.',
+      outcome: 'One source of truth that teams adopted in place of data siloed across multiple teams and apps. It now supports the real estate team\'s monthly reviews and decision-making.',
+      demo: 'real-estate.html'
+    },
+    {
+      id: 'supplier-spend', kind: 'Employer work', title: 'Supplier Spend Dashboard',
+      from: 'ERP exports pasted into spreadsheets, again and again',
+      to: 'A self-serve view of where to contract and where to renegotiate',
+      tools: ['SQL', 'BigQuery', 'Python', 'Tableau', 'Excel'],
+      summary: 'A dashboard that shows how much is spent with each supplier on in-building operational activities, and which suppliers lack a contract.',
+      problem: 'The Capital team analyzed spend on in-building operations by exporting data from the ERP and pasting it into Excel, over and over. It was slow, and it hid which suppliers needed contracts and which needed renegotiation.',
+      built: [
+        'Headline KPIs for total spend, supplier count, and the split between contracted and uncontracted spend',
+        'Supplier rankings and a quarterly spend heatmap for the largest suppliers',
+        'A geographic view of spend by facility',
+        'A category breakdown showing supplier concentration and average spend per supplier',
+        'A contract coverage tracker measured against a target',
+        'A list of uncontracted suppliers, ranked so the team knows who to pursue first',
+        'A supplier notes log that records refreshes and context',
+        'A built-in data download for ad-hoc analysis'
+      ],
+      runs: 'A user exports spend data from the ERP into a shared Excel file, because an automated connection wasn\'t available. From there, Python, SQL, and BigQuery feed Tableau automatically.',
+      outcome: 'The team moved from rebuilding spreadsheets to answering contracting questions on demand, with a clear view of where to negotiate and where to formalize agreements.',
+      demo: 'supplier-spend.html'
+    },
+    {
+      id: 'capital', kind: 'Employer work', title: 'Capital Availability Dashboard',
+      from: 'Budgets tracked by hand across Excel sheets',
+      to: 'An always-current view of capital remaining on every project',
+      tools: ['SQL', 'BigQuery', 'Python', 'Tableau'],
+      summary: 'A single view of budget, commitments, spend, and the capital still available for each project.',
+      problem: 'The Capital team tracked budgets, commitments, and spend for each project across several Excel sheets, updated by hand. Answering "how much do we have left?" meant reconciling files.',
+      built: [
+        'A current availability report by project: budget, actuals, commitments, assigned dollars, and what remains',
+        'Week-over-week changes in budget and available capital',
+        'The share of each budget already assigned, with overages flagged',
+        'A trend view of budget against actuals, commitments, and availability over an adjustable date range',
+        'Filters by spend type and project',
+        'A built-in feedback link, so users can report issues and suggest improvements'
+      ],
+      runs: 'Fully automated end to end with Python, SQL, BigQuery, and Tableau. It runs hands-off today.',
+      outcome: 'One central view of capital position that replaced manual tracking across spreadsheets.',
+      demo: 'capital.html'
+    },
+    {
+      id: 'mhe', kind: 'Employer work', title: 'Self-Perform Maintenance Savings Tracker',
+      from: 'A new in-house maintenance program with no scorecard',
+      to: 'A weekly view of progress and savings against outside vendors',
+      tools: ['SQL', 'BigQuery', 'Python', 'Tableau'],
+      summary: 'A tracker that shows how an internal self-perform maintenance program is progressing and what it saves compared with using external vendors.',
+      problem: 'The maintenance team launched an internal self-perform program for material handling equipment and needed to see how it was progressing and what it saved compared with outside vendors.',
+      built: [
+        'A weekly trend of cost savings on completed work orders',
+        'Corrective and preventive maintenance volume and labor hours',
+        'On-time preventive maintenance rate and past-due work',
+        'A facility-level view with platform subtotals',
+        'Filters by fiscal week, work code, equipment type, and facility'
+      ],
+      runs: 'A Python script pulls work-order data from the enterprise asset-management system into BigQuery, and Tableau reads from there. As product owner I drove requirements, stakeholder alignment, validation, go-live, and ongoing enhancements, and rolled the product out across multiple distribution facilities.',
+      outcome: 'A shared, trusted view of program progress and savings versus external vendors.'
+    },
+    {
+      id: 'digital-twin', kind: 'Employer work', title: 'Digital Twin Simulation',
+      from: 'An open question: could simulation support real decisions?',
+      to: 'A working 3D model handed to Engineering',
+      tools: ['FlexSim'],
+      summary: 'A 3D simulation model that shows simulation-based decision support is viable.',
+      problem: 'Whether simulation could support operational decisions was an open question, and it sat outside the traditional analytics scope, so nobody owned it.',
+      built: [
+        'Took ownership of the initiative and partnered with Engineering and technology teams',
+        'Built a 3D simulation model in FlexSim',
+        'Demonstrated that simulation-based decision support is viable',
+        'Delivered a usable model to the Engineering team for continued evaluation and development'
+      ],
+      runs: 'Delivered as a working model that Engineering now owns and keeps developing.',
+      outcome: 'Engineering has a usable model and a proof point for simulation-based decisions.'
+    },
+    {
+      id: 'assortment', kind: 'Employer work', title: 'Assortment, Allocation, and Capacity Planning',
+      from: 'Heavy manual analysis behind every stocking decision',
+      to: 'Data-backed assortment, allocation, and capacity decisions',
+      tools: ['SQL', 'Excel'],
+      summary: 'A set of analyses and tools for deciding which products to carry, where to stock them, and how much space to hold for peaks.',
+      problem: 'Decisions about which products to carry, where to stock them, and how much space to reserve for peak events relied on heavy manual analysis.',
+      built: [
+        'An offboarding strategy for underperforming products that freed capacity across a national fulfillment network',
+        'A partnership on an assortment recommendation tool that cut manual analysis for merchandising and supply chain teams',
+        'Allocation logic for onboarding new products across fulfillment centers, balancing space, speed to customer, inventory cost, transportation cost, and regional shipping metrics',
+        'Seasonal capacity planning for peak events, built on space and utilization analysis'
+      ],
+      runs: '',
+      outcome: 'Faster, data-backed assortment and capacity decisions, including a strong assortment rate for the Pro customer segment.'
+    },
+    {
+      id: 'avalanche', kind: 'Personal project', title: 'Avalanche Hub',
+      from: 'A hockey season\'s stats, schedule, and news in a dozen places',
+      to: 'One self-updating app that predicts every game',
+      tools: ['GitHub', 'AI'],
+      summary: 'A sports analytics app for the Colorado Avalanche with an Elo-based win probability model that refreshes itself every hour.',
+      problem: 'Schedules, rosters, injuries, odds, and news for one team live in a dozen places. I wanted one app that pulls them together and predicts each game.',
+      built: [
+        'A full schedule with start times, arenas, and broadcast info',
+        'Rosters and projected lines, with injuries shown where they matter',
+        'An Elo-based model that adjusts for home ice, injuries, and the projected goalie, with a confidence indicator',
+        'Odds-style moneyline and puck line estimates from the model',
+        'Team news and links to team social accounts'
+      ],
+      runs: 'Hosted free on GitHub Pages. A scheduled GitHub Actions job refreshes the schedule, scores, and ratings from public NHL data every hour. Built with AI assistance.',
+      outcome: 'A public, self-updating app, and a hands-on example of modeling, automation, and product design from idea to launch.',
+      live: 'https://caelcernich.github.io/avalanche-hub/',
+      repo: 'https://github.com/caelcernich/avalanche-hub'
+    }
+  ];
+
+  var activeTool = null;
+
+  function el(tag, attrs, html) {
+    var n = document.createElement(tag);
+    if (attrs) Object.keys(attrs).forEach(function (k) { n.setAttribute(k, attrs[k]); });
+    if (html != null) n.innerHTML = html;
+    return n;
+  }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function toolName(id) { var t = TOOLS.filter(function (x) { return x.id === id; })[0]; return t ? t.name : id; }
+  function countFor(id) { return PROJECTS.filter(function (p) { return p.tools.indexOf(id) > -1; }).length; }
+
+  function renderTools() {
+    var host = document.getElementById('tools');
+    if (!host.children.length) {
+      TOOLS.forEach(function (t) {
+        var n = countFor(t.id);
+        var b = el('button', { type: 'button', 'class': 'tool-tile', 'aria-pressed': 'false', 'data-tool': t.id });
+        b.innerHTML = '<h3>' + esc(t.name) + '</h3><p>' + esc(t.line) + '</p><span class="tool-count">Used in ' + n + (n === 1 ? ' project' : ' projects') + '</span>';
+        b.addEventListener('click', function () {
+          activeTool = activeTool === t.id ? null : t.id;
+          renderTools();
+          renderWork();
+          if (activeTool) document.getElementById('work').scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+        });
+        host.appendChild(b);
+      });
+    }
+    Array.prototype.forEach.call(host.children, function (b) {
+      b.setAttribute('aria-pressed', activeTool === b.getAttribute('data-tool') ? 'true' : 'false');
+    });
+  }
+
+  function renderWork() {
+    var grid = document.getElementById('workGrid');
+    var bar = document.getElementById('filterBar');
+    grid.innerHTML = '';
+    var shown = 0;
+    PROJECTS.forEach(function (p) {
+      var match = !activeTool || p.tools.indexOf(activeTool) > -1;
+      if (!match) return;
+      shown++;
+      var card = el('article', { 'class': 'label' + (p.featured ? ' featured' : ''), id: 'proj-' + p.id });
+      var chips = p.tools.map(function (t) { return '<span class="chip' + (t === activeTool ? ' on' : '') + '">' + esc(toolName(t)) + '</span>'; }).join('');
+      var actions = '<button type="button" class="btn small" data-open="' + p.id + '">Read the case study</button>';
+      if (p.demo) actions += '<a class="btn small ghost" href="' + p.demo + '">Try the interactive demo</a>';
+      if (p.live) actions += '<a class="btn small ghost" href="' + p.live + '" target="_blank" rel="noopener">Open the live app</a>';
+      card.innerHTML =
+        '<div class="label-top"><span>' + esc(p.kind) + '</span><span>' + (p.kind === 'Employer work' ? 'Redacted' : 'Public') + '</span></div>' +
+        '<div class="label-body">' +
+          '<h3>' + esc(p.title) + '</h3>' +
+          '<p class="summary">' + esc(p.summary) + '</p>' +
+          '<dl class="route-fields"><dt>FROM</dt><dd>' + esc(p.from) + '</dd><dt>TO</dt><dd>' + esc(p.to) + '</dd></dl>' +
+          '<div class="tool-row"><span class="lead">TOOLS</span>' + chips + '</div>' +
+          '<div class="label-actions">' + actions + '</div>' +
+        '</div>';
+      grid.appendChild(card);
+    });
+    if (activeTool) {
+      bar.innerHTML = 'Showing ' + shown + (shown === 1 ? ' project' : ' projects') + ' that use ' + esc(toolName(activeTool)) + '. <button type="button" id="clearFilter">Show all projects</button>';
+      document.getElementById('clearFilter').addEventListener('click', function () { activeTool = null; renderTools(); renderWork(); });
+    } else {
+      bar.innerHTML = '';
+    }
+    registerBleed('.work-grid .label');
+    updateReveal();
+  }
+
+  // ----- case study dialog -----
+  var dlg = document.createElement('dialog');
+  dlg.setAttribute('aria-labelledby', 'dlgTitle');
+  document.body.appendChild(dlg);
+  var lastTrigger = null;
+
+  function openCase(id) {
+    var p = PROJECTS.filter(function (x) { return x.id === id; })[0];
+    if (!p) return;
+    var built = p.built.map(function (b) { return '<li>' + esc(b) + '</li>'; }).join('');
+    var chips = p.tools.map(function (t) { return '<span class="chip">' + esc(toolName(t)) + '</span>'; }).join('');
+    var links = '';
+    if (p.demo) links += '<a class="btn small" href="' + p.demo + '">Try the interactive demo</a>';
+    if (p.live) links += '<a class="btn small" href="' + p.live + '" target="_blank" rel="noopener">Open the live app</a>';
+    if (p.repo) links += '<a class="btn small ghost" href="' + p.repo + '" target="_blank" rel="noopener">View the code</a>';
+    dlg.innerHTML =
+      '<div class="dlg-top"><span>' + esc(p.kind) + '</span><button type="button" id="dlgClose">Close</button></div>' +
+      '<div class="dlg-body">' +
+        '<h3 id="dlgTitle">' + esc(p.title) + '</h3>' +
+        '<div class="tool-row">' + chips + '</div>' +
+        '<h4>The problem</h4><p>' + esc(p.problem) + '</p>' +
+        '<h4>What I built</h4><ul>' + built + '</ul>' +
+        (p.runs ? '<h4>How it runs</h4><p>' + esc(p.runs) + '</p>' : '') +
+        '<h4>The outcome</h4><p>' + esc(p.outcome) + '</p>' +
+        (links ? '<div class="label-actions">' + links + '</div>' : '') +
+        (p.kind === 'Employer work' ? '<p class="dlg-note">Exact figures, results, and internal system, project, and team names are redacted for confidentiality.</p>' : '') +
+      '</div>';
+    document.getElementById('dlgClose').addEventListener('click', function () { dlg.close(); });
+    if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+  }
+
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+  dlg.addEventListener('close', function () { if (lastTrigger) lastTrigger.focus(); });
+
+  document.getElementById('workGrid').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-open]');
+    if (!b) return;
+    lastTrigger = b;
+    openCase(b.getAttribute('data-open'));
+  });
+
+  // ----- headshot fallback -----
+  var img = document.getElementById('headshot');
+  function monogram() {
+    var frame = document.getElementById('photoFrame');
+    frame.innerHTML = '<div class="monogram" aria-hidden="true">CC</div>';
+  }
+  img.addEventListener('error', monogram);
+  if (img.complete && img.naturalWidth === 0) monogram();
+
+  // ----- scroll-driven reveal: content "unpacks" as you scroll -----
+  var REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var bleeds = [];
+  var BLEED_SELECTORS = ['.hero .lede', '.hero-cta', '.photo', '.about h2', '.about p', '.edu', '.toolkit h2', '.toolkit .intro', '.tool-tile',
+    '.work h2', '.work .notice', '.beyond h2', '.beyond .intro', '.beyond-item', '.experience h2', '.experience .notice', '.job',
+    '.lead-grid .panel', '.contact h2', '.contact p', '.email-row', '.links'];
+
+  function finish(node) {
+    node.__bleed.done = true;
+    node.setAttribute('data-done', '');
+    node.style.removeProperty('--p');
+  }
+  function registerBleed(sel) {
+    Array.prototype.forEach.call(document.querySelectorAll(sel), function (node) {
+      if (node.__bleed) return;
+      var parent = node.parentNode;
+      var idx = Array.prototype.indexOf.call(parent.children, node);
+      var inGrid = window.getComputedStyle(parent).display === 'grid';
+      node.__bleed = { p: 0, off: inGrid ? (idx % 4) * 45 : 0, done: false };
+      node.setAttribute('data-bleed', '');
+      if (REDUCE) finish(node); else bleeds.push(node);
+    });
+  }
+
+  // route graphic: the package travels as you scroll
+  var routeSvg = document.getElementById('routeSvg');
+  var routeWrap = document.getElementById('routeWrap');
+  var routePath = routeSvg.querySelector('.route-draw');
+  var routeNodes = routeSvg.querySelectorAll('.node');
+  var routeLabels = routeSvg.querySelectorAll('.node-label');
+  var pkg = document.getElementById('pkg');
+  var routeLen = routePath.getTotalLength ? routePath.getTotalLength() : 0;
+  var FRACTIONS = [0, 0.239, 0.5, 0.761, 1];
+  var routeQ = 0;
+
+  function setRoute(q) {
+    routePath.style.strokeDasharray = routeLen;
+    routePath.style.strokeDashoffset = routeLen * (1 - q);
+    var pt = routePath.getPointAtLength(routeLen * q);
+    pkg.setAttribute('cx', pt.x);
+    pkg.setAttribute('cy', pt.y);
+    for (var i = 0; i < routeNodes.length; i++) {
+      var lit = q >= FRACTIONS[i] && (i > 0 || q > 0.005);
+      routeNodes[i].classList.toggle('lit', lit);
+      routeLabels[i].classList.toggle('lit', lit);
+    }
+  }
+  if (routeLen) {
+    routeSvg.classList.add('js-route');
+    if (REDUCE) { routeQ = 1; setRoute(1); pkg.style.display = 'none'; } else { setRoute(0); }
+  }
+
+  var cue = document.getElementById('cue');
+  function updateReveal() {
+    var vh = window.innerHeight;
+    var atBottom = window.scrollY + vh >= document.documentElement.scrollHeight - 4;
+    if (cue) cue.style.opacity = Math.max(0, 1 - window.scrollY / 160);
+
+    for (var i = bleeds.length - 1; i >= 0; i--) {
+      var node = bleeds[i], st = node.__bleed;
+      if (st.done) { bleeds.splice(i, 1); continue; }
+      var top = node.getBoundingClientRect().top;
+      var from = vh * 0.98 - st.off, to = vh * 0.62 - st.off;
+      var p = (from - top) / (from - to);
+      p = atBottom ? 1 : Math.max(0, Math.min(1, p));
+      if (p > st.p) st.p = p;                       // once revealed, stays revealed
+      if (st.p >= 1) finish(node); else node.style.setProperty('--p', st.p.toFixed(3));
+    }
+
+    if (routeLen && routeQ < 1) {
+      var rt = routeWrap.getBoundingClientRect().top;
+      var qs = vh * 0.95, qe = vh * 0.38;
+      var q = atBottom ? 1 : Math.max(0, Math.min(1, (qs - rt) / (qs - qe)));
+      if (q > routeQ) { routeQ = q; setRoute(routeQ); }
+    }
+  }
+
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(function () { ticking = false; updateReveal(); });
+  }
+  function initReveal() {
+    BLEED_SELECTORS.forEach(registerBleed);
+    updateReveal();
+    if (!REDUCE) {
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+    }
+  }
+
+  // ----- contact -----
+  var ln = document.getElementById('liLink');
+  if (LINKEDIN) { ln.href = LINKEDIN; ln.hidden = false; }
+  document.getElementById('copyBtn').addEventListener('click', function () {
+    var msg = document.getElementById('copied');
+    function done(ok) { msg.textContent = ok ? 'Copied. Looking forward to hearing from you.' : 'Copy failed. Select the address above and copy it manually.'; }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(EMAIL).then(function () { done(true); }, function () { done(false); });
+    } else { done(false); }
+  });
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  renderTools();
+  renderWork();
+  initReveal();
+})();
+</script>
+</body>
+</html>
