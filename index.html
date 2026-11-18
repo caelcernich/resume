@@ -3,594 +3,799 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0F1B3D">
-<title>Real Estate Portfolio Dashboard (synthetic data demo)</title>
+<meta name="theme-color" content="#2A44FF">
+<title>Cael Cernich: Senior Data Analyst and Analytics Product Owner</title>
+<meta name="description" content="Cael Cernich builds supply chain analytics products end to end: requirements, pipelines, dashboards, and adoption. Based in Atlanta, GA.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%232A44FF'/%3E%3Ctext x='50' y='68' font-size='52' font-weight='800' text-anchor='middle' fill='%23FFC61A' font-family='Arial Black,Arial,sans-serif'%3ECC%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js-on');</script>
 <style>
   :root {
-    --cobalt: #2A44FF; --cobalt-deep: #1C2FC4; --yellow: #FFC61A; --ink: #0F1B3D; --white: #FFFFFF;
-    --concrete: #E6E9EE; --ink-soft: #3C4766; --line: #C3C9D6; --red: #C8321F;
+    --cobalt: #2A44FF;
+    --cobalt-deep: #1C2FC4;
+    --yellow: #FFC61A;
+    --ink: #0F1B3D;
+    --white: #FFFFFF;
+    --concrete: #E6E9EE;
+    --ink-soft: #3C4766;
     --display: 'Big Shoulders Display', 'Arial Narrow', Impact, sans-serif;
     --body: 'Public Sans', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+    --max: 1120px;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; font-family: var(--body); color: var(--ink); background: var(--concrete); line-height: 1.45; font-size: 15px; -webkit-font-smoothing: antialiased; }
-  :focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; box-shadow: 0 0 0 5px var(--ink); }
-  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
-  button { font-family: inherit; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: var(--body); color: var(--ink); background: var(--concrete); line-height: 1.6; font-size: 17px; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  img { max-width: 100%; display: block; }
+  :focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; box-shadow: 0 0 0 6px var(--ink); }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+  .skip { position: absolute; left: -999px; top: 8px; background: var(--yellow); color: var(--ink); padding: 8px 14px; font-weight: 700; z-index: 100; }
+  .skip:focus { left: 8px; }
 
-  .bar { background: var(--ink); color: var(--white); border-bottom: 3px solid var(--yellow); }
-  .bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 60px; flex-wrap: wrap; padding-top: 8px; padding-bottom: 8px; }
-  .bar h1 { font-family: var(--display); font-weight: 800; font-size: 28px; margin: 0; line-height: 1; }
-  .bar a { color: var(--white); font-weight: 600; text-decoration: none; border: 2px solid var(--white); border-radius: 999px; padding: 6px 16px; font-size: 14px; }
-  .bar a:hover { background: var(--yellow); color: var(--ink); border-color: var(--yellow); }
-  .banner { background: var(--yellow); color: var(--ink); border-bottom: 3px solid var(--ink); font-weight: 600; }
-  .banner .wrap { padding-top: 10px; padding-bottom: 10px; }
+  /* ---------- nav ---------- */
+  .nav { position: sticky; top: 0; z-index: 40; background: var(--ink); color: var(--white); border-bottom: 3px solid var(--yellow); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 62px; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--display); font-weight: 800; font-size: 24px; letter-spacing: 0.01em; }
+  .brand-mark { width: 34px; height: 34px; background: var(--yellow); color: var(--ink); display: grid; place-items: center; font-size: 19px; border-radius: 4px; }
+  .nav ul { display: flex; gap: 26px; list-style: none; margin: 0; padding: 0; font-weight: 600; font-size: 15px; }
+  .nav ul a { text-decoration: none; padding: 6px 0; border-bottom: 3px solid transparent; }
+  .nav ul a:hover { border-bottom-color: var(--yellow); }
+  .nav .pill { background: var(--yellow); color: var(--ink); padding: 8px 18px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 15px; }
+  @media (max-width: 820px) { .nav ul { display: none; } }
 
-  .kpis { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; margin: 22px 0 16px; }
-  .kpi { background: var(--white); border: 3px solid var(--ink); border-radius: 8px; padding: 12px 14px; }
-  .kpi .k { font-size: 13px; font-weight: 600; color: var(--ink-soft); }
-  .kpi .v { font-family: var(--display); font-weight: 900; font-size: 34px; line-height: 1.05; }
-  @media (max-width: 980px) { .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-  @media (max-width: 560px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-
-  .filters { background: var(--white); border: 3px solid var(--ink); border-radius: 8px; padding: 14px 16px; display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: flex-end; margin-bottom: 18px; }
-  .fgroup { display: flex; flex-direction: column; gap: 6px; }
-  .fgroup > span { font-size: 13px; font-weight: 700; }
-  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-  .chip { font: 600 13px var(--body); border: 2px solid var(--ink); background: var(--white); color: var(--ink); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
-  .chip[aria-pressed="true"] { background: var(--cobalt); color: var(--white); }
-  select { font: 500 14px var(--body); border: 2px solid var(--ink); border-radius: 6px; padding: 6px 10px; background: var(--white); color: var(--ink); }
-  .check { display: flex; gap: 8px; align-items: center; font-weight: 600; font-size: 14px; }
-  .check input { width: 18px; height: 18px; accent-color: var(--cobalt); }
-  .btn { font: 700 14px var(--body); border: 3px solid var(--ink); background: var(--yellow); color: var(--ink); border-radius: 999px; padding: 7px 16px; cursor: pointer; }
+  /* ---------- hero ---------- */
+  .hero { background: var(--cobalt); color: var(--white); padding: 0 0 72px; overflow: hidden; }
+  .hero-first { min-height: calc(100vh - 65px); min-height: calc(100svh - 65px); display: flex; flex-direction: column; justify-content: center; gap: 40px; padding: 40px 0 28px; }
+  .cue { display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 17px; }
+  .cue-line { width: 4px; height: 48px; background: rgba(255,255,255,0.3); position: relative; overflow: hidden; display: block; }
+  .cue-line::after { content: ""; position: absolute; left: 0; top: -100%; width: 100%; height: 100%; background: var(--yellow); animation: drip 1.9s ease-in-out infinite; }
+  @keyframes drip { to { top: 100%; } }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 48px; align-items: center; padding-top: 72px; }
+  .hero h1 { font-family: var(--display); font-weight: 900; font-size: clamp(64px, 14.5vw, 208px); line-height: 0.86; letter-spacing: -0.012em; margin: 0; }
+  .hero .lede { font-size: clamp(22px, 3vw, 34px); max-width: 28ch; margin: 0 0 32px; line-height: 1.3; font-weight: 500; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; font: 700 16px/1 var(--body); text-decoration: none; padding: 15px 26px; border-radius: 999px; border: 3px solid var(--ink); background: var(--yellow); color: var(--ink); cursor: pointer; }
   .btn:hover { background: var(--white); }
-  .btn.ghost { background: var(--white); }
-  .btn.ghost:hover { background: var(--yellow); }
-  .btn.sm { padding: 5px 12px; font-size: 13px; }
-  .push { margin-left: auto; display: flex; gap: 10px; }
+  .btn.ghost { background: transparent; color: inherit; border-color: currentColor; }
+  .btn.ghost:hover { background: var(--ink); color: var(--white); border-color: var(--ink); }
+  .photo { position: relative; justify-self: end; width: 280px; }
+  .photo::before, .photo::after { content: ""; position: absolute; width: 84px; height: 26px; background: var(--yellow); opacity: 0.92; z-index: 2; }
+  .photo::before { top: -10px; left: -22px; transform: rotate(-38deg); }
+  .photo::after { bottom: -10px; right: -22px; transform: rotate(-38deg); }
+  .photo-frame { aspect-ratio: 3 / 4; background: var(--white); border: 4px solid var(--ink); border-radius: 6px; overflow: hidden; display: grid; place-items: center; }
+  .photo-frame img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+  .monogram { font-family: var(--display); font-weight: 900; font-size: 120px; color: var(--cobalt); letter-spacing: 0.02em; }
+  @media (max-width: 820px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+    .photo { justify-self: start; width: 200px; order: -1; }
+    .monogram { font-size: 84px; }
+  }
 
-  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
-  .tab { font: 800 20px var(--display); border: 3px solid var(--ink); background: var(--white); color: var(--ink); border-radius: 8px 8px 0 0; padding: 8px 18px 6px; cursor: pointer; }
-  .tab[aria-selected="true"] { background: var(--ink); color: var(--white); }
-  .panel { background: var(--white); border: 3px solid var(--ink); border-radius: 8px; padding: 20px 22px; margin-bottom: 26px; }
-  .panel h2 { font-family: var(--display); font-weight: 900; font-size: 34px; margin: 0 0 4px; line-height: 1; }
-  .panel h3 { font-family: var(--display); font-weight: 800; font-size: 24px; margin: 22px 0 10px; line-height: 1; }
-  .sub { margin: 0 0 16px; color: var(--ink-soft); max-width: 70ch; }
-  .seg { display: inline-flex; border: 3px solid var(--ink); border-radius: 999px; overflow: hidden; margin-bottom: 14px; }
-  .seg button { font: 700 14px var(--body); border: 0; padding: 7px 16px; background: var(--white); color: var(--ink); cursor: pointer; }
-  .seg button[aria-pressed="true"] { background: var(--ink); color: var(--white); }
+  /* route graphic (scroll-driven) */
+  .route-wrap { margin-top: 72px; border-top: 3px solid var(--ink); padding-top: 18px; }
+  .route-svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .route-base { fill: none; stroke: rgba(255,255,255,0.28); stroke-width: 4; stroke-linejoin: round; }
+  .route-draw { fill: none; stroke: var(--yellow); stroke-width: 4; stroke-linejoin: round; }
+  .node { fill: var(--yellow); stroke: var(--ink); stroke-width: 4; }
+  .node-label { fill: var(--white); font: 700 17px var(--body); text-anchor: middle; }
+  .package { display: none; fill: var(--white); stroke: var(--ink); stroke-width: 3; }
+  .js-route .node { fill: var(--cobalt-deep); stroke: var(--white); transition: fill .25s, stroke .25s; }
+  .js-route .node.lit { fill: var(--yellow); stroke: var(--ink); }
+  .js-route .node-label { opacity: 0.35; transition: opacity .25s; }
+  .js-route .node-label.lit { opacity: 1; }
+  .js-route .package { display: block; }
 
-  .heads { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 8px; }
-  .head { border: 3px solid var(--ink); border-radius: 8px; padding: 12px 14px; background: var(--concrete); }
-  .head .k { font-weight: 600; font-size: 13px; }
-  .head .v { font-family: var(--display); font-weight: 900; font-size: 42px; line-height: 1; }
-  @media (max-width: 820px) { .heads { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  .two { display: grid; grid-template-columns: 1.15fr 1fr; gap: 26px; }
-  @media (max-width: 900px) { .two { grid-template-columns: 1fr; } }
+  /* scroll reveal: content bleeds in with a soft downward wipe tied to scroll position */
+  .js-on [data-bleed]:not([data-done]) {
+    -webkit-mask-image: linear-gradient(180deg, #000 0, #000 calc(var(--p, 1) * 135% - 35%), transparent calc(var(--p, 1) * 135%));
+    mask-image: linear-gradient(180deg, #000 0, #000 calc(var(--p, 1) * 135% - 35%), transparent calc(var(--p, 1) * 135%));
+    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  }
 
-  .bars { display: flex; flex-direction: column; gap: 6px; }
-  .brow { display: grid; grid-template-columns: 74px 1fr 96px; gap: 10px; align-items: center; border: 0; background: none; padding: 2px 0; cursor: pointer; text-align: left; font: inherit; color: inherit; }
-  .brow .track { height: 22px; background: var(--concrete); border-radius: 4px; overflow: hidden; }
-  .brow .fill { height: 100%; background: var(--cobalt); min-width: 2px; }
-  .brow.past .fill { background: var(--red); }
-  .brow[aria-pressed="true"] .fill { background: var(--yellow); outline: 3px solid var(--ink); outline-offset: -3px; }
-  .brow .l { font-weight: 700; font-size: 13px; }
-  .brow .n { font-weight: 600; font-size: 13px; text-align: right; }
+  /* ---------- sections ---------- */
+  section { padding: 84px 0; }
+  h2 { font-family: var(--display); font-weight: 900; font-size: clamp(44px, 7vw, 84px); line-height: 0.92; margin: 0 0 22px; letter-spacing: -0.01em; }
+  .intro { max-width: 62ch; font-size: 19px; margin: 0 0 40px; }
 
-  .cards4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 18px; }
-  .ecard { border: 3px solid var(--ink); border-radius: 8px; padding: 10px 12px; }
-  .ecard .k { font-weight: 600; font-size: 13px; }
-  .ecard .v { font-family: var(--display); font-weight: 900; font-size: 30px; line-height: 1.05; }
-  .ecard .s { font-size: 13px; color: var(--ink-soft); }
-  @media (max-width: 700px) { .cards4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .about-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: start; }
+  .about p { margin: 0 0 18px; max-width: 62ch; }
+  .edu { background: var(--white); border: 3px solid var(--ink); border-radius: 8px; }
+  .edu-top { padding: 10px 20px; border-bottom: 3px solid var(--ink); background: var(--yellow); font-weight: 700; font-size: 15px; }
+  .edu-body { padding: 20px; }
+  .edu-body h3 { font-family: var(--display); font-size: 30px; margin: 0 0 4px; line-height: 1.05; }
+  .edu-body p { margin: 0 0 6px; font-size: 16px; }
+  @media (max-width: 820px) { .about-grid { grid-template-columns: 1fr; gap: 32px; } }
 
-  table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  th, td { text-align: left; padding: 9px 8px; border-bottom: 2px solid var(--concrete); vertical-align: top; }
-  th { font-weight: 700; font-size: 13px; border-bottom: 3px solid var(--ink); }
-  th button { font: inherit; font-weight: 700; background: none; border: 0; cursor: pointer; padding: 0; color: inherit; }
-  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
-  tr.total td { font-weight: 800; border-top: 3px solid var(--ink); border-bottom: 0; }
-  .tablewrap { overflow-x: auto; }
-  tr.dc { cursor: pointer; }
-  tr.dc:hover td { background: #F3F5F9; }
-  tr.sub td { background: #F7F8FB; font-size: 13px; }
-  .tag { display: inline-block; font-weight: 700; font-size: 12px; border: 2px solid var(--ink); border-radius: 999px; padding: 0 8px; background: var(--yellow); }
-  .tag.late { background: var(--red); color: var(--white); border-color: var(--red); }
+  /* toolkit */
+  .toolkit { background: var(--white); }
+  .tools { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .tool-tile { text-align: left; font: inherit; color: var(--ink); background: var(--concrete); border: 3px solid var(--ink); border-radius: 8px; padding: 18px 18px 16px; cursor: pointer; display: flex; flex-direction: column; gap: 8px; min-height: 190px; }
+  .tool-tile:hover { background: var(--yellow); }
+  .tool-tile[aria-pressed="true"] { background: var(--cobalt); color: var(--white); }
+  .tool-tile h3 { font-family: var(--display); font-weight: 800; font-size: 30px; line-height: 1; margin: 0; }
+  .tool-tile p { margin: 0; font-size: 15px; line-height: 1.45; flex: 1; }
+  .tool-count { font-weight: 700; font-size: 14px; }
+  @media (max-width: 980px) { .tools { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .tools { grid-template-columns: 1fr; } .tool-tile { min-height: 0; } }
 
-  .mapwrap { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 26px; align-items: start; }
-  @media (max-width: 900px) { .mapwrap { grid-template-columns: 1fr; } }
-  .tile { cursor: pointer; }
-  .tile rect { stroke: var(--ink); stroke-width: 2; rx: 6; }
-  .tile text { font: 700 14px var(--body); text-anchor: middle; pointer-events: none; }
-  .tile.sel rect { stroke: var(--yellow); stroke-width: 5; }
-  .legend { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; margin-top: 10px; }
-  .legend i { display: block; width: 160px; height: 12px; border: 2px solid var(--ink); background: linear-gradient(90deg, #E6E9EE, #2A44FF); }
-  .info { border: 3px solid var(--ink); border-radius: 8px; padding: 14px 16px; min-height: 120px; background: var(--concrete); }
-  .info h3 { margin: 0 0 6px; }
+  /* redaction notice */
+  .notice { display: flex; gap: 16px; align-items: flex-start; background: var(--white); border: 3px solid var(--ink); border-left: 14px solid var(--yellow); border-radius: 6px; padding: 16px 20px; margin: 0 0 34px; max-width: 78ch; }
+  .notice strong { display: block; font-size: 16px; margin-bottom: 2px; }
+  .notice p { margin: 0; font-size: 15px; }
 
-  .cal { width: 100%; height: auto; display: block; }
-  .cal text { font: 600 12px var(--body); fill: var(--ink); }
-  .cal .gl { stroke: var(--line); stroke-width: 1; }
-  .cal .bar-t { fill: var(--concrete); stroke: var(--ink); stroke-width: 1.5; }
-  .cal .today { stroke: var(--red); stroke-width: 2.5; stroke-dasharray: 5 4; }
-  .cal .mk { cursor: pointer; }
-  .cal .exp { fill: var(--cobalt); stroke: var(--ink); stroke-width: 2; }
-  .cal .exp.past { fill: var(--red); }
-  .cal .ntc { fill: var(--yellow); stroke: var(--ink); stroke-width: 2; }
-  .key { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; font-weight: 600; margin: 8px 0 14px; }
-  .key span::before { content: ""; display: inline-block; width: 12px; height: 12px; margin-right: 6px; border: 2px solid var(--ink); vertical-align: -1px; }
-  .key .k1::before { background: var(--cobalt); border-radius: 50%; }
-  .key .k2::before { background: var(--yellow); transform: rotate(45deg); }
-  .key .k3::before { background: var(--red); border-radius: 50%; border-color: var(--red); }
-  .key .k4::before { background: var(--concrete); }
+  /* work */
+  .filter-bar { display: flex; align-items: center; gap: 14px; min-height: 44px; margin-bottom: 20px; font-weight: 600; flex-wrap: wrap; }
+  .filter-bar button { font: 700 14px var(--body); border: 3px solid var(--ink); background: var(--yellow); color: var(--ink); border-radius: 999px; padding: 6px 16px; cursor: pointer; }
+  .filter-bar button:hover { background: var(--white); }
+  .work-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
+  .label { background: var(--white); border: 3px solid var(--ink); border-radius: 8px; display: flex; flex-direction: column; }
+  .label.featured { grid-column: 1 / -1; }
+  .label[hidden] { display: none; }
+  .label-top { display: flex; justify-content: space-between; gap: 12px; padding: 10px 20px; border-bottom: 3px solid var(--ink); background: var(--concrete); font-weight: 700; font-size: 14px; }
+  .label.featured .label-top { background: var(--yellow); }
+  .label-body { padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 18px; flex: 1; }
+  .label h3 { font-family: var(--display); font-weight: 900; font-size: clamp(34px, 4vw, 48px); line-height: 0.96; margin: 0; }
+  .label.featured h3 { font-size: clamp(40px, 5.4vw, 68px); }
+  .summary { margin: 0; max-width: 62ch; }
+  .route-fields { display: grid; grid-template-columns: 62px 1fr; gap: 10px 14px; margin: 0; padding-top: 16px; border-top: 3px dashed var(--ink); }
+  .route-fields dt { font-weight: 800; font-size: 13px; letter-spacing: 0.08em; padding-top: 3px; }
+  .route-fields dd { margin: 0; font-weight: 600; }
+  .tool-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .tool-row .lead { font-weight: 800; font-size: 13px; letter-spacing: 0.08em; margin-right: 6px; }
+  .chip { font-size: 14px; font-weight: 600; border: 2px solid var(--ink); border-radius: 999px; padding: 2px 12px; background: var(--white); }
+  .chip.on { background: var(--cobalt); color: var(--white); }
+  .label-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto; padding-top: 4px; }
+  .btn.small { padding: 11px 20px; font-size: 15px; }
+  @media (max-width: 820px) { .work-grid { grid-template-columns: 1fr; } }
 
-  .scen { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
-  @media (max-width: 900px) { .scen { grid-template-columns: 1fr; } }
-  .clist { max-height: 420px; overflow: auto; border: 3px solid var(--ink); border-radius: 8px; }
-  .crow { display: grid; grid-template-columns: 28px 1fr auto; gap: 8px; align-items: center; padding: 8px 10px; border-bottom: 2px solid var(--concrete); font-size: 14px; }
-  .crow:last-child { border-bottom: 0; }
-  .crow input { width: 18px; height: 18px; accent-color: var(--cobalt); }
-  .crow small { display: block; color: var(--ink-soft); }
-  .dtag { font-weight: 700; font-size: 12px; border: 2px solid var(--ink); border-radius: 999px; padding: 0 8px; background: var(--white); }
-  .dtag.no { background: var(--red); color: var(--white); border-color: var(--red); }
-  .dtag.yes { background: var(--cobalt); color: var(--white); }
-  .ctl { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; margin: 12px 0; }
-  .ctl label { display: flex; flex-direction: column; gap: 4px; font-weight: 700; font-size: 13px; }
-  .ctl input[type=number] { width: 110px; font: 500 14px var(--body); border: 2px solid var(--ink); border-radius: 6px; padding: 6px 8px; }
-  .impact { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 12px 0; }
-  .empty { padding: 28px 10px; text-align: center; color: var(--ink-soft); }
-  .note { font-size: 13px; color: var(--ink-soft); margin: 14px 0 0; }
-  footer { padding: 6px 0 40px; font-size: 14px; color: var(--ink-soft); }
+  /* dialog */
+  dialog { border: 3px solid var(--ink); border-radius: 8px; padding: 0; width: min(760px, calc(100% - 28px)); max-height: calc(100% - 40px); color: var(--ink); background: var(--white); }
+  dialog::backdrop { background: rgba(15, 27, 61, 0.72); }
+  .dlg-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 14px 10px 22px; border-bottom: 3px solid var(--ink); background: var(--yellow); font-weight: 700; font-size: 14px; position: sticky; top: 0; }
+  .dlg-top button { font: 700 14px var(--body); border: 3px solid var(--ink); background: var(--white); color: var(--ink); border-radius: 999px; padding: 6px 16px; cursor: pointer; }
+  .dlg-body { padding: 24px 28px 30px; display: flex; flex-direction: column; gap: 18px; }
+  .dlg-body h3 { font-family: var(--display); font-weight: 900; font-size: 46px; line-height: 0.96; margin: 0; }
+  .dlg-body h4 { font-family: var(--display); font-weight: 800; font-size: 26px; margin: 8px 0 -6px; }
+  .dlg-body p { margin: 0; max-width: 62ch; }
+  .dlg-body ul { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; max-width: 62ch; }
+  .dlg-note { font-size: 14px; border-top: 3px dashed var(--ink); padding-top: 14px; }
+
+  /* beyond the build */
+  .beyond { background: var(--yellow); }
+  .beyond-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 8px; }
+  .beyond-item { border-top: 4px solid var(--ink); padding-top: 14px; }
+  .beyond-item h3 { font-family: var(--display); font-weight: 800; font-size: 30px; line-height: 1; margin: 0 0 8px; }
+  .beyond-item p { margin: 0; font-size: 16px; }
+  @media (max-width: 820px) { .beyond-grid { grid-template-columns: 1fr; } }
+
+  /* experience */
+  .experience { background: var(--white); }
+  .timeline { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; }
+  .job { display: grid; grid-template-columns: 220px 1fr; gap: 12px 40px; padding: 30px 0; border-top: 3px solid var(--ink); }
+  .job:last-child { border-bottom: 3px solid var(--ink); }
+  .job-dates { font-family: var(--display); font-weight: 800; font-size: 28px; line-height: 1.05; }
+  .job h3 { font-family: var(--display); font-weight: 800; font-size: 34px; line-height: 1; margin: 0 0 4px; }
+  .job .org { margin: 0 0 14px; font-weight: 600; }
+  .job ul { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; max-width: 70ch; }
+  @media (max-width: 820px) { .job { grid-template-columns: 1fr; gap: 6px; } }
+
+  .lead-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-top: 44px; }
+  .panel { background: var(--concrete); border: 3px solid var(--ink); border-radius: 8px; padding: 22px 24px; }
+  .panel h3 { font-family: var(--display); font-weight: 800; font-size: 32px; margin: 0 0 4px; line-height: 1; }
+  .panel .org { margin: 0 0 12px; font-weight: 600; }
+  .panel ul { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; }
+  @media (max-width: 820px) { .lead-grid { grid-template-columns: 1fr; } }
+
+  /* contact */
+  .contact { background: var(--cobalt); color: var(--white); min-height: 80vh; }
+  .contact h2 { margin-bottom: 18px; }
+  .contact p { max-width: 52ch; font-size: 19px; margin: 0 0 30px; }
+  .email-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-bottom: 26px; }
+  .email-big { font-family: var(--display); font-weight: 900; font-size: clamp(32px, 6.2vw, 76px); line-height: 1; text-decoration: none; border-bottom: 6px solid var(--yellow); overflow-wrap: anywhere; }
+  .email-big:hover { background: var(--yellow); color: var(--ink); }
+  .links { display: flex; flex-wrap: wrap; gap: 14px; }
+  .copied { font-weight: 700; min-height: 1.4em; margin-top: 12px; }
+
+  footer { background: var(--ink); color: var(--white); padding: 28px 0 36px; font-size: 15px; }
+  footer p { margin: 0 0 6px; max-width: 80ch; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .cue-line::after { animation: none; }
+    [data-bleed] { -webkit-mask-image: none !important; mask-image: none !important; }
+  }
+  @media print { [data-bleed] { -webkit-mask-image: none !important; mask-image: none !important; } }
 </style>
 </head>
 <body>
-<header class="bar">
+<a class="skip" href="#work">Skip to selected work</a>
+
+<header class="nav">
   <div class="wrap">
-    <h1>Real Estate Portfolio Dashboard</h1>
-    <a href="../../">Back to portfolio</a>
+    <a class="brand" href="#top" aria-label="Cael Cernich, home"><span class="brand-mark">CC</span>Cael Cernich</a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#toolkit">Toolkit</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#experience">Experience</a></li>
+      </ul>
+    </nav>
+    <a class="pill" href="#contact">Get in touch</a>
   </div>
 </header>
-<div class="banner" role="note">
-  <div class="wrap">Synthetic data demo. Every site, contract, and dollar figure here is fictional. It recreates the layout and interactions of a confidential internal tool I built.</div>
-</div>
 
-<main class="wrap">
-  <div class="kpis" id="kpis" aria-live="polite"></div>
+<main id="top">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div class="hero-first">
+        <h1 id="hero-title">Messy data in. Tools people use out.</h1>
+        <div class="cue" id="cue" aria-hidden="true"><span class="cue-line"></span><span>Scroll to unpack</span></div>
+      </div>
 
-  <section class="filters" aria-label="Filters">
-    <div class="fgroup"><span>Site type</span><div class="chips" id="typeChips"></div></div>
-    <div class="fgroup"><span>State</span><select id="stateSel" aria-label="State"></select></div>
-    <div class="fgroup"><span>Lease expiration</span>
-      <select id="expSel" aria-label="Lease expiration">
-        <option value="all">All dates</option>
-        <option value="past">Past due</option>
-        <option value="12">Next 12 months</option>
-        <option value="24">Next 24 months</option>
-        <option value="60">Next 5 years</option>
-      </select>
-    </div>
-    <label class="check"><input type="checkbox" id="areaChk" checked> Include contracts with no rentable area</label>
-    <div class="push">
-      <button class="btn ghost" id="clearBtn" type="button">Clear all</button>
-      <button class="btn" id="csvBtn" type="button">Download CSV</button>
+      <div class="hero-grid">
+        <div>
+          <p class="lede">I'm Cael Cernich, a senior data analyst and analytics product owner in supply chain. I take a manual process from request to a tool a team adopts.</p>
+          <div class="hero-cta">
+            <a class="btn" href="#work">See my work</a>
+            <a class="btn ghost" href="#contact">Get in touch</a>
+          </div>
+        </div>
+        <div class="photo">
+          <div class="photo-frame" id="photoFrame">
+            <img src="headshot.jpg" width="768" height="1024" alt="Illustrated portrait of Cael Cernich in a navy blazer and light blue shirt, smiling" id="headshot">
+          </div>
+        </div>
+      </div>
+
+      <div class="route-wrap" id="routeWrap">
+        <svg class="route-svg" id="routeSvg" viewBox="0 0 1000 150" role="img" aria-label="A route from source systems through BigQuery and Python with SQL to dashboards and decisions">
+          <path class="route-base" d="M60 90 L270 50 L500 90 L730 50 L940 90"/>
+          <path class="route-draw" d="M60 90 L270 50 L500 90 L730 50 L940 90"/>
+          <circle class="node" cx="60"  cy="90" r="15"/>
+          <circle class="node" cx="270" cy="50" r="15"/>
+          <circle class="node" cx="500" cy="90" r="15"/>
+          <circle class="node" cx="730" cy="50" r="15"/>
+          <circle class="node" cx="940" cy="90" r="19"/>
+          <text class="node-label" x="60"  y="136">Source systems</text>
+          <text class="node-label" x="270" y="96">BigQuery</text>
+          <text class="node-label" x="500" y="136">Python and SQL</text>
+          <text class="node-label" x="730" y="96">Dashboards</text>
+          <text class="node-label" x="940" y="136">Decisions</text>
+          <circle class="package" id="pkg" r="9" cx="60" cy="90"/>
+        </svg>
+      </div>
     </div>
   </section>
 
-  <div class="tabs" role="tablist" id="tabs" aria-label="Dashboard views"></div>
-  <div id="view"></div>
-  <footer>All data in this demo is synthetic, generated for illustration. Nothing here is real, and dates are set relative to today.</footer>
+  <section class="about" id="about" aria-labelledby="about-title">
+    <div class="wrap about-grid">
+      <div>
+        <h2 id="about-title">Industrial engineer by training. Product owner by habit.</h2>
+        <p>I studied Industrial and Systems Engineering at Georgia Tech, which left me with a bias for systems: find the bottleneck, model it, fix it.</p>
+        <p>Over five years in supply chain analytics I've moved from answering one-off questions in spreadsheets to owning analytics products end to end. I gather the requirements, build the pipeline, ship the dashboard, and train the people who use it.</p>
+        <p>I'm happiest when a manual process quietly becomes something nobody has to think about anymore.</p>
+      </div>
+      <aside class="edu" aria-label="Education">
+        <div class="edu-top">Education</div>
+        <div class="edu-body">
+          <h3>Georgia Institute of Technology</h3>
+          <p><strong>B.S., Industrial and Systems Engineering</strong>, College of Engineering</p>
+          <p>Concentration in Economic and Financial Systems</p>
+          <p>Finance certificate, Scheller College of Business</p>
+          <p>2016 to 2021</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="toolkit" id="toolkit" aria-labelledby="toolkit-title">
+    <div class="wrap">
+      <h2 id="toolkit-title">Toolkit</h2>
+      <p class="intro">Every project below runs on some mix of these. Pick a tool to see where I've used it.</p>
+      <div class="tools" id="tools"></div>
+    </div>
+  </section>
+
+  <section class="work" id="work" aria-labelledby="work-title">
+    <div class="wrap">
+      <h2 id="work-title">Selected work</h2>
+      <div class="notice" role="note">
+        <div>
+          <strong>Redacted for confidentiality</strong>
+          <p>Exact figures, results, and internal system, project, and team names have been removed from employer work. The descriptions are accurate to what I built.</p>
+        </div>
+      </div>
+      <div class="filter-bar" id="filterBar" aria-live="polite"></div>
+      <div class="work-grid" id="workGrid"></div>
+    </div>
+  </section>
+
+  <section class="beyond" aria-labelledby="beyond-title">
+    <div class="wrap">
+      <h2 id="beyond-title">Beyond the build</h2>
+      <p class="intro">A tool only matters if people can use it. I spend real time making the people around me better at working with data.</p>
+      <div class="beyond-grid">
+        <div class="beyond-item"><h3>Code review</h3><p>I review and optimize Python scripts for teammates across functions, so their automations run faster and break less.</p></div>
+        <div class="beyond-item"><h3>Dashboard help</h3><p>I help colleagues design, fix, and extend their own dashboards, so they aren't blocked waiting on a build.</p></div>
+        <div class="beyond-item"><h3>Teaching</h3><p>I teach teammates to use BigQuery and Tableau properly, so analytics skill grows past my own desk.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="experience" id="experience" aria-labelledby="exp-title">
+    <div class="wrap">
+      <h2 id="exp-title">Experience</h2>
+      <div class="notice" role="note">
+        <div>
+          <strong>Redacted for confidentiality</strong>
+          <p>Exact figures, results, and internal system, project, and team names have been removed.</p>
+        </div>
+      </div>
+      <ol class="timeline">
+        <li class="job">
+          <div class="job-dates">October 2025 to present</div>
+          <div>
+            <h3>Senior Data Analyst, Supply Chain Infrastructure</h3>
+            <p class="org">The Home Depot, Atlanta, GA</p>
+            <ul>
+              <li>Lead development and enterprise rollout of a maintenance analytics product that combines work order, labor, and equipment data across multiple distribution facilities. I drive requirements, stakeholder alignment, validation, go-live, and ongoing enhancements.</li>
+              <li>Own the strategy, modernization, and delivery of supply chain analytics products, turning manual processes into automated Python, BigQuery, and Tableau solutions. Adoption has grown across a wide base of business users, who now make decisions in self-service.</li>
+              <li>Took ownership of a digital twin initiative outside the traditional analytics scope. I partnered with Engineering to build a 3D simulation model, showed that simulation-based decision support is viable, and delivered a usable model for continued development.</li>
+            </ul>
+          </div>
+        </li>
+        <li class="job">
+          <div class="job-dates">November 2022 to September 2025</div>
+          <div>
+            <h3>Senior Data Analyst, Channel Management</h3>
+            <p class="org">The Home Depot, Atlanta, GA</p>
+            <ul>
+              <li>Built an offboarding strategy for underperforming products that cut unproductive inventory and freed capacity across a national fulfillment network.</li>
+              <li>Partnered on the design and rollout of an assortment recommendation tool that replaced manual analysis for merchandising and supply chain teams.</li>
+              <li>Developed allocation logic for onboarding new products across fulfillment centers, balancing space, speed to customer, inventory cost, transportation cost, and regional shipping metrics.</li>
+              <li>Directed seasonal capacity planning through space and utilization analysis, so storage was ready for peak events.</li>
+            </ul>
+          </div>
+        </li>
+        <li class="job">
+          <div class="job-dates">May 2021 to November 2022</div>
+          <div>
+            <h3>Contractor, Data Analyst</h3>
+            <p class="org">The Home Depot, Atlanta, GA</p>
+            <ul>
+              <li>Found and onboarded critical assortment gaps in a major market, lifting home-delivery revenue, outbound volume, and orders placed.</li>
+              <li>Identified and quantified the root causes limiting warehouse fulfillment performance, which led to targeted operational improvements across multiple markets.</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+
+      <div class="lead-grid">
+        <div class="panel">
+          <h3>Leadership</h3>
+          <p class="org">Employee voice committee, member and contributor, March 2023 to March 2024</p>
+          <ul>
+            <li>Started a series of profiles that demystify how teams across the business operate, published alongside the committee's monthly newsletter.</li>
+            <li>Co-organized and hosted the inaugural Supply Chain Analytics Symposium, a three-day event for peer learning, networking, and recognition.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Skills</h3>
+          <p class="org">What I work in every day</p>
+          <ul>
+            <li><strong>Technical:</strong> SQL, Google BigQuery and Google Cloud Platform, Python, Tableau, Excel, FlexSim, data modeling, ETL pipelines, reporting automation, and AI tools (Gemini, Copilot, Claude, ChatGPT).</li>
+            <li><strong>Business:</strong> product ownership, roadmap prioritization, process improvement, and data governance.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact" aria-labelledby="contact-title">
+    <div class="wrap">
+      <h2 id="contact-title">Let's talk.</h2>
+      <p>I'm open to new roles in analytics, data products, and supply chain technology. The fastest way to reach me is email.</p>
+      <div class="email-row">
+        <a class="email-big" id="emailLink" href="mailto:cael21cernich@gmail.com">cael21cernich@gmail.com</a>
+      </div>
+      <div class="links" id="links">
+        <button class="btn" id="copyBtn" type="button">Copy email address</button>
+        <a class="btn ghost" id="ghLink" href="https://github.com/caelcernich" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn ghost" id="liLink" href="#" target="_blank" rel="noopener" hidden>LinkedIn</a>
+      </div>
+      <div class="copied" id="copied" role="status" aria-live="polite"></div>
+    </div>
+  </section>
 </main>
+
+<footer>
+  <div class="wrap">
+    <p>Employer work on this site is described in general terms. Exact figures, results, and internal system, project, and team names are redacted for confidentiality.</p>
+    <p>&copy; <span id="year"></span> Cael Cernich. Built by hand and with AI assistance.</p>
+  </div>
+</footer>
 
 <script>
 (function () {
   'use strict';
 
-  // ---------- seeded synthetic data ----------
-  function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
-  var rnd = mulberry32(20261118);
-  function between(a, b) { return a + rnd() * (b - a); }
-  function pick(arr) { return arr[Math.floor(rnd() * arr.length)]; }
+  // ----- edit these -----
+  var LINKEDIN = '';   // paste your LinkedIn profile URL here, e.g. 'https://www.linkedin.com/in/your-name'
+  var EMAIL = 'cael21cernich@gmail.com';
+  // -----------------------
 
-  var TODAY = new Date(); TODAY.setHours(0, 0, 0, 0);
-  function addMonths(d, m) { return new Date(d.getFullYear(), d.getMonth() + m, d.getDate()); }
-  function daysBetween(a, b) { return (b - a) / 86400000; }
-
-  var NAMES = ['Ridgeview', 'Harbor Point', 'Cedar Falls', 'Northgate', 'Summit', 'Lakeshore', 'Prairie Lane', 'Redwood', 'Stonebridge', 'Willow Creek', 'Fairmont', 'Ironwood', 'Bayside', 'Highland', 'Maple Grove', 'Eastport', 'Crestline', 'Silverton', 'Pinehurst', 'Copperfield', 'Brookhaven', 'Oakmont', 'Riverbend', 'Sandhill', 'Westfield', 'Granite Run', 'Meadowbrook', 'Foxhollow', 'Timberline', 'Clearwater', 'Stoneridge', 'Juniper', 'Falcon Ridge', 'Goldenrod', 'Marlow', 'Kestrel', 'Longview', 'Alder', 'Thornwood', 'Vista Park', 'Windmere', 'Elkhorn', 'Cobalt Bay', 'Larkspur'];
-  var TYPES = [
-    { name: 'Regional DC', w: 0.28, area: [600000, 1400000], psf: [5.5, 8.5] },
-    { name: 'Specialty DC', w: 0.18, area: [300000, 800000], psf: [6, 9.5] },
-    { name: 'Fulfillment Center', w: 0.26, area: [400000, 1100000], psf: [6.5, 10] },
-    { name: 'Cross-Dock', w: 0.12, area: [100000, 300000], psf: [8, 12] },
-    { name: 'Yard and Parking', w: 0.16, area: [0, 0], psf: [0, 0] }
+  var TOOLS = [
+    { id: 'SQL', name: 'SQL', line: 'Modeling, joins, and validation logic. The backbone under every product I ship.' },
+    { id: 'BigQuery', name: 'BigQuery', line: 'The central warehouse behind every dashboard, plus the scheduled pipelines that feed it. I also teach peers to use it well.' },
+    { id: 'Python', name: 'Python', line: 'Extraction, transformation, and automation. I also review and optimize teammates\' scripts.' },
+    { id: 'Tableau', name: 'Tableau', line: 'Executive-ready dashboards with built-in downloads and feedback loops.' },
+    { id: 'AI', name: 'AI tools', line: 'Gemini, Copilot, Claude, and ChatGPT help me build faster and review smarter. A person checks every number.' },
+    { id: 'Excel', name: 'Excel', line: 'Where stakeholders live. I meet teams there, then move them to automated tools.' },
+    { id: 'GitHub', name: 'GitHub', line: 'Version control, scheduled automation, and free hosting for personal projects.' },
+    { id: 'FlexSim', name: 'FlexSim', line: '3D simulation and digital twin modeling for operational decision support.' }
   ];
-  var STATES = ['TX', 'GA', 'PA', 'OH', 'CA', 'FL', 'IL', 'NC', 'TN', 'AZ', 'NJ', 'IN', 'VA', 'WA', 'CO', 'MO', 'MN', 'MD', 'SC', 'KY', 'NV', 'UT', 'OR', 'AL', 'MI'];
-  var OWNERS = ['Avery Holt', 'Jordan Pike', 'Riley Chen', 'Sam Okafor', 'Taylor Brandt', 'Morgan Ellis'];
-  var PLATFORMS = ['Platform A', 'Platform B', 'Platform C'];
 
-  function pickType() { var r = rnd(), c = 0; for (var i = 0; i < TYPES.length; i++) { c += TYPES[i].w; if (r < c) return TYPES[i]; } return TYPES[0]; }
+  var PROJECTS = [
+    {
+      id: 'real-estate', featured: true, kind: 'Employer work', title: 'Supply Chain Real Estate Dashboard',
+      from: 'Contract data scattered across teams and apps',
+      to: 'One source of truth for monthly reviews and decisions',
+      tools: ['SQL', 'BigQuery', 'AI'],
+      summary: 'A single app that brings a national portfolio of distribution, fulfillment, and parking contracts into one place, so leaders can see what expires, what it costs, and where it sits.',
+      problem: 'Real estate contract data lived in separate teams and apps. Basic questions, like what expires when, what we pay, and where each site is, meant manual digging every time.',
+      built: [
+        'An executive summary with headline KPIs and a quick read on what expires when',
+        'A map of every contract, sized by rent or area',
+        'Lease expirations ranked by next expiration, with drill-down to each contract',
+        'A decision calendar that puts expirations and notice deadlines on one timeline',
+        'Rent-per-square-foot comparisons across groups that show spread and outliers',
+        'A scenario analyzer for renewal what-ifs that never touches source data, with scenarios that can be saved, compared, and exported',
+        'Data quality checks ranked by severity, each with a plain-language fix',
+        'Filters that apply to every view, and a download of the data behind any view'
+      ],
+      runs: 'The data refreshes monthly from a BigQuery query and a documented build step that uses AI assistance. The result is deployed as an internal app behind company sign-in, with access granted by named user, visits logged for usage metrics, and a link that stays the same after every refresh. I also wrote the user and admin guide and a handoff checklist.',
+      outcome: 'One source of truth that teams adopted in place of data siloed across multiple teams and apps. It now supports the real estate team\'s monthly reviews and decision-making.',
+      demo: 'real-estate.html'
+    },
+    {
+      id: 'supplier-spend', kind: 'Employer work', title: 'Supplier Spend Dashboard',
+      from: 'ERP exports pasted into spreadsheets, again and again',
+      to: 'A self-serve view of where to contract and where to renegotiate',
+      tools: ['SQL', 'BigQuery', 'Python', 'Tableau', 'Excel'],
+      summary: 'A dashboard that shows how much is spent with each supplier on in-building operational activities, and which suppliers lack a contract.',
+      problem: 'The Capital team analyzed spend on in-building operations by exporting data from the ERP and pasting it into Excel, over and over. It was slow, and it hid which suppliers needed contracts and which needed renegotiation.',
+      built: [
+        'Headline KPIs for total spend, supplier count, and the split between contracted and uncontracted spend',
+        'Supplier rankings and a quarterly spend heatmap for the largest suppliers',
+        'A geographic view of spend by facility',
+        'A category breakdown showing supplier concentration and average spend per supplier',
+        'A contract coverage tracker measured against a target',
+        'A list of uncontracted suppliers, ranked so the team knows who to pursue first',
+        'A supplier notes log that records refreshes and context',
+        'A built-in data download for ad-hoc analysis'
+      ],
+      runs: 'A user exports spend data from the ERP into a shared Excel file, because an automated connection wasn\'t available. From there, Python, SQL, and BigQuery feed Tableau automatically.',
+      outcome: 'The team moved from rebuilding spreadsheets to answering contracting questions on demand, with a clear view of where to negotiate and where to formalize agreements.',
+      demo: 'supplier-spend.html'
+    },
+    {
+      id: 'capital', kind: 'Employer work', title: 'Capital Availability Dashboard',
+      from: 'Budgets tracked by hand across Excel sheets',
+      to: 'An always-current view of capital remaining on every project',
+      tools: ['SQL', 'BigQuery', 'Python', 'Tableau'],
+      summary: 'A single view of budget, commitments, spend, and the capital still available for each project.',
+      problem: 'The Capital team tracked budgets, commitments, and spend for each project across several Excel sheets, updated by hand. Answering "how much do we have left?" meant reconciling files.',
+      built: [
+        'A current availability report by project: budget, actuals, commitments, assigned dollars, and what remains',
+        'Week-over-week changes in budget and available capital',
+        'The share of each budget already assigned, with overages flagged',
+        'A trend view of budget against actuals, commitments, and availability over an adjustable date range',
+        'Filters by spend type and project',
+        'A built-in feedback link, so users can report issues and suggest improvements'
+      ],
+      runs: 'Fully automated end to end with Python, SQL, BigQuery, and Tableau. It runs hands-off today.',
+      outcome: 'One central view of capital position that replaced manual tracking across spreadsheets.',
+      demo: 'capital.html'
+    },
+    {
+      id: 'mhe', kind: 'Employer work', title: 'Self-Perform Maintenance Savings Tracker',
+      from: 'A new in-house maintenance program with no scorecard',
+      to: 'A weekly view of progress and savings against outside vendors',
+      tools: ['SQL', 'BigQuery', 'Python', 'Tableau'],
+      summary: 'A tracker that shows how an internal self-perform maintenance program is progressing and what it saves compared with using external vendors.',
+      problem: 'The maintenance team launched an internal self-perform program for material handling equipment and needed to see how it was progressing and what it saved compared with outside vendors.',
+      built: [
+        'A weekly trend of cost savings on completed work orders',
+        'Corrective and preventive maintenance volume and labor hours',
+        'On-time preventive maintenance rate and past-due work',
+        'A facility-level view with platform subtotals',
+        'Filters by fiscal week, work code, equipment type, and facility'
+      ],
+      runs: 'A Python script pulls work-order data from the enterprise asset-management system into BigQuery, and Tableau reads from there. As product owner I drove requirements, stakeholder alignment, validation, go-live, and ongoing enhancements, and rolled the product out across multiple distribution facilities.',
+      outcome: 'A shared, trusted view of program progress and savings versus external vendors.'
+    },
+    {
+      id: 'digital-twin', kind: 'Employer work', title: 'Digital Twin Simulation',
+      from: 'An open question: could simulation support real decisions?',
+      to: 'A working 3D model handed to Engineering',
+      tools: ['FlexSim'],
+      summary: 'A 3D simulation model that shows simulation-based decision support is viable.',
+      problem: 'Whether simulation could support operational decisions was an open question, and it sat outside the traditional analytics scope, so nobody owned it.',
+      built: [
+        'Took ownership of the initiative and partnered with Engineering and technology teams',
+        'Built a 3D simulation model in FlexSim',
+        'Demonstrated that simulation-based decision support is viable',
+        'Delivered a usable model to the Engineering team for continued evaluation and development'
+      ],
+      runs: 'Delivered as a working model that Engineering now owns and keeps developing.',
+      outcome: 'Engineering has a usable model and a proof point for simulation-based decisions.'
+    },
+    {
+      id: 'assortment', kind: 'Employer work', title: 'Assortment, Allocation, and Capacity Planning',
+      from: 'Heavy manual analysis behind every stocking decision',
+      to: 'Data-backed assortment, allocation, and capacity decisions',
+      tools: ['SQL', 'Excel'],
+      summary: 'A set of analyses and tools for deciding which products to carry, where to stock them, and how much space to hold for peaks.',
+      problem: 'Decisions about which products to carry, where to stock them, and how much space to reserve for peak events relied on heavy manual analysis.',
+      built: [
+        'An offboarding strategy for underperforming products that freed capacity across a national fulfillment network',
+        'A partnership on an assortment recommendation tool that cut manual analysis for merchandising and supply chain teams',
+        'Allocation logic for onboarding new products across fulfillment centers, balancing space, speed to customer, inventory cost, transportation cost, and regional shipping metrics',
+        'Seasonal capacity planning for peak events, built on space and utilization analysis'
+      ],
+      runs: '',
+      outcome: 'Faster, data-backed assortment and capacity decisions, including a strong assortment rate for the Pro customer segment.'
+    },
+    {
+      id: 'avalanche', kind: 'Personal project', title: 'Avalanche Hub',
+      from: 'A hockey season\'s stats, schedule, and news in a dozen places',
+      to: 'One self-updating app that predicts every game',
+      tools: ['GitHub', 'AI'],
+      summary: 'A sports analytics app for the Colorado Avalanche with an Elo-based win probability model that refreshes itself every hour.',
+      problem: 'Schedules, rosters, injuries, odds, and news for one team live in a dozen places. I wanted one app that pulls them together and predicts each game.',
+      built: [
+        'A full schedule with start times, arenas, and broadcast info',
+        'Rosters and projected lines, with injuries shown where they matter',
+        'An Elo-based model that adjusts for home ice, injuries, and the projected goalie, with a confidence indicator',
+        'Odds-style moneyline and puck line estimates from the model',
+        'Team news and links to team social accounts'
+      ],
+      runs: 'Hosted free on GitHub Pages. A scheduled GitHub Actions job refreshes the schedule, scores, and ratings from public NHL data every hour. Built with AI assistance.',
+      outcome: 'A public, self-updating app, and a hands-on example of modeling, automation, and product design from idea to launch.',
+      live: 'https://caelcernich.github.io/avalanche-hub/',
+      repo: 'https://github.com/caelcernich/avalanche-hub'
+    }
+  ];
 
-  function genExpiryMonths() {
-    var r = rnd();
-    if (r < 0.06) return -Math.round(between(1, 12));
-    if (r < 0.36) return Math.round(between(0, 12));
-    if (r < 0.56) return Math.round(between(12, 24));
-    if (r < 0.70) return Math.round(between(24, 36));
-    if (r < 0.90) return Math.round(between(36, 60));
-    return Math.round(between(60, 168));
+  var activeTool = null;
+
+  function el(tag, attrs, html) {
+    var n = document.createElement(tag);
+    if (attrs) Object.keys(attrs).forEach(function (k) { n.setAttribute(k, attrs[k]); });
+    if (html != null) n.innerHTML = html;
+    return n;
   }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function toolName(id) { var t = TOOLS.filter(function (x) { return x.id === id; })[0]; return t ? t.name : id; }
+  function countFor(id) { return PROJECTS.filter(function (p) { return p.tools.indexOf(id) > -1; }).length; }
 
-  var contracts = [];
-  var cid = 1001;
-  NAMES.forEach(function (n, i) {
-    var t = pickType();
-    var st = pick(STATES);
-    var owner = pick(OWNERS);
-    var plat = pick(PLATFORMS);
-    var count = rnd() < 0.3 ? 2 : 1;
-    for (var k = 0; k < count; k++) {
-      var expiry = addMonths(TODAY, genExpiryMonths());
-      expiry = new Date(expiry.getFullYear(), expiry.getMonth(), Math.min(28, Math.max(1, expiry.getDate())));
-      var termYears = Math.round(between(5, 20));
-      var commence = addMonths(expiry, -termYears * 12);
-      if (commence > TODAY) commence = addMonths(TODAY, -Math.round(between(12, 60)));
-      var sqft = 0, rent = 0;
-      if (t.area[1] > 0) {
-        sqft = Math.round(between(t.area[0], t.area[1]) / 1000) * 1000;
-        if (k === 1) sqft = Math.round(sqft * 0.35 / 1000) * 1000;
-        rent = Math.round(sqft * between(t.psf[0], t.psf[1]));
-      } else {
-        rent = Math.round(between(150000, 650000) / 1000) * 1000;
-        if (rnd() < 0.3) { sqft = 0; }
-      }
-      var baseShare = between(0.72, 0.85);
-      var noticeM = pick([6, 9, 12]);
-      contracts.push({
-        id: 'C-' + (cid++), dc: n + ' ' + t.name, type: t.name, state: st, platform: plat, owner: owner,
-        sqft: sqft, rent: rent, base: Math.round(rent * baseShare), opex: rent - Math.round(rent * baseShare),
-        commence: commence, expiry: expiry, notice: addMonths(expiry, -noticeM), noticeM: noticeM
+  function renderTools() {
+    var host = document.getElementById('tools');
+    if (!host.children.length) {
+      TOOLS.forEach(function (t) {
+        var n = countFor(t.id);
+        var b = el('button', { type: 'button', 'class': 'tool-tile', 'aria-pressed': 'false', 'data-tool': t.id });
+        b.innerHTML = '<h3>' + esc(t.name) + '</h3><p>' + esc(t.line) + '</p><span class="tool-count">Used in ' + n + (n === 1 ? ' project' : ' projects') + '</span>';
+        b.addEventListener('click', function () {
+          activeTool = activeTool === t.id ? null : t.id;
+          renderTools();
+          renderWork();
+          if (activeTool) document.getElementById('work').scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+        });
+        host.appendChild(b);
       });
     }
-  });
-
-  // ---------- state ----------
-  var s = { tab: 'summary', measure: 'rent', types: {}, state: 'all', exp: 'all', area: true, year: null,
-    sortKey: 'next', sortDir: 1, expanded: {}, onlyNotice: false, calH: 5, calMode: 'calendar', due: 90,
-    dec: {}, sel: {}, saved: [], rp: 0, sp: 0 };
-  TYPES.forEach(function (t) { s.types[t.name] = true; });
-
-  // ---------- helpers ----------
-  function money(n, d) { var a = Math.abs(n); var sgn = n < 0 ? '-' : ''; if (a >= 1e9) return sgn + '$' + (a / 1e9).toFixed(d == null ? 2 : d) + 'B'; if (a >= 1e6) return sgn + '$' + (a / 1e6).toFixed(d == null ? 1 : d) + 'M'; if (a >= 1e3) return sgn + '$' + Math.round(a / 1e3) + 'K'; return sgn + '$' + Math.round(a); }
-  function sq(n) { if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M'; if (n >= 1e3) return Math.round(n / 1e3) + 'K'; return String(Math.round(n)); }
-  function fmtDate(d) { return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }); }
-  function fmtDay(d) { return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); }
-  function sum(arr, f) { var t = 0; for (var i = 0; i < arr.length; i++) t += f(arr[i]); return t; }
-  function psf(list) { var withArea = list.filter(function (c) { return c.sqft > 0; }); var a = sum(withArea, function (c) { return c.sqft; }); return a ? sum(withArea, function (c) { return c.rent; }) / a : 0; }
-  function mval(c) { return s.measure === 'rent' ? c.rent : s.measure === 'contracts' ? 1 : c.sqft; }
-  function mfmt(v) { return s.measure === 'rent' ? money(v) : s.measure === 'contracts' ? String(Math.round(v)) : sq(v) + ' sq ft'; }
-  function esc(x) { return String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-  function isPast(c) { return c.expiry < TODAY; }
-  function withinMonths(c, m) { return c.expiry >= TODAY && c.expiry <= addMonths(TODAY, m); }
-
-  function yearBucket(c) {
-    if (isPast(c)) return 'Past due';
-    var y = c.expiry.getFullYear(), y0 = TODAY.getFullYear();
-    if (y > y0 + 9) return 'Later';
-    return String(y);
-  }
-  function filtered(ignoreYear) {
-    return contracts.filter(function (c) {
-      if (!s.types[c.type]) return false;
-      if (s.state !== 'all' && c.state !== s.state) return false;
-      if (!s.area && c.sqft <= 0) return false;
-      if (s.exp === 'past' && !isPast(c)) return false;
-      if (s.exp !== 'all' && s.exp !== 'past' && !withinMonths(c, Number(s.exp))) return false;
-      if (!ignoreYear && s.year && yearBucket(c) !== s.year) return false;
-      return true;
+    Array.prototype.forEach.call(host.children, function (b) {
+      b.setAttribute('aria-pressed', activeTool === b.getAttribute('data-tool') ? 'true' : 'false');
     });
   }
-  function download(name, text) {
-    var b = new Blob([text], { type: 'text/csv;charset=utf-8' });
-    var a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = name; document.body.appendChild(a); a.click();
-    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
-  }
-  function csvRow(arr) { return arr.map(function (x) { return '"' + String(x).replace(/"/g, '""') + '"'; }).join(','); }
 
-  // ---------- header + filters ----------
-  function renderKpis(list) {
-    var states = {}; list.forEach(function (c) { states[c.state] = 1; });
-    var items = [
-      ['Contracts shown', String(list.length)], ['Rentable sq ft', sq(sum(list, function (c) { return c.sqft; }))],
-      ['States', String(Object.keys(states).length)], ['Total annual rent', money(sum(list, function (c) { return c.rent; }))],
-      ['Base rent', money(sum(list, function (c) { return c.base; }))], ['Opex and other fees', money(sum(list, function (c) { return c.opex; }))]
-    ];
-    document.getElementById('kpis').innerHTML = items.map(function (i) { return '<div class="kpi"><div class="k">' + i[0] + '</div><div class="v">' + i[1] + '</div></div>'; }).join('');
-  }
-  function buildFilters() {
-    var chips = document.getElementById('typeChips');
-    chips.innerHTML = TYPES.map(function (t) { return '<button type="button" class="chip" data-type="' + esc(t.name) + '" aria-pressed="' + (s.types[t.name] ? 'true' : 'false') + '">' + esc(t.name) + '</button>'; }).join('');
-    var sel = document.getElementById('stateSel');
-    var uniq = {}; contracts.forEach(function (c) { uniq[c.state] = 1; });
-    sel.innerHTML = '<option value="all">All states</option>' + Object.keys(uniq).sort().map(function (x) { return '<option value="' + x + '"' + (s.state === x ? ' selected' : '') + '>' + x + '</option>'; }).join('');
-    document.getElementById('expSel').value = s.exp;
-    document.getElementById('areaChk').checked = s.area;
-  }
-
-  var TABS = [['summary', 'Executive summary'], ['footprint', 'Footprint'], ['expirations', 'Lease expirations'], ['calendar', 'Decision calendar'], ['scenario', 'Scenario analyzer']];
-  function renderTabs() {
-    document.getElementById('tabs').innerHTML = TABS.map(function (t) { return '<button class="tab" role="tab" data-tab="' + t[0] + '" aria-selected="' + (s.tab === t[0]) + '">' + t[1] + '</button>'; }).join('');
-  }
-
-  function measureSwitch() {
-    return '<div class="seg" role="group" aria-label="Measure">' + [['rent', 'Annual rent'], ['contracts', 'Contracts'], ['area', 'Rentable area']].map(function (m) { return '<button type="button" data-measure="' + m[0] + '" aria-pressed="' + (s.measure === m[0]) + '">' + m[1] + '</button>'; }).join('') + '</div>';
-  }
-
-  // ---------- summary ----------
-  function viewSummary(list) {
-    var all = list;
-    var avgTerm = all.length ? sum(all.filter(function (c) { return !isPast(c); }), function (c) { return daysBetween(TODAY, c.expiry) / 365.25; }) / Math.max(1, all.filter(function (c) { return !isPast(c); }).length) : 0;
-    var exp12 = sum(all.filter(function (c) { return withinMonths(c, 12); }), function (c) { return c.rent; });
-    var due90 = all.filter(function (c) { return c.notice >= TODAY && c.notice <= new Date(TODAY.getTime() + 90 * 86400000) && !isPast(c); }).length;
-    var heads = [['Rent per sq ft', '$' + psf(all).toFixed(2)], ['Average term left', avgTerm.toFixed(1) + ' yr'], ['Rent expiring in 12 months', money(exp12)], ['Decisions due in 90 days', String(due90)]];
-    var totalM = sum(all, mval);
-    var cards = [12, 24, 36, 60].map(function (m) {
-      var v = sum(all.filter(function (c) { return withinMonths(c, m); }), mval);
-      return '<div class="ecard"><div class="k">' + (m === 60 ? 'Within 5 years' : 'Within ' + m + ' months') + '</div><div class="v">' + mfmt(v) + '</div><div class="s">' + (totalM ? Math.round(v / totalM * 100) : 0) + '% of total</div></div>';
-    }).join('');
-    var y0 = TODAY.getFullYear();
-    var buckets = ['Past due']; for (var y = 0; y < 10; y++) buckets.push(String(y0 + y)); buckets.push('Later');
-    var base = filtered(true);
-    var vals = {}; buckets.forEach(function (b) { vals[b] = 0; });
-    base.forEach(function (c) { vals[yearBucket(c)] += mval(c); });
-    var mx = Math.max.apply(null, buckets.map(function (b) { return vals[b]; })) || 1;
-    var bars = buckets.map(function (b) {
-      return '<button type="button" class="brow' + (b === 'Past due' ? ' past' : '') + '" data-year="' + b + '" aria-pressed="' + (s.year === b) + '"><span class="l">' + b + '</span><span class="track"><span class="fill" style="display:block;width:' + (vals[b] / mx * 100) + '%"></span></span><span class="n">' + mfmt(vals[b]) + '</span></button>';
-    }).join('');
-    var rows = TYPES.map(function (t) {
-      var g = all.filter(function (c) { return c.type === t.name; });
-      return { name: t.name, v: sum(g, mval), p: psf(g), n: g.length };
-    }).filter(function (r) { return r.n > 0; }).sort(function (a, b) { return b.v - a.v; });
-    var trs = rows.map(function (r) { return '<tr><td>' + esc(r.name) + '</td><td class="num">' + mfmt(r.v) + '</td><td class="num">' + (totalM ? Math.round(r.v / totalM * 100) : 0) + '%</td><td class="num">' + (r.p ? '$' + r.p.toFixed(2) : 'n/a') + '</td></tr>'; }).join('');
-    return '<div class="panel"><h2>Executive summary</h2><p class="sub">Start here: the headline numbers and a quick picture of what expires when. Click a year bar to filter the whole dashboard, and click it again to clear.</p>' +
-      '<div class="heads">' + heads.map(function (h) { return '<div class="head"><div class="k">' + h[0] + '</div><div class="v">' + h[1] + '</div></div>'; }).join('') + '</div>' +
-      '<h3>Rent expiring over time</h3>' + measureSwitch() + '<div class="cards4">' + cards + '</div>' +
-      '<div class="two"><div><h3 style="margin-top:0">Expirations by year</h3><div class="bars">' + bars + '</div></div>' +
-      '<div><h3 style="margin-top:0">By site type</h3><div class="tablewrap"><table><thead><tr><th>Type</th><th class="num">' + (s.measure === 'rent' ? 'Rent' : s.measure === 'contracts' ? 'Contracts' : 'Area') + '</th><th class="num">Share</th><th class="num">Rent per sq ft</th></tr></thead><tbody>' + trs +
-      '<tr class="total"><td>Total</td><td class="num">' + mfmt(totalM) + '</td><td class="num">100%</td><td class="num">$' + psf(all).toFixed(2) + '</td></tr></tbody></table></div></div></div></div>';
-  }
-
-  // ---------- footprint (tile grid map) ----------
-  var GRID = { AK: [0, 0], ME: [10, 0], VT: [9, 1], NH: [10, 1], WA: [0, 2], ID: [1, 2], MT: [2, 2], ND: [3, 2], MN: [4, 2], IL: [5, 2], WI: [6, 2], MI: [7, 2], NY: [8, 2], RI: [9, 2], MA: [10, 2], OR: [0, 3], NV: [1, 3], WY: [2, 3], SD: [3, 3], IA: [4, 3], IN: [5, 3], OH: [6, 3], PA: [7, 3], NJ: [8, 3], CT: [9, 3], CA: [0, 4], UT: [1, 4], CO: [2, 4], NE: [3, 4], MO: [4, 4], KY: [5, 4], WV: [6, 4], VA: [7, 4], MD: [8, 4], DE: [9, 4], AZ: [1, 5], NM: [2, 5], KS: [3, 5], AR: [4, 5], TN: [5, 5], NC: [6, 5], SC: [7, 5], DC: [8, 5], OK: [3, 6], LA: [4, 6], MS: [5, 6], AL: [6, 6], GA: [7, 6], HI: [0, 7], TX: [3, 7], FL: [8, 7] };
-  function lerp(a, b, t) { return Math.round(a + (b - a) * t); }
-  function tileColor(t) { return 'rgb(' + lerp(230, 42, t) + ',' + lerp(233, 68, t) + ',' + lerp(238, 255, t) + ')'; }
-  function stateInfoHtml(code, list) {
-    var g = list.filter(function (c) { return c.state === code; });
-    if (!g.length) return '<h3>' + code + '</h3><p class="sub">No contracts in view for this state.</p>';
-    return '<h3>' + code + '</h3><p style="margin:0 0 6px"><strong>' + g.length + '</strong> contracts, <strong>' + money(sum(g, function (c) { return c.rent; })) + '</strong> annual rent, <strong>' + sq(sum(g, function (c) { return c.sqft; })) + '</strong> sq ft</p><p class="sub" style="margin:0">Next expiration: ' + fmtDate(new Date(Math.min.apply(null, g.map(function (c) { return c.expiry.getTime(); })))) + '</p>';
-  }
-  function viewFootprint(list) {
-    var by = {}; list.forEach(function (c) { by[c.state] = (by[c.state] || 0) + mval(c); });
-    var mx = Math.max.apply(null, Object.keys(by).map(function (k) { return by[k]; }).concat([1]));
-    var size = 56, gap = 7, tiles = '';
-    Object.keys(GRID).forEach(function (code) {
-      var p = GRID[code], v = by[code] || 0, t = v / mx;
-      var x = p[0] * (size + gap) + 4, y = p[1] * (size + gap) + 4;
-      tiles += '<g class="tile' + (s.state === code ? ' sel' : '') + '" data-state="' + code + '" tabindex="0" role="button" aria-label="' + code + ', ' + mfmt(v) + '"><rect x="' + x + '" y="' + y + '" width="' + size + '" height="' + size + '" fill="' + (v ? tileColor(Math.max(0.12, t)) : '#F3F5F9') + '"/><text x="' + (x + size / 2) + '" y="' + (y + size / 2 + 5) + '" fill="' + (t > 0.5 ? '#fff' : '#0F1B3D') + '">' + code + '</text></g>';
+  function renderWork() {
+    var grid = document.getElementById('workGrid');
+    var bar = document.getElementById('filterBar');
+    grid.innerHTML = '';
+    var shown = 0;
+    PROJECTS.forEach(function (p) {
+      var match = !activeTool || p.tools.indexOf(activeTool) > -1;
+      if (!match) return;
+      shown++;
+      var card = el('article', { 'class': 'label' + (p.featured ? ' featured' : ''), id: 'proj-' + p.id });
+      var chips = p.tools.map(function (t) { return '<span class="chip' + (t === activeTool ? ' on' : '') + '">' + esc(toolName(t)) + '</span>'; }).join('');
+      var actions = '<button type="button" class="btn small" data-open="' + p.id + '">Read the case study</button>';
+      if (p.demo) actions += '<a class="btn small ghost" href="' + p.demo + '">Try the interactive demo</a>';
+      if (p.live) actions += '<a class="btn small ghost" href="' + p.live + '" target="_blank" rel="noopener">Open the live app</a>';
+      card.innerHTML =
+        '<div class="label-top"><span>' + esc(p.kind) + '</span><span>' + (p.kind === 'Employer work' ? 'Redacted' : 'Public') + '</span></div>' +
+        '<div class="label-body">' +
+          '<h3>' + esc(p.title) + '</h3>' +
+          '<p class="summary">' + esc(p.summary) + '</p>' +
+          '<dl class="route-fields"><dt>FROM</dt><dd>' + esc(p.from) + '</dd><dt>TO</dt><dd>' + esc(p.to) + '</dd></dl>' +
+          '<div class="tool-row"><span class="lead">TOOLS</span>' + chips + '</div>' +
+          '<div class="label-actions">' + actions + '</div>' +
+        '</div>';
+      grid.appendChild(card);
     });
-    var w = 11 * (size + gap) + 4, h = 8 * (size + gap) + 4;
-    var tyRows = TYPES.map(function (t) { var n = list.filter(function (c) { return c.type === t.name; }).length; return '<tr><td>' + esc(t.name) + '</td><td class="num">' + n + '</td></tr>'; }).join('');
-    return '<div class="panel"><h2>Footprint</h2><p class="sub">Every state with a contract, shaded by your chosen measure. Click a state to filter the dashboard to it, and click it again to clear.</p>' + measureSwitch() +
-      '<div class="mapwrap"><div><svg viewBox="0 0 ' + w + ' ' + h + '" role="group" aria-label="Tile map of states" style="width:100%;height:auto">' + tiles + '</svg><div class="legend"><span>Lower</span><i></i><span>Higher</span></div></div>' +
-      '<div><div class="info" id="stateInfo">' + (s.state !== 'all' ? stateInfoHtml(s.state, list) : '<h3>Pick a state</h3><p class="sub" style="margin:0">Hover or focus a tile to see its totals.</p>') + '</div>' +
-      '<h3>Contracts by site type</h3><table><tbody>' + tyRows + '</tbody></table></div></div></div>';
-  }
-
-  // ---------- expirations ----------
-  function groupDCs(list) {
-    var m = {};
-    list.forEach(function (c) { (m[c.dc] = m[c.dc] || []).push(c); });
-    return Object.keys(m).map(function (k) {
-      var g = m[k].slice().sort(function (a, b) { return a.expiry - b.expiry; });
-      var rent = sum(g, function (c) { return c.rent; }), area = sum(g, function (c) { return c.sqft; });
-      return { dc: k, type: g[0].type, state: g[0].state, list: g, next: g[0].expiry, rent: rent, area: area, psf: psf(g) };
-    });
-  }
-  function noticeTag(c) {
-    if (isPast(c)) return '<span class="tag late">Past due</span>';
-    if (c.notice < TODAY) return '<span class="tag late">Notice date passed</span>';
-    if (c.notice <= addMonths(TODAY, 12)) return '<span class="tag">Notice by ' + fmtDate(c.notice) + '</span>';
-    return '<span style="color:#3C4766">' + fmtDate(c.notice) + '</span>';
-  }
-  function viewExpirations(list) {
-    var dcs = groupDCs(list);
-    if (s.onlyNotice) dcs = dcs.filter(function (d) { return d.list.some(function (c) { return c.notice <= addMonths(TODAY, 12) && !isPast(c); }); });
-    var key = s.sortKey;
-    dcs.sort(function (a, b) {
-      var av = key === 'dc' ? a.dc : key === 'type' ? a.type : key === 'next' ? a.next.getTime() : key === 'rent' ? a.rent : key === 'area' ? a.area : a.psf;
-      var bv = key === 'dc' ? b.dc : key === 'type' ? b.type : key === 'next' ? b.next.getTime() : key === 'rent' ? b.rent : key === 'area' ? b.area : b.psf;
-      return (av < bv ? -1 : av > bv ? 1 : 0) * s.sortDir;
-    });
-    function th(k, label, num) { return '<th class="' + (num ? 'num' : '') + '" aria-sort="' + (s.sortKey === k ? (s.sortDir > 0 ? 'ascending' : 'descending') : 'none') + '"><button type="button" data-sort="' + k + '">' + label + (s.sortKey === k ? (s.sortDir > 0 ? ' \u25B2' : ' \u25BC') : '') + '</button></th>'; }
-    var rows = dcs.map(function (d) {
-      var open = !!s.expanded[d.dc];
-      var r = '<tr class="dc" data-dc="' + esc(d.dc) + '" tabindex="0" aria-expanded="' + open + '"><td>' + (open ? '\u25BE ' : '\u25B8 ') + esc(d.dc) + '</td><td>' + esc(d.type) + '</td><td>' + fmtDate(d.next) + '</td><td class="num">' + money(d.rent) + '</td><td class="num">' + (d.area ? sq(d.area) : 'n/a') + '</td><td class="num">' + (d.psf ? '$' + d.psf.toFixed(2) : 'n/a') + '</td></tr>';
-      if (open) d.list.forEach(function (c) {
-        r += '<tr class="sub"><td>' + c.id + ' <span style="color:#3C4766">(' + c.state + ')</span></td><td>Commenced ' + fmtDate(c.commence) + ', ' + Math.round(daysBetween(c.commence, c.expiry) / 365.25) + ' yr term</td><td>' + fmtDate(c.expiry) + '</td><td class="num">' + money(c.base) + ' base<br>' + money(c.opex) + ' opex</td><td class="num">' + (c.sqft ? sq(c.sqft) : 'n/a') + '</td><td class="num">' + noticeTag(c) + '</td></tr>';
-      });
-      return r;
-    }).join('');
-    var tot = sum(dcs, function (d) { return d.rent; });
-    return '<div class="panel"><h2>Lease expirations</h2><p class="sub">Every site ranked by its next expiration. Click a site to see each contract behind it. Click a column heading to sort.</p>' +
-      '<p style="margin:0 0 12px"><strong>' + dcs.length + ' sites</strong>, <strong>' + sum(dcs, function (d) { return d.list.length; }) + ' contracts</strong>, <strong>' + money(tot) + '</strong> annual rent</p>' +
-      '<label class="check" style="margin-bottom:12px"><input type="checkbox" id="onlyNotice"' + (s.onlyNotice ? ' checked' : '') + '> Show only sites with a notice deadline in the next 12 months</label>' +
-      '<div class="tablewrap"><table><thead><tr>' + th('dc', 'Site') + th('type', 'Type') + th('next', 'Next expiration') + th('rent', 'Annual rent', true) + th('area', 'Sq ft', true) + th('psf', 'Rent per sq ft', true) + '</tr></thead><tbody>' + (rows || '<tr><td colspan="6" class="empty">No sites match these filters. Clear a filter to see more.</td></tr>') + '</tbody></table></div></div>';
-  }
-
-  // ---------- calendar ----------
-  function decisionsDue(list) {
-    var end = s.due === 90 ? new Date(TODAY.getTime() + 90 * 86400000) : addMonths(TODAY, 12);
-    return list.filter(function (c) { return c.notice >= TODAY && c.notice <= end && !isPast(c); }).sort(function (a, b) { return a.notice - b.notice; });
-  }
-  function viewCalendar(list) {
-    var head = '<div class="panel"><h2>Decision calendar</h2><p class="sub">Know what is coming due and when decisions must be made.</p>' +
-      '<div class="seg" role="group" aria-label="Calendar view"><button type="button" data-calmode="calendar" aria-pressed="' + (s.calMode === 'calendar') + '">Calendar</button><button type="button" data-calmode="due" aria-pressed="' + (s.calMode === 'due') + '">Decisions due</button></div> ';
-    if (s.calMode === 'due') {
-      var d = decisionsDue(list);
-      var rows = d.map(function (c) { return '<tr><td>' + fmtDay(c.notice) + '</td><td>' + esc(c.dc) + '<br><small style="color:#3C4766">' + c.id + '</small></td><td>' + fmtDate(c.expiry) + '</td><td>' + esc(c.owner) + '</td><td class="num">' + money(c.rent) + '</td><td class="num">' + (c.sqft ? sq(c.sqft) : 'n/a') + '</td></tr>'; }).join('');
-      return head + '<div class="seg" role="group" aria-label="Window"><button type="button" data-due="90" aria-pressed="' + (s.due === 90) + '">Next 90 days</button><button type="button" data-due="365" aria-pressed="' + (s.due === 365) + '">Next 12 months</button></div> <button class="btn sm" type="button" id="dueCsv">Download list (CSV)</button>' +
-        '<div class="tablewrap"><table><thead><tr><th>Decision due</th><th>Site</th><th>Expires</th><th>Owner</th><th class="num">Annual rent</th><th class="num">Sq ft</th></tr></thead><tbody>' + (rows || '<tr><td colspan="6" class="empty">No decisions are due in this window.</td></tr>') + '</tbody></table></div></div>';
+    if (activeTool) {
+      bar.innerHTML = 'Showing ' + shown + (shown === 1 ? ' project' : ' projects') + ' that use ' + esc(toolName(activeTool)) + '. <button type="button" id="clearFilter">Show all projects</button>';
+      document.getElementById('clearFilter').addEventListener('click', function () { activeTool = null; renderTools(); renderWork(); });
+    } else {
+      bar.innerHTML = '';
     }
-    var dcs = groupDCs(list).filter(function (g) { return g.list.some(function (c) { return c.expiry <= addMonths(TODAY, s.calH * 12) || c.notice <= addMonths(TODAY, s.calH * 12); }); }).sort(function (a, b) { return a.next - b.next; }).slice(0, 16);
-    var W = 1000, L = 190, R = 20, T = 40, RH = 30;
-    var start = addMonths(TODAY, -6), end = addMonths(TODAY, s.calH * 12);
-    function X(d) { var t = (d - start) / (end - start); return L + Math.max(0, Math.min(1, t)) * (W - L - R); }
-    var H = T + dcs.length * RH + 20;
-    var svg = '<svg class="cal" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Timeline of contract terms, expirations and notice deadlines">';
-    var step = s.calH <= 2 ? 6 : 12;
-    for (var m = 0; m <= (end.getFullYear() - start.getFullYear()) * 12 + 12; m += step) {
-      var gd = new Date(start.getFullYear(), (s.calH <= 2 ? Math.floor(start.getMonth() / 6) * 6 : 0) + m, 1);
-      if (gd < start || gd > end) continue;
-      svg += '<line class="gl" x1="' + X(gd) + '" y1="' + (T - 8) + '" x2="' + X(gd) + '" y2="' + (H - 10) + '"/><text x="' + (X(gd) + 4) + '" y="' + (T - 14) + '">' + (s.calH <= 2 ? gd.toLocaleDateString('en-US', { month: 'short', year: '2-digit' }) : gd.getFullYear()) + '</text>';
-    }
-    var maxRent = Math.max.apply(null, dcs.map(function (g) { return Math.max.apply(null, g.list.map(function (c) { return c.rent; })); }).concat([1]));
-    dcs.forEach(function (g, i) {
-      var y = T + i * RH + RH / 2;
-      svg += '<text x="' + (L - 10) + '" y="' + (y + 4) + '" text-anchor="end">' + esc(g.dc.length > 24 ? g.dc.slice(0, 23) + '\u2026' : g.dc) + '</text>';
-      g.list.forEach(function (c) {
-        var x1 = X(c.commence), x2 = X(c.expiry);
-        svg += '<rect class="bar-t" x="' + x1 + '" y="' + (y - 7) + '" width="' + Math.max(2, x2 - x1) + '" height="14" rx="3"/>';
-        var r = 4 + 7 * (c.rent / maxRent);
-        if (c.notice >= start && c.notice <= end && c.notice !== c.expiry) svg += '<rect class="mk ntc" data-dcgo="' + esc(g.dc) + '" x="' + (X(c.notice) - 6) + '" y="' + (y - 6) + '" width="12" height="12" transform="rotate(45 ' + X(c.notice) + ' ' + y + ')"><title>' + c.id + ' notice deadline ' + fmtDay(c.notice) + '</title></rect>';
-        if (c.expiry >= start && c.expiry <= end) svg += '<circle class="mk exp' + (isPast(c) ? ' past' : '') + '" data-dcgo="' + esc(g.dc) + '" cx="' + X(c.expiry) + '" cy="' + y + '" r="' + r + '"><title>' + c.id + ' expires ' + fmtDay(c.expiry) + ', ' + money(c.rent) + '</title></circle>';
-      });
+    registerBleed('.work-grid .label');
+    updateReveal();
+  }
+
+  // ----- case study dialog -----
+  var dlg = document.createElement('dialog');
+  dlg.setAttribute('aria-labelledby', 'dlgTitle');
+  document.body.appendChild(dlg);
+  var lastTrigger = null;
+
+  function openCase(id) {
+    var p = PROJECTS.filter(function (x) { return x.id === id; })[0];
+    if (!p) return;
+    var built = p.built.map(function (b) { return '<li>' + esc(b) + '</li>'; }).join('');
+    var chips = p.tools.map(function (t) { return '<span class="chip">' + esc(toolName(t)) + '</span>'; }).join('');
+    var links = '';
+    if (p.demo) links += '<a class="btn small" href="' + p.demo + '">Try the interactive demo</a>';
+    if (p.live) links += '<a class="btn small" href="' + p.live + '" target="_blank" rel="noopener">Open the live app</a>';
+    if (p.repo) links += '<a class="btn small ghost" href="' + p.repo + '" target="_blank" rel="noopener">View the code</a>';
+    dlg.innerHTML =
+      '<div class="dlg-top"><span>' + esc(p.kind) + '</span><button type="button" id="dlgClose">Close</button></div>' +
+      '<div class="dlg-body">' +
+        '<h3 id="dlgTitle">' + esc(p.title) + '</h3>' +
+        '<div class="tool-row">' + chips + '</div>' +
+        '<h4>The problem</h4><p>' + esc(p.problem) + '</p>' +
+        '<h4>What I built</h4><ul>' + built + '</ul>' +
+        (p.runs ? '<h4>How it runs</h4><p>' + esc(p.runs) + '</p>' : '') +
+        '<h4>The outcome</h4><p>' + esc(p.outcome) + '</p>' +
+        (links ? '<div class="label-actions">' + links + '</div>' : '') +
+        (p.kind === 'Employer work' ? '<p class="dlg-note">Exact figures, results, and internal system, project, and team names are redacted for confidentiality.</p>' : '') +
+      '</div>';
+    document.getElementById('dlgClose').addEventListener('click', function () { dlg.close(); });
+    if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+  }
+
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+  dlg.addEventListener('close', function () { if (lastTrigger) lastTrigger.focus(); });
+
+  document.getElementById('workGrid').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-open]');
+    if (!b) return;
+    lastTrigger = b;
+    openCase(b.getAttribute('data-open'));
+  });
+
+  // ----- headshot fallback -----
+  var img = document.getElementById('headshot');
+  function monogram() {
+    var frame = document.getElementById('photoFrame');
+    frame.innerHTML = '<div class="monogram" aria-hidden="true">CC</div>';
+  }
+  img.addEventListener('error', monogram);
+  if (img.complete && img.naturalWidth === 0) monogram();
+
+  // ----- scroll-driven reveal: content "unpacks" as you scroll -----
+  var REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var bleeds = [];
+  var BLEED_SELECTORS = ['.hero .lede', '.hero-cta', '.photo', '.about h2', '.about p', '.edu', '.toolkit h2', '.toolkit .intro', '.tool-tile',
+    '.work h2', '.work .notice', '.beyond h2', '.beyond .intro', '.beyond-item', '.experience h2', '.experience .notice', '.job',
+    '.lead-grid .panel', '.contact h2', '.contact p', '.email-row', '.links'];
+
+  function finish(node) {
+    node.__bleed.done = true;
+    node.setAttribute('data-done', '');
+    node.style.removeProperty('--p');
+  }
+  function registerBleed(sel) {
+    Array.prototype.forEach.call(document.querySelectorAll(sel), function (node) {
+      if (node.__bleed) return;
+      var parent = node.parentNode;
+      var idx = Array.prototype.indexOf.call(parent.children, node);
+      var inGrid = window.getComputedStyle(parent).display === 'grid';
+      node.__bleed = { p: 0, off: inGrid ? (idx % 4) * 45 : 0, done: false };
+      node.setAttribute('data-bleed', '');
+      if (REDUCE) finish(node); else bleeds.push(node);
     });
-    svg += '<line class="today" x1="' + X(TODAY) + '" y1="' + (T - 8) + '" x2="' + X(TODAY) + '" y2="' + (H - 10) + '"/><text x="' + (X(TODAY) + 5) + '" y="' + (H - 2) + '" style="fill:#C8321F">Today</text></svg>';
-    return head + '<div class="seg" role="group" aria-label="Time horizon">' + [[2, '2 years'], [5, '5 years'], [10, '10 years']].map(function (h) { return '<button type="button" data-cal="' + h[0] + '" aria-pressed="' + (s.calH === h[0]) + '">' + h[1] + '</button>'; }).join('') + '</div>' +
-      '<div class="key"><span class="k4">Contract term</span><span class="k1">Lease expires (sized by rent)</span><span class="k2">Notice deadline</span><span class="k3">Past due</span></div>' + (dcs.length ? svg : '<div class="empty">Nothing falls in this window. Clear a filter or pick a longer horizon.</div>') +
-      '<p class="note">Click a marker to open that site in Lease expirations. Showing the sites with the earliest dates, up to 16.</p></div>';
   }
 
-  // ---------- scenario ----------
-  function scenarioCalc(list) {
-    var base = sum(list, function (c) { return c.rent; }), baseArea = sum(list, function (c) { return c.sqft; });
-    var rent = 0, area = 0, n = 0;
-    list.forEach(function (c) {
-      var d = s.dec[c.id];
-      if (d && d.mode === 'no') return;
-      var rp = d && d.mode === 'chg' ? d.rp : 0, sp = d && d.mode === 'chg' ? d.sp : 0;
-      rent += c.rent * (1 + rp / 100) * (1 + sp / 100);
-      area += c.sqft * (1 + sp / 100); n++;
-    });
-    return { base: base, rent: rent, change: rent - base, area: area, baseArea: baseArea, n: n };
-  }
-  function viewScenario(list) {
-    var rows = list.slice().sort(function (a, b) { return a.expiry - b.expiry; });
-    var shown = rows.slice(0, 60);
-    var cl = shown.map(function (c) {
-      var d = s.dec[c.id]; var tag = d ? (d.mode === 'no' ? '<span class="dtag no">Do not renew</span>' : d.mode === 'chg' ? '<span class="dtag yes">Changed</span>' : '<span class="dtag">Renew as-is</span>') : '';
-      return '<label class="crow"><input type="checkbox" data-sel="' + c.id + '"' + (s.sel[c.id] ? ' checked' : '') + '><span>' + esc(c.dc) + '<small>' + c.id + ' expires ' + fmtDate(c.expiry) + ', ' + money(c.rent) + '</small></span>' + tag + '</label>';
-    }).join('');
-    var r = scenarioCalc(list);
-    var saved = s.saved.map(function (v, i) { return '<tr><td>' + esc(v.name) + '</td><td class="num">' + money(v.rent) + '</td><td class="num">' + (v.change >= 0 ? '+' : '') + money(v.change) + '</td><td class="num">' + sq(v.area) + '</td><td class="num">' + v.n + '</td></tr>'; }).join('');
-    return '<div class="panel"><h2>Scenario analyzer</h2><p class="sub">Test what-if renewal decisions. Nothing here changes the dashboard data. Showing the ' + shown.length + ' contracts that expire soonest in your current view.</p>' +
-      '<div class="scen"><div><div class="ctl"><button class="btn sm ghost" type="button" id="selAll">Select all shown</button><button class="btn sm ghost" type="button" id="selNone">Clear selection</button></div><div class="clist">' + (cl || '<div class="empty">No contracts in view. Clear a filter to see more.</div>') + '</div></div>' +
-      '<div><h3 style="margin-top:0">Test a decision</h3><div class="ctl"><button class="btn sm" type="button" data-act="no">Do not renew</button><button class="btn sm" type="button" data-act="asis">Renew as-is</button></div>' +
-      '<div class="ctl"><label>Rent per sq ft change (%)<input type="number" id="rp" value="' + s.rp + '" step="1"></label><label>Square feet change (%)<input type="number" id="sp" value="' + s.sp + '" step="1"></label><button class="btn sm" type="button" data-act="chg">Apply to selected</button></div>' +
-      '<h3>Impact</h3><div class="impact"><div class="head"><div class="k">Annual rent</div><div class="v">' + money(r.rent) + '</div></div><div class="head"><div class="k">Change in rent</div><div class="v">' + (r.change >= 0 ? '+' : '') + money(r.change) + '</div></div><div class="head"><div class="k">Rentable sq ft</div><div class="v">' + sq(r.area) + '</div></div><div class="head"><div class="k">Contracts in place</div><div class="v">' + r.n + '</div></div></div>' +
-      '<div class="ctl"><button class="btn sm" type="button" id="saveScen">Save scenario</button><button class="btn sm ghost" type="button" id="resetScen">Reset all</button><button class="btn sm ghost" type="button" id="scenCsv">Export to CSV</button></div>' +
-      (s.saved.length ? '<h3>Saved scenarios</h3><div class="tablewrap"><table><thead><tr><th>Scenario</th><th class="num">Annual rent</th><th class="num">Change</th><th class="num">Sq ft</th><th class="num">Contracts</th></tr></thead><tbody>' + saved + '</tbody></table></div>' : '') +
-      '</div></div></div>';
-  }
+  // route graphic: the package travels as you scroll
+  var routeSvg = document.getElementById('routeSvg');
+  var routeWrap = document.getElementById('routeWrap');
+  var routePath = routeSvg.querySelector('.route-draw');
+  var routeNodes = routeSvg.querySelectorAll('.node');
+  var routeLabels = routeSvg.querySelectorAll('.node-label');
+  var pkg = document.getElementById('pkg');
+  var routeLen = routePath.getTotalLength ? routePath.getTotalLength() : 0;
+  var FRACTIONS = [0, 0.239, 0.5, 0.761, 1];
+  var routeQ = 0;
 
-  // ---------- render ----------
-  function render() {
-    var list = filtered(false);
-    renderKpis(list);
-    renderTabs();
-    var v = document.getElementById('view');
-    v.innerHTML = s.tab === 'summary' ? viewSummary(list) : s.tab === 'footprint' ? viewFootprint(list) : s.tab === 'expirations' ? viewExpirations(list) : s.tab === 'calendar' ? viewCalendar(list) : viewScenario(list);
-  }
-
-  // ---------- events ----------
-  document.getElementById('typeChips').addEventListener('click', function (e) {
-    var b = e.target.closest('[data-type]'); if (!b) return;
-    var n = b.getAttribute('data-type'); s.types[n] = !s.types[n];
-    if (!Object.keys(s.types).some(function (k) { return s.types[k]; })) s.types[n] = true;
-    buildFilters(); render();
-  });
-  document.getElementById('stateSel').addEventListener('change', function (e) { s.state = e.target.value; render(); });
-  document.getElementById('expSel').addEventListener('change', function (e) { s.exp = e.target.value; render(); });
-  document.getElementById('areaChk').addEventListener('change', function (e) { s.area = e.target.checked; render(); });
-  document.getElementById('clearBtn').addEventListener('click', function () {
-    TYPES.forEach(function (t) { s.types[t.name] = true; }); s.state = 'all'; s.exp = 'all'; s.area = true; s.year = null; s.onlyNotice = false;
-    buildFilters(); render();
-  });
-  document.getElementById('csvBtn').addEventListener('click', function () {
-    var rows = [csvRow(['Contract', 'Site', 'Type', 'State', 'Platform', 'Owner', 'Rentable sq ft', 'Annual rent', 'Base rent', 'Opex and fees', 'Commence', 'Expiration', 'Notice by'])];
-    filtered(false).forEach(function (c) { rows.push(csvRow([c.id, c.dc, c.type, c.state, c.platform, c.owner, c.sqft, c.rent, c.base, c.opex, c.commence.toISOString().slice(0, 10), c.expiry.toISOString().slice(0, 10), c.notice.toISOString().slice(0, 10)])); });
-    download('synthetic-contracts.csv', rows.join('\n'));
-  });
-  document.getElementById('tabs').addEventListener('click', function (e) { var b = e.target.closest('[data-tab]'); if (!b) return; s.tab = b.getAttribute('data-tab'); render(); });
-
-  var view = document.getElementById('view');
-  view.addEventListener('click', function (e) {
-    var t;
-    if ((t = e.target.closest('[data-measure]'))) { s.measure = t.getAttribute('data-measure'); render(); return; }
-    if ((t = e.target.closest('[data-year]'))) { var y = t.getAttribute('data-year'); s.year = s.year === y ? null : y; render(); return; }
-    if ((t = e.target.closest('[data-state]'))) { var st = t.getAttribute('data-state'); s.state = s.state === st ? 'all' : st; buildFilters(); render(); return; }
-    if ((t = e.target.closest('[data-sort]'))) { var k = t.getAttribute('data-sort'); if (s.sortKey === k) s.sortDir *= -1; else { s.sortKey = k; s.sortDir = 1; } render(); return; }
-    if ((t = e.target.closest('tr.dc'))) { var d = t.getAttribute('data-dc'); s.expanded[d] = !s.expanded[d]; render(); return; }
-    if ((t = e.target.closest('[data-calmode]'))) { s.calMode = t.getAttribute('data-calmode'); render(); return; }
-    if ((t = e.target.closest('[data-cal]'))) { s.calH = Number(t.getAttribute('data-cal')); render(); return; }
-    if ((t = e.target.closest('[data-due]'))) { s.due = Number(t.getAttribute('data-due')); render(); return; }
-    if ((t = e.target.closest('[data-dcgo]'))) { s.expanded[t.getAttribute('data-dcgo')] = true; s.tab = 'expirations'; render(); window.scrollTo(0, 0); return; }
-    if (e.target.id === 'dueCsv') {
-      var rows = [csvRow(['Decision due', 'Site', 'Contract', 'Expires', 'Owner', 'Annual rent', 'Sq ft'])];
-      decisionsDue(filtered(false)).forEach(function (c) { rows.push(csvRow([c.notice.toISOString().slice(0, 10), c.dc, c.id, c.expiry.toISOString().slice(0, 10), c.owner, c.rent, c.sqft])); });
-      download('synthetic-decisions-due.csv', rows.join('\n')); return;
+  function setRoute(q) {
+    routePath.style.strokeDasharray = routeLen;
+    routePath.style.strokeDashoffset = routeLen * (1 - q);
+    var pt = routePath.getPointAtLength(routeLen * q);
+    pkg.setAttribute('cx', pt.x);
+    pkg.setAttribute('cy', pt.y);
+    for (var i = 0; i < routeNodes.length; i++) {
+      var lit = q >= FRACTIONS[i] && (i > 0 || q > 0.005);
+      routeNodes[i].classList.toggle('lit', lit);
+      routeLabels[i].classList.toggle('lit', lit);
     }
-    if (e.target.id === 'selAll') { filtered(false).sort(function (a, b) { return a.expiry - b.expiry; }).slice(0, 60).forEach(function (c) { s.sel[c.id] = true; }); render(); return; }
-    if (e.target.id === 'selNone') { s.sel = {}; render(); return; }
-    if ((t = e.target.closest('[data-act]'))) {
-      var act = t.getAttribute('data-act');
-      var rp = Number(document.getElementById('rp').value) || 0, sp = Number(document.getElementById('sp').value) || 0;
-      s.rp = rp; s.sp = sp;
-      Object.keys(s.sel).forEach(function (id) { if (!s.sel[id]) return; s.dec[id] = act === 'no' ? { mode: 'no' } : act === 'asis' ? { mode: 'asis' } : { mode: 'chg', rp: rp, sp: sp }; });
-      render(); return;
+  }
+  if (routeLen) {
+    routeSvg.classList.add('js-route');
+    if (REDUCE) { routeQ = 1; setRoute(1); pkg.style.display = 'none'; } else { setRoute(0); }
+  }
+
+  var cue = document.getElementById('cue');
+  function updateReveal() {
+    var vh = window.innerHeight;
+    var atBottom = window.scrollY + vh >= document.documentElement.scrollHeight - 4;
+    if (cue) cue.style.opacity = Math.max(0, 1 - window.scrollY / 160);
+
+    for (var i = bleeds.length - 1; i >= 0; i--) {
+      var node = bleeds[i], st = node.__bleed;
+      if (st.done) { bleeds.splice(i, 1); continue; }
+      var top = node.getBoundingClientRect().top;
+      var from = vh * 0.98 - st.off, to = vh * 0.62 - st.off;
+      var p = (from - top) / (from - to);
+      p = atBottom ? 1 : Math.max(0, Math.min(1, p));
+      if (p > st.p) st.p = p;                       // once revealed, stays revealed
+      if (st.p >= 1) finish(node); else node.style.setProperty('--p', st.p.toFixed(3));
     }
-    if (e.target.id === 'saveScen') { var r = scenarioCalc(filtered(false)); r.name = 'Scenario ' + (s.saved.length + 1); s.saved.push(r); render(); return; }
-    if (e.target.id === 'resetScen') { s.dec = {}; s.sel = {}; s.rp = 0; s.sp = 0; render(); return; }
-    if (e.target.id === 'scenCsv') {
-      var out = [csvRow(['Contract', 'Site', 'Decision', 'Rent change %', 'Sq ft change %', 'Scenario annual rent'])];
-      filtered(false).forEach(function (c) { var d = s.dec[c.id]; var rr = d && d.mode === 'no' ? 0 : c.rent * (1 + ((d && d.mode === 'chg' ? d.rp : 0) / 100)) * (1 + ((d && d.mode === 'chg' ? d.sp : 0) / 100)); out.push(csvRow([c.id, c.dc, d ? d.mode : 'none', d && d.rp || 0, d && d.sp || 0, Math.round(rr)])); });
-      download('synthetic-scenario.csv', out.join('\n')); return;
+
+    if (routeLen && routeQ < 1) {
+      var rt = routeWrap.getBoundingClientRect().top;
+      var qs = vh * 0.95, qe = vh * 0.38;
+      var q = atBottom ? 1 : Math.max(0, Math.min(1, (qs - rt) / (qs - qe)));
+      if (q > routeQ) { routeQ = q; setRoute(routeQ); }
     }
-  });
-  view.addEventListener('change', function (e) {
-    if (e.target.id === 'onlyNotice') { s.onlyNotice = e.target.checked; render(); return; }
-    var id = e.target.getAttribute && e.target.getAttribute('data-sel');
-    if (id) { s.sel[id] = e.target.checked; }
-  });
-  view.addEventListener('keydown', function (e) {
-    if (e.key !== 'Enter' && e.key !== ' ') return;
-    var t = e.target.closest('tr.dc, .tile');
-    if (!t) return;
-    e.preventDefault(); t.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-  });
-  view.addEventListener('mouseover', function (e) {
-    var t = e.target.closest('.tile'); if (!t) return;
-    var box = document.getElementById('stateInfo'); if (box) box.innerHTML = stateInfoHtml(t.getAttribute('data-state'), filtered(false));
-  });
-  view.addEventListener('focusin', function (e) {
-    var t = e.target.closest && e.target.closest('.tile'); if (!t) return;
-    var box = document.getElementById('stateInfo'); if (box) box.innerHTML = stateInfoHtml(t.getAttribute('data-state'), filtered(false));
+  }
+
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(function () { ticking = false; updateReveal(); });
+  }
+  function initReveal() {
+    BLEED_SELECTORS.forEach(registerBleed);
+    updateReveal();
+    if (!REDUCE) {
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+    }
+  }
+
+  // ----- contact -----
+  var ln = document.getElementById('liLink');
+  if (LINKEDIN) { ln.href = LINKEDIN; ln.hidden = false; }
+  document.getElementById('copyBtn').addEventListener('click', function () {
+    var msg = document.getElementById('copied');
+    function done(ok) { msg.textContent = ok ? 'Copied. Looking forward to hearing from you.' : 'Copy failed. Select the address above and copy it manually.'; }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(EMAIL).then(function () { done(true); }, function () { done(false); });
+    } else { done(false); }
   });
 
-  buildFilters();
-  render();
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  renderTools();
+  renderWork();
+  initReveal();
 })();
 </script>
 </body>
