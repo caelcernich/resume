@@ -1,5 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+<!--
+=====================================================================
+HOW TO EDIT THIS DEMO (Supplier Spend Dashboard, synthetic data)
+=====================================================================
+Everything on this page is FAKE data made up by the script near the
+bottom of this file. Any resemblance to real companies is coincidence.
+
+WORDS YOU CAN CHANGE
+  * Page title: search "Supplier Spend Dashboard". Tab names: "var TABS".
+  * Section headings: search the heading words you see on the page.
+  * The yellow banner sentence: search "Synthetic data demo".
+CHANGING THE FAKE DATA (in the SCRIPT, section "seeded synthetic data")
+  * CATS: the spend categories and how many suppliers each has.
+  * PREFIX and the nouns inside CATS: the pieces that make up supplier names.
+  * FACN and FSTATES: the fake facility names and their states.
+  * NOTES: the entries in the Notes tab. GOAL: the contract coverage target.
+  * The number inside mulberry32( ) is the random seed. Change it and
+    every fake number changes.
+COLORS AND FONTS: the first block of the STYLE section (colors are #RRGGBB).
+Headings follow the site style: Capitalize Every Word.
+Tip: text in the SCRIPT sits between quotes. Keep the quotes and commas,
+and use a curly apostrophe (it’s) so the page does not break.
+=====================================================================
+-->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,7 +43,7 @@
   * { box-sizing: border-box; }
   body { margin: 0; font-family: var(--body); color: var(--ink); background: var(--concrete); line-height: 1.45; font-size: 15px; -webkit-font-smoothing: antialiased; }
   :focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; box-shadow: 0 0 0 5px var(--ink); }
-  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+  .wrap { max-width: 1840px; margin: 0 auto; padding: 0 clamp(16px, 3vw, 48px); }
   button, input { font-family: inherit; }
 
   .bar { background: var(--ink); color: var(--white); border-bottom: 3px solid var(--yellow); }
@@ -142,6 +166,10 @@
 (function () {
   'use strict';
 
+  /* =====================================================================
+     SCRIPT GUIDE: the fake data lives in the block just below (see the guide
+     at the very top of this file). The rest of this script draws the page.
+     ===================================================================== */
   // ---------- seeded synthetic data ----------
   function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
   var rnd = mulberry32(20261201);
@@ -269,7 +297,7 @@
     document.getElementById('catSel').innerHTML = '<option value="all">All categories</option>' + CATS.map(function (c) { return '<option value="' + esc(c.name) + '"' + (s.cat === c.name ? ' selected' : '') + '>' + esc(c.name) + '</option>'; }).join('');
     document.getElementById('fySel').value = String(s.fy); document.getElementById('conSel').value = s.con; document.getElementById('searchBox').value = s.search;
   }
-  var TABS = [['overview', 'Overview'], ['categories', 'Categories'], ['contracts', 'Contracts and actions'], ['facilities', 'Facilities'], ['notes', 'Notes']];
+  var TABS = [['overview', 'Overview'], ['categories', 'Categories'], ['contracts', 'Contracts And Actions'], ['facilities', 'Facilities'], ['notes', 'Notes']];
   function renderTabs() { document.getElementById('tabs').innerHTML = TABS.map(function (t) { return '<button class="tab" role="tab" data-tab="' + t[0] + '" aria-selected="' + (s.tab === t[0]) + '">' + t[1] + '</button>'; }).join(''); }
 
   // ---------- overview ----------
@@ -283,10 +311,10 @@
     var rows = top5.map(function (sp) { return '<tr><td>' + esc(sp.name) + '</td>' + sp.q.map(cell).join('') + '<td class="num"><strong>' + money(sp.total) + '</strong></td></tr>'; }).join('');
     var c = cov(list);
     return '<div class="panel"><h2>Overview</h2><p class="sub">Where the money goes and where contracts are missing. Click a supplier bar to filter the whole dashboard to that supplier, and click it again to clear.</p>' +
-      '<div class="two"><div><h3 style="margin-top:0">Annual net spend by supplier</h3><div class="legend2"><span><i style="background:#1E3A8A"></i>Under contract</span><span><i style="background:#C8321F"></i>Not under contract</span></div><div class="rank">' + (bars || '<div class="empty">No suppliers match these filters.</div>') + '</div></div>' +
-      '<div><h3 style="margin-top:0">Spend by quarter, top 5 suppliers</h3><div class="tablewrap"><table><thead><tr><th>Supplier</th><th class="num">Q1</th><th class="num">Q2</th><th class="num">Q3</th><th class="num">Q4</th><th class="num">Annual</th></tr></thead><tbody>' +
+      '<div class="two"><div><h3 style="margin-top:0">Annual Net Spend By Supplier</h3><div class="legend2"><span><i style="background:#1E3A8A"></i>Under contract</span><span><i style="background:#C8321F"></i>Not under contract</span></div><div class="rank">' + (bars || '<div class="empty">No suppliers match these filters.</div>') + '</div></div>' +
+      '<div><h3 style="margin-top:0">Spend By Quarter, Top 5 Suppliers</h3><div class="tablewrap"><table><thead><tr><th>Supplier</th><th class="num">Q1</th><th class="num">Q2</th><th class="num">Q3</th><th class="num">Q4</th><th class="num">Annual</th></tr></thead><tbody>' +
       '<tr class="total"><td>All suppliers</td>' + qt.map(function (v) { return '<td class="num">' + moneyP(v) + '</td>'; }).join('') + '<td class="num">' + money(c.total) + '</td></tr>' + (rows || '<tr><td colspan="6" class="empty">No data in view.</td></tr>') + '</tbody></table></div>' +
-      '<h3>Contract coverage</h3><div class="donutwrap">' + donut(c.share, GOAL) + '<div><p style="margin:0 0 6px"><strong>' + Math.round(c.share * 100) + '%</strong> of spend is under contract.</p><p class="sub" style="margin:0">Goal: ' + Math.round(GOAL * 100) + '% under contract (yellow marker).</p></div></div></div></div></div>';
+      '<h3>Contract Coverage</h3><div class="donutwrap">' + donut(c.share, GOAL) + '<div><p style="margin:0 0 6px"><strong>' + Math.round(c.share * 100) + '%</strong> of spend is under contract.</p><p class="sub" style="margin:0">Goal: ' + Math.round(GOAL * 100) + '% under contract (yellow marker).</p></div></div></div></div></div>';
   }
 
   // ---------- categories ----------
@@ -305,7 +333,7 @@
     var top = inCat.map(function (sp) { return '<tr><td>' + esc(sp.name) + '</td><td class="num">' + money(sp.total) + '</td><td class="num">' + pct(sp.total, ctot) + '%</td><td class="num ' + (sp.con ? 'yes' : 'no') + '">' + (sp.con ? 'Yes' : 'No') + '</td></tr>'; }).join('');
     return '<div class="panel"><h2>Categories</h2><p class="sub">How many suppliers sit in each category, what we spend, and how much of it is under contract. Pick a category to see its largest suppliers.</p>' +
       '<div class="tablewrap"><table><thead><tr>' + th('name', 'Category') + th('n', 'Suppliers', true) + th('spend', 'Net spend', true) + th('share', 'Share of spend', true) + th('avg', 'Average per supplier', true) + th('cp', 'Under contract', true) + '</tr></thead><tbody>' + (trs || '<tr><td colspan="6" class="empty">No data in view.</td></tr>') + '</tbody></table></div>' +
-      '<h3>Top 5 suppliers in ' + esc(chosen || 'this category') + '</h3><div class="tablewrap"><table><thead><tr><th>Supplier</th><th class="num">Net spend</th><th class="num">Share of category</th><th class="num">Contract</th></tr></thead><tbody>' + (top || '<tr><td colspan="4" class="empty">No data in view.</td></tr>') + '</tbody></table></div></div>';
+      '<h3>Top 5 Suppliers In ' + esc(chosen || 'this category') + '</h3><div class="tablewrap"><table><thead><tr><th>Supplier</th><th class="num">Net spend</th><th class="num">Share of category</th><th class="num">Contract</th></tr></thead><tbody>' + (top || '<tr><td colspan="4" class="empty">No data in view.</td></tr>') + '</tbody></table></div></div>';
   }
 
   // ---------- contracts and actions ----------
@@ -318,10 +346,10 @@
     var rows = un.slice(0, 25).map(function (x) { var a = actionFor(x); return '<tr><td>' + esc(x.name) + '</td><td>' + esc(x.cat) + '</td>' + x.q.map(function (v) { return '<td class="num">' + moneyP(v) + '</td>'; }).join('') + '<td class="num"><strong>' + money(x.total) + '</strong></td><td><span class="tag ' + a.c + '">' + a.t + '</span></td></tr>'; }).join('');
     var review = sups.filter(function (x) { if (!x.con) return false; var a = actionFor(x); return a.t !== 'On track'; });
     var rrows = review.map(function (x) { var a = actionFor(x); return '<tr><td>' + esc(x.name) + '</td><td>' + esc(x.cat) + '</td><td class="num">' + money(x.total) + '</td><td>' + (x.end ? fmtMon(x.end) : 'n/a') + '</td><td><span class="tag ' + a.c + '">' + a.t + '</span></td></tr>'; }).join('');
-    return '<div class="panel"><h2>Contracts and actions</h2><p class="sub">Who to pursue for a contract, and which existing contracts deserve a second look. Actions follow simple rules: large uncontracted spend, contracts nearing renewal, and fast-rising spend.</p>' +
+    return '<div class="panel"><h2>Contracts And Actions</h2><p class="sub">Who to pursue for a contract, and which existing contracts deserve a second look. Actions follow simple rules: large uncontracted spend, contracts nearing renewal, and fast-rising spend.</p>' +
       '<div class="donutwrap">' + donut(c.share, GOAL) + '<div><p style="margin:0 0 6px"><strong>' + money(c.non) + '</strong> of spend has no contract.</p><p class="sub" style="margin:0 0 10px">Goal: ' + Math.round(GOAL * 100) + '% under contract.</p><button class="btn sm" type="button" id="unCsv">Download uncontracted list (CSV)</button></div></div>' +
-      '<h3>Suppliers not under contract</h3><div class="tablewrap"><table><thead><tr>' + th('name', 'Supplier') + th('cat', 'Category') + th('q1', 'Q1', true) + th('q2', 'Q2', true) + th('q3', 'Q3', true) + th('q4', 'Q4', true) + th('total', 'Annual', true) + '<th>Suggested action</th></tr></thead><tbody>' + (rows || '<tr><td colspan="8" class="empty">Every supplier in view is under contract. Clear a filter to see more.</td></tr>') + '</tbody></table></div>' +
-      '<h3>Contracted suppliers to review</h3><div class="tablewrap"><table><thead><tr><th>Supplier</th><th>Category</th><th class="num">Annual</th><th>Contract ends</th><th>Suggested action</th></tr></thead><tbody>' + (rrows || '<tr><td colspan="5" class="empty">No contracted suppliers need review in this view.</td></tr>') + '</tbody></table></div></div>';
+      '<h3>Suppliers Not Under Contract</h3><div class="tablewrap"><table><thead><tr>' + th('name', 'Supplier') + th('cat', 'Category') + th('q1', 'Q1', true) + th('q2', 'Q2', true) + th('q3', 'Q3', true) + th('q4', 'Q4', true) + th('total', 'Annual', true) + '<th>Suggested action</th></tr></thead><tbody>' + (rows || '<tr><td colspan="8" class="empty">Every supplier in view is under contract. Clear a filter to see more.</td></tr>') + '</tbody></table></div>' +
+      '<h3>Contracted Suppliers To Review</h3><div class="tablewrap"><table><thead><tr><th>Supplier</th><th>Category</th><th class="num">Annual</th><th>Contract ends</th><th>Suggested action</th></tr></thead><tbody>' + (rrows || '<tr><td colspan="5" class="empty">No contracted suppliers need review in this view.</td></tr>') + '</tbody></table></div></div>';
   }
 
   // ---------- facilities ----------
@@ -348,13 +376,13 @@
     var bars = fr.map(function (o) { return '<button type="button" class="brow" data-fac="' + esc(o.name) + '" aria-pressed="' + (s.fac === o.name) + '"><span class="l">' + esc(o.name) + '</span><span class="track"><span class="fill" style="width:' + (Math.max(0, o.v) / fm * 100) + '%"></span></span><span class="n">' + pct(o.v, ft) + '%</span></button>'; }).join('');
     return '<div class="panel"><h2>Facilities</h2><p class="sub">Spend by state and by facility. Click a facility bar to filter the dashboard to it, and click it again to clear.</p>' +
       '<div class="mapwrap"><div><svg viewBox="0 0 ' + w + ' ' + h + '" role="group" aria-label="Tile map of spend by state" style="width:100%;height:auto">' + tiles + '</svg><div class="legend"><span>Lower</span><i></i><span>Higher</span></div></div>' +
-      '<div><div class="info" id="stateInfo"><h3>Pick a state</h3><p class="sub" style="margin:0">Hover or focus a tile to see its spend.</p></div><h3 style="margin-top:0">Top 10 facilities by share of spend</h3><div class="rank">' + (bars || '<div class="empty">No spend in view.</div>') + '</div></div></div></div>';
+      '<div><div class="info" id="stateInfo"><h3>Pick A State</h3><p class="sub" style="margin:0">Hover or focus a tile to see its spend.</p></div><h3 style="margin-top:0">Top 10 Facilities By Share Of Spend</h3><div class="rank">' + (bars || '<div class="empty">No spend in view.</div>') + '</div></div></div></div>';
   }
 
   // ---------- notes ----------
   function viewNotes() {
     var rows = s.notes.slice().sort(function (a, b) { return b.d - a.d; }).map(function (n) { return '<div class="note"><div class="d">' + fmtDay(n.d) + '</div><div>' + esc(n.t) + '</div></div>'; }).join('');
-    return '<div class="panel"><h2>Supplier notes</h2><p class="sub">A running log of refreshes and context, so everyone reads the numbers the same way. Notes you add here live only in this demo and disappear on reload.</p>' +
+    return '<div class="panel"><h2>Supplier Notes</h2><p class="sub">A running log of refreshes and context, so everyone reads the numbers the same way. Notes you add here live only in this demo and disappear on reload.</p>' +
       '<div class="addnote"><input type="text" id="noteBox" placeholder="Add a note for the team" aria-label="Add a note"><button class="btn" type="button" id="noteBtn">Add note</button></div><div class="notes">' + rows + '</div></div>';
   }
 

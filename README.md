@@ -29,3 +29,7 @@ Each case study has its own link. Add the project's ID to your site address: `#c
 ## Editing your role lines
 
 Each project's "My role" text lives in the `ROLES` list near the top of the script in `index.html`. The first entry is the short version shown on the card, and the second is the longer version shown in the pop-up.
+
+## Quick editing guide
+
+Open `index.html` in any text editor. The very top of the file has a "How to edit this site" guide, and every section has a labeled note above it that says exactly which words to change. Project text, tool descriptions, and "My Role" lines live in labeled lists near the bottom of the file, inside the script.

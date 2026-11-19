@@ -1,5 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+<!--
+=====================================================================
+HOW TO EDIT THIS DEMO (Real Estate Dashboard, synthetic data)
+=====================================================================
+Everything on this page is FAKE data made up by the script near the
+bottom of this file. Nothing here is real.
+
+WORDS YOU CAN CHANGE
+  * Page title and tab names: search "Real Estate Portfolio Dashboard"
+    (the title) and "var TABS" (the five tab names).
+  * Section headings: search the heading words you see on the page.
+  * The yellow banner sentence: search "Synthetic data demo".
+CHANGING THE FAKE DATA (in the SCRIPT, section "seeded synthetic data")
+  * NAMES: the list of fake site names. TYPES: the site types.
+    STATES, OWNERS, PLATFORMS: the other lists the data is built from.
+  * The number inside mulberry32( ) is the random seed. Change it and
+    every fake number changes. Keep it the same to keep the data stable.
+COLORS AND FONTS: the first block of the STYLE section (colors are #RRGGBB).
+Headings follow the site style: Capitalize Every Word.
+Tip: text in the SCRIPT sits between quotes. Keep the quotes and commas,
+and use a curly apostrophe (it’s) so the page does not break.
+=====================================================================
+-->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,7 +42,7 @@
   * { box-sizing: border-box; }
   body { margin: 0; font-family: var(--body); color: var(--ink); background: var(--concrete); line-height: 1.45; font-size: 15px; -webkit-font-smoothing: antialiased; }
   :focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; box-shadow: 0 0 0 5px var(--ink); }
-  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+  .wrap { max-width: 1840px; margin: 0 auto; padding: 0 clamp(16px, 3vw, 48px); }
   button { font-family: inherit; }
 
   .bar { background: var(--ink); color: var(--white); border-bottom: 3px solid var(--yellow); }
@@ -189,6 +212,10 @@
 (function () {
   'use strict';
 
+  /* =====================================================================
+     SCRIPT GUIDE: the fake data lives in the block just below (see the guide
+     at the very top of this file). The rest of this script draws the page.
+     ===================================================================== */
   // ---------- seeded synthetic data ----------
   function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
   var rnd = mulberry32(20261118);
@@ -319,7 +346,7 @@
     document.getElementById('areaChk').checked = s.area;
   }
 
-  var TABS = [['summary', 'Executive summary'], ['footprint', 'Footprint'], ['expirations', 'Lease expirations'], ['calendar', 'Decision calendar'], ['scenario', 'Scenario analyzer']];
+  var TABS = [['summary', 'Executive Summary'], ['footprint', 'Footprint'], ['expirations', 'Lease Expirations'], ['calendar', 'Decision Calendar'], ['scenario', 'Scenario Analyzer']];
   function renderTabs() {
     document.getElementById('tabs').innerHTML = TABS.map(function (t) { return '<button class="tab" role="tab" data-tab="' + t[0] + '" aria-selected="' + (s.tab === t[0]) + '">' + t[1] + '</button>'; }).join('');
   }
@@ -354,11 +381,11 @@
       return { name: t.name, v: sum(g, mval), p: psf(g), n: g.length };
     }).filter(function (r) { return r.n > 0; }).sort(function (a, b) { return b.v - a.v; });
     var trs = rows.map(function (r) { return '<tr><td>' + esc(r.name) + '</td><td class="num">' + mfmt(r.v) + '</td><td class="num">' + (totalM ? Math.round(r.v / totalM * 100) : 0) + '%</td><td class="num">' + (r.p ? '$' + r.p.toFixed(2) : 'n/a') + '</td></tr>'; }).join('');
-    return '<div class="panel"><h2>Executive summary</h2><p class="sub">Start here: the headline numbers and a quick picture of what expires when. Click a year bar to filter the whole dashboard, and click it again to clear.</p>' +
+    return '<div class="panel"><h2>Executive Summary</h2><p class="sub">Start here: the headline numbers and a quick picture of what expires when. Click a year bar to filter the whole dashboard, and click it again to clear.</p>' +
       '<div class="heads">' + heads.map(function (h) { return '<div class="head"><div class="k">' + h[0] + '</div><div class="v">' + h[1] + '</div></div>'; }).join('') + '</div>' +
-      '<h3>Rent expiring over time</h3>' + measureSwitch() + '<div class="cards4">' + cards + '</div>' +
-      '<div class="two"><div><h3 style="margin-top:0">Expirations by year</h3><div class="bars">' + bars + '</div></div>' +
-      '<div><h3 style="margin-top:0">By site type</h3><div class="tablewrap"><table><thead><tr><th>Type</th><th class="num">' + (s.measure === 'rent' ? 'Rent' : s.measure === 'contracts' ? 'Contracts' : 'Area') + '</th><th class="num">Share</th><th class="num">Rent per sq ft</th></tr></thead><tbody>' + trs +
+      '<h3>Rent Expiring Over Time</h3>' + measureSwitch() + '<div class="cards4">' + cards + '</div>' +
+      '<div class="two"><div><h3 style="margin-top:0">Expirations By Year</h3><div class="bars">' + bars + '</div></div>' +
+      '<div><h3 style="margin-top:0">By Site Type</h3><div class="tablewrap"><table><thead><tr><th>Type</th><th class="num">' + (s.measure === 'rent' ? 'Rent' : s.measure === 'contracts' ? 'Contracts' : 'Area') + '</th><th class="num">Share</th><th class="num">Rent per sq ft</th></tr></thead><tbody>' + trs +
       '<tr class="total"><td>Total</td><td class="num">' + mfmt(totalM) + '</td><td class="num">100%</td><td class="num">$' + psf(all).toFixed(2) + '</td></tr></tbody></table></div></div></div></div>';
   }
 
@@ -384,8 +411,8 @@
     var tyRows = TYPES.map(function (t) { var n = list.filter(function (c) { return c.type === t.name; }).length; return '<tr><td>' + esc(t.name) + '</td><td class="num">' + n + '</td></tr>'; }).join('');
     return '<div class="panel"><h2>Footprint</h2><p class="sub">Every state with a contract, shaded by your chosen measure. Click a state to filter the dashboard to it, and click it again to clear.</p>' + measureSwitch() +
       '<div class="mapwrap"><div><svg viewBox="0 0 ' + w + ' ' + h + '" role="group" aria-label="Tile map of states" style="width:100%;height:auto">' + tiles + '</svg><div class="legend"><span>Lower</span><i></i><span>Higher</span></div></div>' +
-      '<div><div class="info" id="stateInfo">' + (s.state !== 'all' ? stateInfoHtml(s.state, list) : '<h3>Pick a state</h3><p class="sub" style="margin:0">Hover or focus a tile to see its totals.</p>') + '</div>' +
-      '<h3>Contracts by site type</h3><table><tbody>' + tyRows + '</tbody></table></div></div></div>';
+      '<div><div class="info" id="stateInfo">' + (s.state !== 'all' ? stateInfoHtml(s.state, list) : '<h3>Pick A State</h3><p class="sub" style="margin:0">Hover or focus a tile to see its totals.</p>') + '</div>' +
+      '<h3>Contracts By Site Type</h3><table><tbody>' + tyRows + '</tbody></table></div></div></div>';
   }
 
   // ---------- expirations ----------
@@ -423,7 +450,7 @@
       return r;
     }).join('');
     var tot = sum(dcs, function (d) { return d.rent; });
-    return '<div class="panel"><h2>Lease expirations</h2><p class="sub">Every site ranked by its next expiration. Click a site to see each contract behind it. Click a column heading to sort.</p>' +
+    return '<div class="panel"><h2>Lease Expirations</h2><p class="sub">Every site ranked by its next expiration. Click a site to see each contract behind it. Click a column heading to sort.</p>' +
       '<p style="margin:0 0 12px"><strong>' + dcs.length + ' sites</strong>, <strong>' + sum(dcs, function (d) { return d.list.length; }) + ' contracts</strong>, <strong>' + money(tot) + '</strong> annual rent</p>' +
       '<label class="check" style="margin-bottom:12px"><input type="checkbox" id="onlyNotice"' + (s.onlyNotice ? ' checked' : '') + '> Show only sites with a notice deadline in the next 12 months</label>' +
       '<div class="tablewrap"><table><thead><tr>' + th('dc', 'Site') + th('type', 'Type') + th('next', 'Next expiration') + th('rent', 'Annual rent', true) + th('area', 'Sq ft', true) + th('psf', 'Rent per sq ft', true) + '</tr></thead><tbody>' + (rows || '<tr><td colspan="6" class="empty">No sites match these filters. Clear a filter to see more.</td></tr>') + '</tbody></table></div></div>';
@@ -435,7 +462,7 @@
     return list.filter(function (c) { return c.notice >= TODAY && c.notice <= end && !isPast(c); }).sort(function (a, b) { return a.notice - b.notice; });
   }
   function viewCalendar(list) {
-    var head = '<div class="panel"><h2>Decision calendar</h2><p class="sub">Know what is coming due and when decisions must be made.</p>' +
+    var head = '<div class="panel"><h2>Decision Calendar</h2><p class="sub">Know what is coming due and when decisions must be made.</p>' +
       '<div class="seg" role="group" aria-label="Calendar view"><button type="button" data-calmode="calendar" aria-pressed="' + (s.calMode === 'calendar') + '">Calendar</button><button type="button" data-calmode="due" aria-pressed="' + (s.calMode === 'due') + '">Decisions due</button></div> ';
     if (s.calMode === 'due') {
       var d = decisionsDue(list);
@@ -495,13 +522,13 @@
     }).join('');
     var r = scenarioCalc(list);
     var saved = s.saved.map(function (v, i) { return '<tr><td>' + esc(v.name) + '</td><td class="num">' + money(v.rent) + '</td><td class="num">' + (v.change >= 0 ? '+' : '') + money(v.change) + '</td><td class="num">' + sq(v.area) + '</td><td class="num">' + v.n + '</td></tr>'; }).join('');
-    return '<div class="panel"><h2>Scenario analyzer</h2><p class="sub">Test what-if renewal decisions. Nothing here changes the dashboard data. Showing the ' + shown.length + ' contracts that expire soonest in your current view.</p>' +
+    return '<div class="panel"><h2>Scenario Analyzer</h2><p class="sub">Test what-if renewal decisions. Nothing here changes the dashboard data. Showing the ' + shown.length + ' contracts that expire soonest in your current view.</p>' +
       '<div class="scen"><div><div class="ctl"><button class="btn sm ghost" type="button" id="selAll">Select all shown</button><button class="btn sm ghost" type="button" id="selNone">Clear selection</button></div><div class="clist">' + (cl || '<div class="empty">No contracts in view. Clear a filter to see more.</div>') + '</div></div>' +
-      '<div><h3 style="margin-top:0">Test a decision</h3><div class="ctl"><button class="btn sm" type="button" data-act="no">Do not renew</button><button class="btn sm" type="button" data-act="asis">Renew as-is</button></div>' +
+      '<div><h3 style="margin-top:0">Test A Decision</h3><div class="ctl"><button class="btn sm" type="button" data-act="no">Do not renew</button><button class="btn sm" type="button" data-act="asis">Renew as-is</button></div>' +
       '<div class="ctl"><label>Rent per sq ft change (%)<input type="number" id="rp" value="' + s.rp + '" step="1"></label><label>Square feet change (%)<input type="number" id="sp" value="' + s.sp + '" step="1"></label><button class="btn sm" type="button" data-act="chg">Apply to selected</button></div>' +
       '<h3>Impact</h3><div class="impact"><div class="head"><div class="k">Annual rent</div><div class="v">' + money(r.rent) + '</div></div><div class="head"><div class="k">Change in rent</div><div class="v">' + (r.change >= 0 ? '+' : '') + money(r.change) + '</div></div><div class="head"><div class="k">Rentable sq ft</div><div class="v">' + sq(r.area) + '</div></div><div class="head"><div class="k">Contracts in place</div><div class="v">' + r.n + '</div></div></div>' +
       '<div class="ctl"><button class="btn sm" type="button" id="saveScen">Save scenario</button><button class="btn sm ghost" type="button" id="resetScen">Reset all</button><button class="btn sm ghost" type="button" id="scenCsv">Export to CSV</button></div>' +
-      (s.saved.length ? '<h3>Saved scenarios</h3><div class="tablewrap"><table><thead><tr><th>Scenario</th><th class="num">Annual rent</th><th class="num">Change</th><th class="num">Sq ft</th><th class="num">Contracts</th></tr></thead><tbody>' + saved + '</tbody></table></div>' : '') +
+      (s.saved.length ? '<h3>Saved Scenarios</h3><div class="tablewrap"><table><thead><tr><th>Scenario</th><th class="num">Annual rent</th><th class="num">Change</th><th class="num">Sq ft</th><th class="num">Contracts</th></tr></thead><tbody>' + saved + '</tbody></table></div>' : '') +
       '</div></div></div>';
   }
 

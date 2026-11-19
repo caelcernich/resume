@@ -1,9 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
+<!--
+=====================================================================
+HOW TO EDIT THIS SITE (QUICK START)
+=====================================================================
+
+You do not need to know how to code to change the words on this page.
+
+THE 3 STEP EDIT
+  1. Press Ctrl+F (Windows) or Cmd+F (Mac) and search for a few words
+     from the sentence or heading you want to change.
+  2. Change only the words. Leave anything inside < and > brackets alone.
+  3. Save the file, then upload it to GitHub (Add file, Upload files,
+     Commit changes). The live site updates in a minute or two. Do a
+     hard refresh (Ctrl+Shift+R or Cmd+Shift+R) to see the change.
+
+WHERE EACH PART OF THE SITE LIVES (search for these words)
+  Navigation bar ........ "brand-name" and "open-note"
+  Hero (first screen) ... "setup" and "punch" (the two headline lines)
+  Intro paragraph ....... "Hi, I'm Cael"
+  Route graphic ......... "Source Systems" (appears twice, see HERO note)
+  About section ......... "about-title", "glance-body", "how-steps"
+  Toolkit tiles ......... in the SCRIPT, search "var TOOLS"
+  Practices chips ....... "practices-row"
+  Project cards and
+  case studies .......... in the SCRIPT, search "var PROJECTS"
+  "My Role" lines ....... in the SCRIPT, search "var ROLES"
+  Card drawings ......... in the SCRIPT, search "var PREVIEWS"
+  Beyond The Build ...... "beyond-item"
+  Experience (jobs) ..... the word "job-dates"
+  Contact and email ..... "contact-title" and "EMAIL" (the script)
+  LinkedIn button ....... in the SCRIPT, search "var LINKEDIN"
+  Colors and fonts ...... the first block of the STYLE section
+  Scroll speed .......... in the SCRIPT, search "REVEAL_START"
+
+RULES FOR EDITING TEXT INSIDE THE SCRIPT (the part near the bottom)
+  * Each piece of text sits between single quotes, like 'this'.
+    Do not delete the quotes, and do not delete the comma after them.
+  * Do not type a straight apostrophe inside script text. It will break
+    the page. Use the curly one instead: write it’s, not it's.
+    (Text in the HTML part is fine either way.)
+  * Headings follow one style: Capitalize Every Word. The two statement
+    lines (the hero headline and the About tagline) are the exception.
+
+IF SOMETHING BREAKS
+  Re-upload the last version of the file that worked. Keep a copy of
+  the original before every round of edits.
+=====================================================================
+-->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#1E3A8A">
+<meta name="theme-color" content="#12245C">
 <title>Cael: Senior Data Analyst and Analytics Product Owner</title>
 <meta name="description" content="Cael builds supply chain analytics products end to end: requirements, pipelines, dashboards, and adoption. Based in Atlanta, GA.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%231E3A8A'/%3E%3Ctext x='50' y='68' font-size='52' font-weight='800' text-anchor='middle' fill='%23D2A02B' font-family='Arial Black,Arial,sans-serif'%3EC%3C/text%3E%3C/svg%3E">
@@ -12,6 +60,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js-on');</script>
 <style>
+  /* =====================================================================
+     SITE SETTINGS: COLORS, FONTS, AND WIDTH
+     Change a value to the right of a colon to restyle the whole site.
+     Colors are written as #RRGGBB codes (search the web for a free
+     "hex color picker" to find new ones).
+       --hero ........ background of the first screen and the Contact section
+       --hero-deep ... the dark fill of the route graphic's unlit dots
+       --cobalt ...... the lighter navy used on chips, tiles, and highlights
+       --yellow ...... the mustard gold used on buttons and accents
+       --ink ......... the near-black used for text, borders, and the top bar
+       --concrete .... the light gray page background
+       --max ......... the widest the content may get on very large screens
+       --display ..... the font used for headings
+       --body ........ the font used for paragraphs
+     PINNED ROUTE LENGTH: search ".route-pin" below and change 260vh.
+     A bigger number means the route takes more scrolling to fill in.
+     ===================================================================== */
   :root {
     --cobalt: #1E3A8A;
     --cobalt-deep: #14285F;
@@ -23,7 +88,9 @@
     --display: 'Bricolage Grotesque', 'Public Sans', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
     --display-wide: 'Bricolage Grotesque', 'Public Sans', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
     --body: 'Public Sans', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
-    --max: 1120px;
+    --max: 1840px;
+    --hero: #12245C;
+    --hero-deep: #0B1738;
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -31,7 +98,7 @@
   a { color: inherit; }
   img { max-width: 100%; display: block; }
   :focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; box-shadow: 0 0 0 6px var(--ink); }
-  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 clamp(16px, 3.2vw, 56px); }
   .skip { position: absolute; left: -999px; top: 8px; background: var(--yellow); color: var(--ink); padding: 8px 14px; font-weight: 700; z-index: 100; }
   .skip:focus { left: 8px; }
 
@@ -52,23 +119,23 @@
   @media (max-width: 820px) { .nav ul { display: none; } }
 
   /* ---------- hero ---------- */
-  .hero { background: var(--cobalt); color: var(--white); padding: 0 0 72px; overflow: hidden; }
+  .hero { background: var(--hero); color: var(--white); padding: 0 0 72px; overflow-x: clip; }
   .hero-first { min-height: calc(100vh - 65px); min-height: calc(100svh - 65px); display: flex; flex-direction: column; justify-content: space-between; gap: 48px; padding: clamp(56px, 13vh, 150px) 0 clamp(28px, 5vh, 56px); }
   .cue { display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 17px; }
   .cue-line { width: 4px; height: 48px; background: rgba(255,255,255,0.3); position: relative; overflow: hidden; display: block; }
   .cue-line::after { content: ""; position: absolute; left: 0; top: -100%; width: 100%; height: 100%; background: var(--yellow); animation: drip 1.9s ease-in-out infinite; }
   @keyframes drip { to { top: 100%; } }
-  .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 48px; align-items: center; padding-top: 72px; }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) clamp(240px, 22vw, 380px); gap: 48px; align-items: center; padding-top: 72px; }
   .hero h1 { font-family: var(--display-wide); font-weight: 800; margin: 0; letter-spacing: -0.015em; line-height: 1.1; }
-  .hero h1 .setup { display: block; font-weight: 500; font-size: clamp(22px, 3.2vw, 44px); line-height: 1.3; letter-spacing: 0; color: rgba(255,255,255,0.88); max-width: 26ch; margin-bottom: clamp(20px, 4vh, 40px); text-wrap: balance; }
-  .hero h1 .punch { display: block; font-size: clamp(42px, 7.4vw, 108px); line-height: 1.08; max-width: 15ch; text-wrap: balance; }
-  .hero .lede { font-size: clamp(20px, 2.5vw, 30px); max-width: 34ch; margin: 0 0 32px; line-height: 1.3; font-weight: 500; }
+  .hero h1 .setup { display: block; font-weight: 500; font-size: clamp(20px, 4.2vw, 76px); line-height: 1.25; letter-spacing: 0.01em; color: rgba(255,255,255,0.88); margin-bottom: clamp(20px, 4vh, 44px); text-wrap: balance; }
+  .hero h1 .punch { display: block; font-size: clamp(40px, 8vw, 150px); line-height: 1.05; letter-spacing: 0.005em; text-wrap: balance; }
+  .hero .lede { font-size: clamp(22px, 2.6vw, 40px); max-width: 38ch; margin: 0 0 32px; line-height: 1.3; font-weight: 500; }
   .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; }
   .btn { display: inline-flex; align-items: center; justify-content: center; font: 700 16px/1 var(--body); text-decoration: none; padding: 15px 26px; border-radius: 999px; border: 3px solid var(--ink); background: var(--yellow); color: var(--ink); cursor: pointer; }
   .btn:hover { background: var(--white); }
   .btn.ghost { background: transparent; color: inherit; border-color: currentColor; }
   .btn.ghost:hover { background: var(--ink); color: var(--white); border-color: var(--ink); }
-  .photo { position: relative; justify-self: end; width: 280px; }
+  .photo { position: relative; justify-self: end; width: 100%; }
   .photo::before, .photo::after { content: ""; position: absolute; width: 84px; height: 26px; background: var(--yellow); opacity: 0.92; z-index: 2; }
   .photo::before { top: -10px; left: -22px; transform: rotate(-38deg); }
   .photo::after { bottom: -10px; right: -22px; transform: rotate(-38deg); }
@@ -82,7 +149,8 @@
   }
 
   /* route graphic (scroll-driven) */
-  .route-wrap { margin-top: 72px; border-top: 3px solid var(--ink); padding-top: 22px; }
+  .route-pin { position: relative; height: 260vh; margin-top: 56px; }
+  .route-wrap { position: sticky; top: max(92px, calc(50vh - 170px)); border-top: 3px solid var(--ink); padding-top: 22px; }
   .route-svg { width: 100%; height: auto; display: block; overflow: visible; }
   .route-base { fill: none; stroke: rgba(255,255,255,0.28); stroke-width: 4; stroke-linejoin: round; }
   .route-draw { fill: none; stroke: var(--yellow); stroke-width: 4; stroke-linejoin: round; }
@@ -90,7 +158,7 @@
   .nl-name { fill: var(--white); font: 700 24px var(--body); text-anchor: middle; }
   .nl-sub { fill: rgba(255,255,255,0.86); font: 500 18px var(--body); text-anchor: middle; }
   .package { display: none; fill: var(--white); stroke: var(--ink); stroke-width: 3; }
-  .js-route .node { fill: var(--cobalt-deep); stroke: var(--white); transition: fill .25s, stroke .25s; }
+  .js-route .node { fill: var(--hero-deep); stroke: var(--white); transition: fill .25s, stroke .25s; }
   .js-route .node.lit { fill: var(--yellow); stroke: var(--ink); }
   .js-route .nl { opacity: 0.35; transition: opacity .25s; }
   .js-route .nl.lit { opacity: 1; }
@@ -106,10 +174,10 @@
   .route-list em { display: block; font-style: normal; font-size: 15px; opacity: 0.85; }
   .js-route-list .rl-fill { height: 0; }
   .js-route-list li { opacity: 0.45; transition: opacity .25s; }
-  .js-route-list li .rl-dot { background: var(--cobalt-deep); border-color: var(--white); transition: background .25s, border-color .25s; }
+  .js-route-list li .rl-dot { background: var(--hero-deep); border-color: var(--white); transition: background .25s, border-color .25s; }
   .js-route-list li.lit { opacity: 1; }
   .js-route-list li.lit .rl-dot { background: var(--yellow); border-color: var(--ink); }
-  @media (max-width: 900px) { .route-svg { display: none; } .route-list { display: block; } }
+  @media (max-width: 900px) { .route-svg { display: none; } .route-list { display: block; } .route-pin { height: 230vh; } .route-wrap { top: 92px; } }
 
   /* scroll reveal: content bleeds in with a soft downward wipe tied to scroll position */
   .js-on [data-bleed]:not([data-done]) {
@@ -121,10 +189,10 @@
   /* ---------- sections ---------- */
   section { padding: 84px 0; }
   h2 { font-family: var(--display); font-weight: 800; font-size: clamp(33px, 5.32vw, 64px); line-height: 1.1; margin: 0 0 22px; letter-spacing: -0.01em; }
-  .intro { max-width: 62ch; font-size: 19px; margin: 0 0 40px; }
+  .intro { max-width: 76ch; font-size: 19px; margin: 0 0 40px; }
 
   .about-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: start; }
-  .about p { margin: 0 0 18px; max-width: 62ch; }
+  .about p { margin: 0 0 18px; max-width: 74ch; }
   .edu { background: var(--white); border: 3px solid var(--ink); border-radius: 8px; }
   .edu-top { padding: 10px 20px; border-bottom: 3px solid var(--ink); background: var(--yellow); font-weight: 700; font-size: 15px; }
   .edu-body { padding: 20px; display: flex; align-items: center; gap: 18px; }
@@ -141,13 +209,14 @@
   .glance-body dd { margin: 0; font-weight: 600; font-size: 16px; }
   .how { margin-top: 76px; }
   .how h3 { font-family: var(--display); font-weight: 800; font-size: clamp(26px, 3.2vw, 38px); line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 34px; }
-  .how-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px 0; }
+  .how-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 40px 0; }
   .how-step { position: relative; border-top: 4px solid var(--ink); padding: 30px 26px 0 0; }
   .how-step::before { content: ""; position: absolute; top: -13px; left: 0; width: 22px; height: 22px; border-radius: 50%; background: var(--yellow); border: 3px solid var(--ink); }
   .how-step h4 { font-family: var(--display); font-weight: 800; font-size: 22px; line-height: 1.15; margin: 0 0 8px; }
   .how-step p { margin: 0; font-size: 16px; max-width: 34ch; }
-  @media (max-width: 900px) { .how-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  @media (max-width: 560px) { .how-steps { grid-template-columns: 1fr; } .how { margin-top: 56px; } }
+  @media (max-width: 1180px) { .how-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 760px) { .how-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 520px) { .how-steps { grid-template-columns: 1fr; } .how { margin-top: 56px; } }
   @media (max-width: 820px) { .about-grid { grid-template-columns: 1fr; gap: 32px; } }
 
   /* toolkit */
@@ -169,7 +238,7 @@
   .tool-cue { font-weight: 700; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
   .practices { margin-top: 68px; }
   .practices h3 { font-family: var(--display); font-weight: 800; font-size: clamp(26px, 3.2vw, 38px); line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 10px; }
-  .practices-intro { margin: 0 0 24px; max-width: 62ch; font-size: 18px; }
+  .practices-intro { margin: 0 0 24px; max-width: 76ch; font-size: 18px; }
   .practices-row { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 12px; }
   .practices-row li { font-weight: 600; font-size: 17px; background: var(--concrete); border: 3px solid var(--ink); border-radius: 999px; padding: 8px 20px; }
 
@@ -201,11 +270,12 @@
   .chip.on { background: var(--cobalt); color: var(--white); }
   .label-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto; padding-top: 4px; }
   .btn.small { padding: 11px 20px; font-size: 15px; }
+  @media (min-width: 1360px) { .work-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   @media (max-width: 820px) { .work-grid { grid-template-columns: 1fr; } }
 
-  .preview { width: 100%; }
+  .preview { width: 100%; max-width: 560px; }
   .pv { display: block; width: 100%; height: auto; }
-  .label.featured .label-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 400px); column-gap: 40px; row-gap: 18px; align-items: start; }
+  .label.featured .label-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 520px); column-gap: 40px; row-gap: 18px; align-items: start; }
   .label.featured .label-body > * { grid-column: 1; }
   .label.featured .label-body > .preview { grid-column: 2; grid-row: 1 / span 6; align-self: center; }
   @media (max-width: 820px) { .label.featured .label-body { display: flex; flex-direction: column; } }
@@ -249,7 +319,7 @@
   .job-span:empty { display: none; }
   .job h3 { font-family: var(--display); font-weight: 800; font-size: 26px; line-height: 1.1; margin: 0 0 4px; }
   .job .org { margin: 0 0 14px; font-weight: 600; }
-  .job ul { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; max-width: 70ch; }
+  .job ul { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; max-width: 100ch; }
   @media (max-width: 820px) { .job { grid-template-columns: 1fr; gap: 6px; } }
 
   .lead-grid { display: grid; grid-template-columns: 1fr; gap: 26px; margin-top: 44px; }
@@ -260,7 +330,7 @@
   @media (max-width: 820px) { .lead-grid { grid-template-columns: 1fr; } }
 
   /* contact */
-  .contact { background: var(--cobalt); color: var(--white); min-height: 80vh; }
+  .contact { background: var(--hero); color: var(--white); min-height: 80vh; }
   .contact h2 { margin-bottom: 18px; }
   .contact p { max-width: 52ch; font-size: 19px; margin: 0 0 30px; }
   .email-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-bottom: 26px; }
@@ -275,6 +345,8 @@
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .cue-line::after { animation: none; }
+    .route-pin { height: auto; }
+    .route-wrap { position: static; }
     [data-bleed] { -webkit-mask-image: none !important; mask-image: none !important; }
   }
   @media print { [data-bleed] { -webkit-mask-image: none !important; mask-image: none !important; } }
@@ -283,6 +355,17 @@
 <body>
 <a class="skip" href="#work">Skip to selected work</a>
 
+<!--
+=====================================================================
+NAVIGATION BAR (the strip across the top)
+EDIT HERE:
+  * Your name: the text inside class="brand-name".
+  * The status note: the text inside class="open-note" (Open to new roles).
+  * The page links (About, Toolkit, Work, Experience) and the
+    "Get in touch" button.
+  * The round photo is headshot.jpg. Replace that file to change it.
+=====================================================================
+-->
 <header class="nav">
   <div class="wrap">
     <a class="brand" href="#top" aria-label="Cael, open to new roles, home"><span class="brand-mark" id="navFace"><img src="headshot.jpg" width="44" height="44" alt="" id="navImg"></span><span class="brand-text"><span class="brand-name">Cael</span><span class="open-note"><i aria-hidden="true"></i>Open to new roles</span></span></a>
@@ -299,6 +382,22 @@
 </header>
 
 <main id="top">
+  <!--
+=====================================================================
+HERO: THE FIRST SCREEN, THE INTRO, AND THE ROUTE GRAPHIC
+EDIT HERE:
+  * The two headline lines: class="setup" is the small line and
+    class="punch" is the big line.
+  * The intro paragraph: the text that starts "Hi, I'm Cael".
+  * The two buttons: "See my work" and "Get in touch".
+  * The route graphic further down: every stop name and the small phrase
+    under it appears TWICE. Once in the drawing (the svg, used on
+    computers) and once in the list (the ol, used on phones). Change
+    both so they match.
+  * To make the route fill slower or faster, see the STYLE guide at the
+    top of this file (PINNED ROUTE LENGTH).
+=====================================================================
+-->
   <section class="hero" aria-labelledby="hero-title">
     <div class="wrap">
       <div class="hero-first">
@@ -308,7 +407,7 @@
 
       <div class="hero-grid">
         <div>
-          <p class="lede">I'm Cael, a senior data analyst and analytics product owner. I take messy source data and turn it into dependable tools my peers can use for any use case.</p>
+          <p class="lede">Hi, I'm Cael, a senior data analyst and analytics product owner. I take messy source data and turn it into dependable tools my peers can use for any use case.</p>
           <div class="hero-cta">
             <a class="btn" href="#work">See my work</a>
             <a class="btn ghost" href="#contact">Get in touch</a>
@@ -321,6 +420,7 @@
         </div>
       </div>
 
+      <div class="route-pin" id="routePin">
       <div class="route-wrap" id="routeWrap">
         <svg class="route-svg" id="routeSvg" viewBox="0 0 1280 240" role="img" aria-label="A route from source systems through Microsoft 365, Google Cloud, Python and SQL, and AI tools to dashboards, tools, and reports, and finally to decisions">
           <path class="route-base" d="M100 152 L280 96 L460 152 L640 96 L820 152 L1000 96 L1180 152"/>
@@ -332,28 +432,45 @@
           <circle class="node" cx="820" cy="152" r="15"/>
           <circle class="node" cx="1000" cy="96" r="15"/>
           <circle class="node" cx="1180" cy="152" r="19"/>
-          <g class="nl"><text class="nl-name" x="100" y="202">Source systems</text><text class="nl-sub" x="100" y="224">Where the mess starts</text></g>
+          <g class="nl"><text class="nl-name" x="100" y="202">Source Systems</text><text class="nl-sub" x="100" y="224">Where the mess starts</text></g>
           <g class="nl"><text class="nl-name" x="280" y="40">Microsoft 365</text><text class="nl-sub" x="280" y="62">SharePoint and Excel</text></g>
           <g class="nl"><text class="nl-name" x="460" y="202">Google Cloud</text><text class="nl-sub" x="460" y="224">BigQuery</text></g>
-          <g class="nl"><text class="nl-name" x="640" y="40">Python and SQL</text><text class="nl-sub" x="640" y="62">Clean and model</text></g>
-          <g class="nl"><text class="nl-name" x="820" y="202">AI tools</text><text class="nl-sub" x="820" y="224">Claude, Gemini, Copilot</text></g>
-          <g class="nl"><text class="nl-name" x="1000" y="40">Dashboards, tools, and reports</text><text class="nl-sub" x="1000" y="62">What people actually use</text></g>
+          <g class="nl"><text class="nl-name" x="640" y="40">Python And SQL</text><text class="nl-sub" x="640" y="62">Clean and model</text></g>
+          <g class="nl"><text class="nl-name" x="820" y="202">AI Tools</text><text class="nl-sub" x="820" y="224">Claude, Gemini, Copilot</text></g>
+          <g class="nl"><text class="nl-name" x="1000" y="40">Dashboards, Tools, And Reports</text><text class="nl-sub" x="1000" y="62">What people actually use</text></g>
           <g class="nl"><text class="nl-name" x="1180" y="206">Decisions</text><text class="nl-sub" x="1180" y="228">The point of it all</text></g>
           <circle class="package" id="pkg" r="9" cx="100" cy="152"/>
         </svg>
         <ol class="route-list" id="routeList" aria-label="From source systems to decisions"><div class="rl-fill" id="rlFill" aria-hidden="true"></div>
-          <li><span class="rl-dot" aria-hidden="true"></span><strong>Source systems</strong><em>Where the mess starts</em></li>
+          <li><span class="rl-dot" aria-hidden="true"></span><strong>Source Systems</strong><em>Where the mess starts</em></li>
           <li><span class="rl-dot" aria-hidden="true"></span><strong>Microsoft 365</strong><em>SharePoint and Excel</em></li>
           <li><span class="rl-dot" aria-hidden="true"></span><strong>Google Cloud</strong><em>BigQuery</em></li>
-          <li><span class="rl-dot" aria-hidden="true"></span><strong>Python and SQL</strong><em>Clean and model</em></li>
-          <li><span class="rl-dot" aria-hidden="true"></span><strong>AI tools</strong><em>Claude, Gemini, Copilot</em></li>
-          <li><span class="rl-dot" aria-hidden="true"></span><strong>Dashboards, tools, and reports</strong><em>What people actually use</em></li>
+          <li><span class="rl-dot" aria-hidden="true"></span><strong>Python And SQL</strong><em>Clean and model</em></li>
+          <li><span class="rl-dot" aria-hidden="true"></span><strong>AI Tools</strong><em>Claude, Gemini, Copilot</em></li>
+          <li><span class="rl-dot" aria-hidden="true"></span><strong>Dashboards, Tools, And Reports</strong><em>What people actually use</em></li>
           <li><span class="rl-dot" aria-hidden="true"></span><strong>Decisions</strong><em>The point of it all</em></li>
         </ol>
+      </div>
       </div>
     </div>
   </section>
 
+  <!--
+=====================================================================
+ABOUT: TAGLINE, PARAGRAPHS, EDUCATION, AT A GLANCE, AND HOW I WORK
+EDIT HERE:
+  * The tagline: the h2 with id="about-title".
+  * The three paragraphs just below it.
+  * Education: the text inside class="edu-body". The Georgia Tech mark is
+    the file gt-logo.png.
+  * At A Glance: each row is a pair of words, a label (dt) and a value (dd).
+  * How I Work further down: each step is one line starting with
+    class="how-step". Copy a whole line to add a step, or delete one.
+    The steps sit in a row of five on large screens. If you add or remove
+    a step, search "how-steps" in the STYLE section and change the number
+    in repeat(5,
+=====================================================================
+-->
   <section class="about" id="about" aria-labelledby="about-title">
     <div class="wrap about-grid">
       <div>
@@ -374,9 +491,9 @@
           </div>
         </aside>
         <div class="glance">
-          <div class="glance-top">At a glance</div>
+          <div class="glance-top">At A Glance</div>
           <dl class="glance-body">
-            <div><dt>Based in</dt><dd>Atlanta, GA</dd></div>
+            <div><dt>Based In</dt><dd>Atlanta, GA</dd></div>
             <div><dt>Role</dt><dd>Senior Data Analyst and analytics product owner</dd></div>
             <div><dt>Focus</dt><dd>Supply chain analytics products, automation, and self-service reporting</dd></div>
             <div><dt>Stack</dt><dd>SQL, Python, BigQuery, Tableau, and AI tools</dd></div>
@@ -388,16 +505,29 @@
     </div>
 
     <div class="wrap how">
-      <h3 id="how-title">How I work</h3>
+      <h3 id="how-title">How I Work</h3>
       <ol class="how-steps" aria-labelledby="how-title">
         <li class="how-step"><h4>Understand</h4><p>I start with the decision someone needs to make, then trace the data behind it. Requirements and stakeholder alignment come before any code.</p></li>
         <li class="how-step"><h4>Build</h4><p>I turn manual steps into automated pipelines, with SQL, Python, and BigQuery underneath and a dashboard or tool on top.</p></li>
         <li class="how-step"><h4>Validate</h4><p>Every number gets checked against its source and reviewed with the people who know it best before anything goes live.</p></li>
         <li class="how-step"><h4>Adopt</h4><p>I train the people who use it, gather feedback, and keep improving it, so it becomes the way the team works.</p></li>
+        <li class="how-step"><h4>Enhance</h4><p>Published work is never finished. I watch how a tool gets used, gather feedback, and keep refining it, fixing what is rough and adding what teams ask for, so it keeps getting better long after launch.</p></li>
       </ol>
     </div>
   </section>
 
+  <!--
+=====================================================================
+TOOLKIT: THE INTRO LINE AND THE PRACTICES CHIPS
+EDIT HERE:
+  * The intro sentence under the heading.
+  * The Practices chips: each is one li item inside class="practices-row".
+THE TOOL TILES ARE NOT HERE. Their names and descriptions live in the
+SCRIPT near the bottom: search "var TOOLS". The "Used in 5 of 7 projects"
+counts and dots are worked out automatically from each project's tools
+list, so you never type them.
+=====================================================================
+-->
   <section class="toolkit" id="toolkit" aria-labelledby="toolkit-title">
     <div class="wrap">
       <h2 id="toolkit-title">Toolkit</h2>
@@ -420,12 +550,22 @@
     </div>
   </section>
 
+  <!--
+=====================================================================
+SELECTED WORKS: HEADING AND REDACTION NOTICE
+EDIT HERE:
+  * The heading and the confidentiality notice (class="notice").
+THE PROJECT CARDS ARE NOT HERE. Every card and every case study pop-up is
+built from the SCRIPT near the bottom: search "var PROJECTS". Each project
+is one block there. See the notes above that list.
+=====================================================================
+-->
   <section class="work" id="work" aria-labelledby="work-title">
     <div class="wrap">
-      <h2 id="work-title">Selected work</h2>
+      <h2 id="work-title">Selected Works</h2>
       <div class="notice" role="note">
         <div>
-          <strong>Redacted for confidentiality</strong>
+          <strong>Redacted For Confidentiality</strong>
           <p>Exact figures, results, and internal system, project, and team names have been removed from employer work. The descriptions are accurate to what I built.</p>
         </div>
       </div>
@@ -434,24 +574,46 @@
     </div>
   </section>
 
+  <!--
+=====================================================================
+BEYOND THE BUILD: THREE SHORT BLOCKS
+EDIT HERE:
+  * Each block is one line starting with class="beyond-item": a heading (h3)
+    and a sentence (p).
+=====================================================================
+-->
   <section class="beyond" aria-labelledby="beyond-title">
     <div class="wrap">
-      <h2 id="beyond-title">Beyond the build</h2>
+      <h2 id="beyond-title">Beyond The Build</h2>
       <p class="intro">A tool only matters if people can use it. I spend real time making the people around me better at working with data.</p>
       <div class="beyond-grid">
-        <div class="beyond-item"><h3>Code review</h3><p>I review and optimize Python scripts for teammates across functions, so their automations run faster and break less.</p></div>
-        <div class="beyond-item"><h3>Dashboard help</h3><p>I help colleagues design, fix, and extend their own dashboards, so they aren't blocked waiting on a build.</p></div>
+        <div class="beyond-item"><h3>Code Review</h3><p>I review and optimize Python scripts for teammates across functions, so their automations run faster and break less.</p></div>
+        <div class="beyond-item"><h3>Dashboard Help</h3><p>I help colleagues design, fix, and extend their own dashboards, so they aren't blocked waiting on a build.</p></div>
         <div class="beyond-item"><h3>Teaching</h3><p>I teach teammates to use BigQuery and Tableau properly, so analytics skill grows past my own desk.</p></div>
       </div>
     </div>
   </section>
 
+  <!--
+=====================================================================
+EXPERIENCE: JOBS, TIME IN ROLE, AND LEADERSHIP
+EDIT HERE:
+  * Each job is one block starting with class="job". Inside it: the dates
+    (class="job-dates"), the job title (h3), the employer line, and the
+    bullet points (li).
+  * The small gold badge under the dates (for example 1 year, 2 months) is
+    worked out automatically. It reads data-start and data-end, written
+    as year-month, like 2025-10. For a current job, write present as the
+    data-end. Update these two values when you change the dates.
+  * Leadership: the block with the h3 Leadership at the bottom.
+=====================================================================
+-->
   <section class="experience" id="experience" aria-labelledby="exp-title">
     <div class="wrap">
       <h2 id="exp-title">Experience</h2>
       <div class="notice" role="note">
         <div>
-          <strong>Redacted for confidentiality</strong>
+          <strong>Redacted For Confidentiality</strong>
           <p>Exact figures, results, and internal system, project, and team names have been removed.</p>
         </div>
       </div>
@@ -507,9 +669,22 @@
     </div>
   </section>
 
+  <!--
+=====================================================================
+CONTACT
+EDIT HERE:
+  * The heading and the sentence under it.
+  * The email address appears in TWO places. Here (the link and the words
+    you see) and in the SCRIPT as EMAIL, which powers the Copy button.
+    Change all of them.
+  * The GitHub button: change the address in its href.
+  * The LinkedIn button appears once you paste your profile address into
+    the SCRIPT: search "var LINKEDIN".
+=====================================================================
+-->
   <section class="contact" id="contact" aria-labelledby="contact-title">
     <div class="wrap">
-      <h2 id="contact-title">Let's talk.</h2>
+      <h2 id="contact-title">Let's Talk.</h2>
       <p>I'm open to new roles in analytics, data products, and supply chain technology. The fastest way to reach me is email.</p>
       <div class="email-row">
         <a class="email-big" id="emailLink" href="mailto:cael21cernich@gmail.com">cael21cernich@gmail.com</a>
@@ -524,6 +699,11 @@
   </section>
 </main>
 
+<!--
+=====================================================================
+FOOTER: the small print at the bottom (the year updates by itself).
+=====================================================================
+-->
 <footer>
   <div class="wrap">
     <p>Employer work on this site is described in general terms. Exact figures, results, and internal system, project, and team names are redacted for confidentiality.</p>
@@ -535,28 +715,61 @@
 (function () {
   'use strict';
 
-  // ----- edit these -----
+  /* =====================================================================
+     SCRIPT GUIDE
+     This part of the file holds the words for the tool tiles, the project
+     cards, the case studies, and the "My Role" lines, plus the settings
+     for scroll speed. Everything is organized in labeled blocks below:
+       1. LINKEDIN and EMAIL         (contact details)
+       2. TOOLS                      (the Toolkit tiles)
+       3. PROJECTS                   (cards and case study pop-ups)
+       4. ROLES                      (the "My Role" lines)
+       5. PREVIEWS                   (the small drawing on each card)
+       6. SCROLL SPEED SETTINGS      (REVEAL_START, REVEAL_END, and so on)
+     Remember: text sits between single quotes, keep the quotes and the
+     commas, and use a curly apostrophe (it’s) inside script text.
+     ===================================================================== */
+  // ----- 1. CONTACT DETAILS (edit these) -----
   var LINKEDIN = '';   // paste your LinkedIn profile URL here, e.g. 'https://www.linkedin.com/in/your-name'
   var EMAIL = 'cael21cernich@gmail.com';
   // -----------------------
 
+  // ----- 2. TOOLKIT TILES -----
+  // Each tile is one line: id (do not change), name (the tile heading),
+  // line (the sentence on the tile). The id is how projects point to a tool,
+  // so keep the ids exactly as they are. Reorder the lines to reorder tiles.
   var TOOLS = [
+    { id: 'Excel', name: 'Microsoft 365', line: 'SharePoint and Excel run through all of my work. They are where stakeholders live, so I meet teams there, then move them to automated tools.' },
     { id: 'SQL', name: 'SQL', line: 'Modeling, joins, and validation logic. The backbone under most of what I ship.' },
     { id: 'BigQuery', name: 'Google Cloud', line: 'BigQuery is the central warehouse behind every dashboard, plus the scheduled pipelines that feed it. I also teach peers to use it well.' },
-    { id: 'Python', name: 'Python', line: 'Extraction, transformation, and automation. I also review and optimize teammates\' scripts.' },
+    { id: 'Python', name: 'Python', line: 'Extraction, transformation, and automation. I also review and optimize teammates\u2019 scripts.' },
     { id: 'Tableau', name: 'Tableau', line: 'Executive-ready dashboards with built-in downloads and feedback loops.' },
-    { id: 'AI', name: 'AI tools', line: 'Gemini, Copilot, Claude, and ChatGPT help me build faster and review smarter. A person checks every number.' },
-    { id: 'Excel', name: 'Microsoft 365', line: 'SharePoint and Excel are where stakeholders live. I meet teams there, then move them to automated tools.' },
+    { id: 'AI', name: 'AI Tools', line: 'Gemini, Copilot, Claude, and ChatGPT help me build faster and review smarter. A person checks every number.' },
     { id: 'GitHub', name: 'GitHub', line: 'New to me and already earning its keep: version control, scheduled automation, and free hosting for my personal projects.' },
     { id: 'FlexSim', name: 'FlexSim', line: '3D simulation and digital twin modeling for operational decision support.' }
   ];
 
+  // ----- 3. PROJECT CARDS AND CASE STUDIES -----
+  // Each project is one block between { and }. Fields, in order:
+  //   id ........ the short name used in links (for example #case-capital). Do not change.
+  //   featured .. true makes the card wide and first. Only one should have it.
+  //   kind ...... 'Employer Work' or 'Personal Project' (the label on the card).
+  //   title ..... the card and pop-up heading.
+  //   from, to .. the two lines on the card (messy start, and what it became).
+  //   tools ..... which tools were used. Must match TOOLS ids: Excel, SQL,
+  //               BigQuery, Python, Tableau, AI, GitHub, FlexSim. This is what
+  //               drives the Toolkit counts and filtering.
+  //   summary ... the short paragraph on the card.
+  //   problem, built (a list), runs, outcome ... the case study pop-up.
+  //   demo ...... optional link to a demo page. live, repo ... optional links.
+  // To add a project: copy a whole block, give it a new id, then also add a
+  // line for it in ROLES and PREVIEWS below (a missing drawing is fine).
   var PROJECTS = [
     {
-      id: 'real-estate', featured: true, kind: 'Employer work', title: 'Supply Chain Real Estate Dashboard',
+      id: 'real-estate', featured: true, kind: 'Employer Work', title: 'Supply Chain Real Estate Dashboard',
       from: 'Contract data scattered across teams and apps',
       to: 'One source of truth for monthly reviews and decisions',
-      tools: ['SQL', 'BigQuery', 'Python', 'AI'],
+      tools: ['SQL', 'BigQuery', 'Python', 'Excel', 'AI'],
       summary: 'A single app that brings a national portfolio of distribution, fulfillment, and parking contracts into one place, so leaders can see what expires, what it costs, and where it sits.',
       problem: 'Real estate contract data lived in separate teams and apps. Basic questions, like what expires when, what we pay, and where each site is, meant manual digging every time.',
       built: [
@@ -574,7 +787,7 @@
       demo: 'real-estate.html'
     },
     {
-      id: 'supplier-spend', kind: 'Employer work', title: 'Supplier Spend Dashboard',
+      id: 'supplier-spend', kind: 'Employer Work', title: 'Supplier Spend Dashboard',
       from: 'ERP exports pasted into spreadsheets, again and again',
       to: 'A self-serve view of where to contract and where to renegotiate',
       tools: ['SQL', 'BigQuery', 'Python', 'Tableau', 'Excel'],
@@ -595,10 +808,10 @@
       demo: 'supplier-spend.html'
     },
     {
-      id: 'capital', kind: 'Employer work', title: 'Capital Availability Dashboard',
+      id: 'capital', kind: 'Employer Work', title: 'Capital Availability Dashboard',
       from: 'Budgets tracked by hand across Excel sheets',
       to: 'An always-current view of capital remaining on every project',
-      tools: ['SQL', 'BigQuery', 'Python', 'Tableau'],
+      tools: ['SQL', 'BigQuery', 'Python', 'Tableau', 'Excel'],
       summary: 'A single view of budget, commitments, spend, and the capital still available for each project.',
       problem: 'The Capital team tracked budgets, commitments, and spend for each project across several Excel sheets, updated by hand. Answering “how much do we have left?” meant reconciling files.',
       built: [
@@ -614,10 +827,10 @@
       demo: 'capital.html'
     },
     {
-      id: 'mhe', kind: 'Employer work', title: 'Self-Perform Maintenance Savings Tracker',
+      id: 'mhe', kind: 'Employer Work', title: 'Self-Perform Maintenance Savings Tracker',
       from: 'A new in-house maintenance program with no scorecard',
       to: 'A weekly view of progress and savings against outside vendors',
-      tools: ['SQL', 'BigQuery', 'Python', 'Tableau'],
+      tools: ['SQL', 'BigQuery', 'Python', 'Tableau', 'Excel'],
       summary: 'A tracker that shows how an internal self-perform maintenance program is progressing and what it saves compared with using external vendors.',
       problem: 'The maintenance team launched an internal self-perform program for material handling equipment and needed to see how it was progressing and what it saved compared with outside vendors.',
       built: [
@@ -631,10 +844,10 @@
       outcome: 'A shared, trusted view of program progress and savings versus external vendors.'
     },
     {
-      id: 'digital-twin', kind: 'Employer work', title: 'Digital Twin Simulation',
+      id: 'digital-twin', kind: 'Employer Work', title: 'Digital Twin Simulation',
       from: 'An open question: could simulation support real decisions?',
       to: 'A working 3D model handed to Engineering',
-      tools: ['FlexSim'],
+      tools: ['FlexSim', 'Excel', 'AI'],
       summary: 'A 3D simulation model that shows simulation-based decision support is viable.',
       problem: 'Whether simulation could support operational decisions was an open question, and it sat outside the traditional analytics scope, so nobody owned it.',
       built: [
@@ -647,7 +860,7 @@
       outcome: 'Engineering has a usable model and a proof point for simulation-based decisions.'
     },
     {
-      id: 'assortment', kind: 'Employer work', title: 'Assortment, Allocation, and Capacity Planning',
+      id: 'assortment', kind: 'Employer Work', title: 'Assortment, Allocation, And Capacity Planning',
       from: 'Heavy manual analysis behind every stocking decision',
       to: 'Data-backed assortment, allocation, and capacity decisions',
       tools: ['SQL', 'BigQuery', 'Python', 'Excel'],
@@ -663,10 +876,10 @@
       outcome: 'Faster, data-backed assortment and capacity decisions, including a strong assortment rate for the Pro customer segment.'
     },
     {
-      id: 'avalanche', kind: 'Personal project', title: 'Avalanche Hub',
+      id: 'avalanche', kind: 'Personal Project', title: 'Avalanche Hub',
       from: 'A hockey season\'s stats, schedule, and news in a dozen places',
       to: 'One self-updating app that predicts every game',
-      tools: ['GitHub', 'AI'],
+      tools: ['GitHub', 'Excel', 'AI'],
       summary: 'A sports analytics app for the Colorado Avalanche with an Elo-based win probability model that refreshes itself every hour.',
       problem: 'Schedules, rosters, injuries, odds, and news for one team live in a dozen places. I wanted one app that pulls them together and predicts each game.',
       built: [
@@ -683,7 +896,8 @@
     }
   ];
 
-  // ----- my role on each project (drafted from the resume; edit freely) -----
+  // ----- 4. MY ROLE LINES -----
+  // Format: 'project id': ['short version on the card', 'longer version in the pop-up'].
   var ROLES = {
     'real-estate': ['Built it end to end', 'I built it end to end: requirements, the data pipeline, the app itself, deployment, and the user guide and handoff.'],
     'supplier-spend': ['Designed and built it', 'I designed and built the data pipeline and the dashboard for the Capital team.'],
@@ -695,7 +909,9 @@
   };
   PROJECTS.forEach(function (p) { var r = ROLES[p.id] || ['', '']; p.roleShort = r[0]; p.role = r[1]; });
 
-  // ----- small illustrative previews (drawn in code, no real screenshots) -----
+  // ----- 5. CARD PREVIEW DRAWINGS -----
+  // Small pictures drawn in code, with no real screenshots. Safe to leave alone.
+  // Each one is keyed by project id. A project with no drawing simply shows none.
   var PV = { navy: '#1E3A8A', gold: '#D2A02B', ink: '#0B1430', con: '#E6E9EE', red: '#C8321F', blue: '#3F72D4' };
   function R(x, y, w, h, fill, extra) { return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="' + fill + '"' + (extra || '') + '/>'; }
   function PL(points, color, w) { return '<polyline points="' + points + '" fill="none" stroke="' + color + '" stroke-width="' + (w || 3) + '" stroke-linejoin="round" stroke-linecap="round"/>'; }
@@ -832,7 +1048,7 @@
       if (p.demo) actions += '<a class="btn small ghost" href="' + p.demo + '">Try the interactive demo</a>';
       if (p.live) actions += '<a class="btn small ghost" href="' + p.live + '" target="_blank" rel="noopener">Open the live app</a>';
       card.innerHTML =
-        '<div class="label-top"><span>' + esc(p.kind) + '</span><span>' + (p.kind === 'Employer work' ? 'Redacted' : 'Public') + '</span></div>' +
+        '<div class="label-top"><span>' + esc(p.kind) + '</span><span>' + (p.kind === 'Employer Work' ? 'Redacted' : 'Public') + '</span></div>' +
         '<div class="label-body">' +
           '<div class="preview">' + preview(p.id) + '</div>' +
           '<h3>' + esc(p.title) + '</h3>' +
@@ -883,13 +1099,13 @@
         '<div class="preview">' + preview(p.id) + '</div>' +
         '<h3 id="dlgTitle">' + esc(p.title) + '</h3>' +
         '<div class="tool-row">' + chips + '</div>' +
-        '<h4>My role</h4><p>' + esc(p.role) + '</p>' +
-        '<h4>The problem</h4><p>' + esc(p.problem) + '</p>' +
-        '<h4>What I built</h4><ul>' + built + '</ul>' +
-        (p.runs ? '<h4>How it runs</h4><p>' + esc(p.runs) + '</p>' : '') +
-        '<h4>The outcome</h4><p>' + esc(p.outcome) + '</p>' +
+        '<h4>My Role</h4><p>' + esc(p.role) + '</p>' +
+        '<h4>The Problem</h4><p>' + esc(p.problem) + '</p>' +
+        '<h4>What I Built</h4><ul>' + built + '</ul>' +
+        (p.runs ? '<h4>How It Runs</h4><p>' + esc(p.runs) + '</p>' : '') +
+        '<h4>The Outcome</h4><p>' + esc(p.outcome) + '</p>' +
         '<div class="label-actions">' + links + '</div>' +
-        (p.kind === 'Employer work' ? '<p class="dlg-note">Exact figures, results, and internal system, project, and team names are redacted for confidentiality.</p>' : '') +
+        (p.kind === 'Employer Work' ? '<p class="dlg-note">Exact figures, results, and internal system, project, and team names are redacted for confidentiality.</p>' : '') +
         '<div class="dlg-nav">' +
           '<button type="button" class="dlg-navbtn" data-go="' + prev.id + '"><span>Previous</span><strong>' + esc(prev.title) + '</strong></button>' +
           '<button type="button" class="dlg-navbtn next" data-go="' + next.id + '"><span>Next</span><strong>' + esc(next.title) + '</strong></button>' +
@@ -959,6 +1175,12 @@
   // ----- scroll-driven reveal: content "unpacks" as you scroll -----
   var REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var bleeds = [];
+  // ----- 6. SCROLL SPEED SETTINGS -----
+  // Bigger gap between START and END means content fades in more slowly as you scroll.
+  var REVEAL_START = 1.0;      // an item starts appearing when its top edge reaches this point of the screen (1.0 = bottom edge)
+  var REVEAL_END = 0.3;        // ...and is fully visible when it reaches this point (0.3 = 30% down from the top). A bigger gap = slower.
+  var REVEAL_STAGGER_PX = 70;  // extra scroll delay between neighbors in the same row
+  var ROUTE_FILL_END = 0.88;   // the route is completely filled after this share of its pinned scroll distance
   var BLEED_SELECTORS = ['.hero .lede', '.hero-cta', '.photo', '.about h2', '.about p', '.edu', '.glance', '.how h3', '.how-step', '.toolkit h2', '.toolkit .intro', '.tool-tile', '.practices h3', '.practices-intro', '.practices-row',
     '.work h2', '.work .notice', '.beyond h2', '.beyond .intro', '.beyond-item', '.experience h2', '.experience .notice', '.job',
     '.lead-grid .panel', '.contact h2', '.contact p', '.email-row', '.links'];
@@ -974,7 +1196,7 @@
       var parent = node.parentNode;
       var idx = Array.prototype.indexOf.call(parent.children, node);
       var inGrid = window.getComputedStyle(parent).display === 'grid';
-      node.__bleed = { p: 0, off: inGrid ? (idx % 4) * 45 : 0, done: false };
+      node.__bleed = { p: 0, off: inGrid ? (idx % 4) * REVEAL_STAGGER_PX : 0, done: false };
       node.setAttribute('data-bleed', '');
       if (REDUCE) finish(node); else bleeds.push(node);
     });
@@ -983,6 +1205,8 @@
   // route graphic: the package travels as you scroll (wide screens), or a vertical list fills in (narrow screens)
   var routeSvg = document.getElementById('routeSvg');
   var routeList = document.getElementById('routeList');
+  var routePin = document.getElementById('routePin');
+  var routeStick = document.getElementById('routeWrap');
   var routePath = routeSvg.querySelector('.route-draw');
   var routeNodes = routeSvg.querySelectorAll('.node');
   var routeLabels = routeSvg.querySelectorAll('.nl');
@@ -1023,19 +1247,23 @@
       var node = bleeds[i], st = node.__bleed;
       if (st.done) { bleeds.splice(i, 1); continue; }
       var top = node.getBoundingClientRect().top;
-      var from = vh * 0.98 - st.off, to = vh * 0.62 - st.off;
+      var from = vh * REVEAL_START - st.off, to = vh * REVEAL_END - st.off;
       var p = (from - top) / (from - to);
       p = atBottom ? 1 : Math.max(0, Math.min(1, p));
       if (p > st.p) st.p = p;                       // once revealed, stays revealed
       if (st.p >= 1) finish(node); else node.style.setProperty('--p', st.p.toFixed(3));
     }
 
-    if (routeQ < 1) {
-      var routeEl = window.getComputedStyle(routeSvg).display !== 'none' ? routeSvg : routeList;
-      var rr = routeEl.getBoundingClientRect();
-      var qs = vh * 0.95, qe = Math.min(vh * 0.38, vh * 0.9 - rr.height);
-      var q = atBottom ? 1 : Math.max(0, Math.min(1, (qs - rr.top) / (qs - qe)));
-      if (q > routeQ) { routeQ = q; setRoute(routeQ); }
+    if (!REDUCE) {
+      // The route graphic is pinned on screen; scrolling through the tall wrapper fills it in (and un-fills it going back up).
+      var pr = routePin.getBoundingClientRect();
+      var stickTop = parseFloat(window.getComputedStyle(routeStick).top);
+      if (isNaN(stickTop)) stickTop = 92;
+      var travel = Math.max(1, pr.height - routeStick.getBoundingClientRect().height);
+      var q = atBottom ? 1 : Math.max(0, Math.min(1, ((stickTop - pr.top) / travel) / ROUTE_FILL_END));
+      if (q > 0.998) q = 1;      // snap to the ends so the first and last stops always light correctly
+      if (q < 0.002) q = 0;
+      if (q !== routeQ && (Math.abs(q - routeQ) > 0.002 || q === 0 || q === 1)) { routeQ = q; setRoute(q); }
     }
   }
 
